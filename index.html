@@ -701,24 +701,6 @@
         root.render(<App />);
     </script>
 
-    <!-- Ko-fi floating chat widget -->
-    <style>
-        /* center the floating chat button at bottom of viewport */
-        .floatingchat-container-wrap {
-            left: 50% !important;
-            right: auto !important;
-            transform: translateX(-50%) !important;
-        }
-    </style>
-    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
-    <script>
-        kofiWidgetOverlay.draw('harmonilab', {
-            'type': 'floating-chat',
-            'floating-chat.donateButton.text': 'Support us',
-            'floating-chat.donateButton.background-color': '#8b5cf6',
-            'floating-chat.donateButton.text-color': '#fff'
-        });
-    </script>
 </body>
 
 </html>
