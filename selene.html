@@ -268,6 +268,85 @@
             );
         };
 
+        const TechStack = () => {
+            const layers = [
+                {
+                    label: "Inference Engine",
+                    color: "bg-violet-600",
+                    items: [
+                        { name: "MedGemma 4B", desc: "Google's biomedical-tuned vision-language model, running fully on-device via Ollama for zero data egress." },
+                        { name: "Ollama", desc: "Local LLM runtime. No cloud API calls — all inference stays on the user's machine." },
+                    ]
+                },
+                {
+                    label: "Retrieval & Knowledge",
+                    color: "bg-blue-600",
+                    items: [
+                        { name: "Chroma RAG", desc: "Vector database for retrieval-augmented generation over a curated corpus of peer-reviewed menopause literature." },
+                        { name: "Graph RAG (in progress)", desc: "Knowledge graph layer connecting symptom clusters, hormonal states, and clinical evidence for richer contextual retrieval." },
+                    ]
+                },
+                {
+                    label: "Data & Output",
+                    color: "bg-pink-600",
+                    items: [
+                        { name: "Longitudinal Symptom Tracker", desc: "Structured local storage of user symptom data across time — the core research dataset for hormonal trajectory modeling." },
+                        { name: "Clinical PDF Reports", desc: "Auto-generated visit-ready reports (CC BY 4.0) summarizing symptom burden and evidence-based context for clinician review." },
+                    ]
+                },
+            ];
+
+            return (
+                <div id="approach" className="py-20 bg-slate-900 text-white">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center mb-14">
+                            <h2 className="text-sm font-bold text-violet-400 uppercase tracking-wide mb-2">Technical Architecture</h2>
+                            <h3 className="text-3xl font-bold text-white mb-4">Built for Privacy. Built to Last.</h3>
+                            <p className="text-slate-400 max-w-2xl mx-auto">
+                                SELENE runs entirely on the user's device. No cloud inference, no data transmission, no vendor lock-in.
+                                The stack is open-source Python end-to-end, released under CC BY 4.0.
+                            </p>
+                        </div>
+
+                        <div className="grid md:grid-cols-3 gap-8 mb-12">
+                            {layers.map((layer, i) => (
+                                <div key={i} className="bg-slate-800 rounded-2xl p-6 border border-slate-700">
+                                    <div className={`inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white mb-6 ${layer.color}`}>{layer.label}</div>
+                                    <div className="space-y-6">
+                                        {layer.items.map((item, j) => (
+                                            <div key={j}>
+                                                <p className="font-bold text-white mb-1">{item.name}</p>
+                                                <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="bg-slate-800 rounded-2xl p-8 border border-slate-700 font-mono text-sm">
+                            <p className="text-violet-400 mb-2 text-xs uppercase tracking-widest font-bold">Sample interaction (CLI prototype)</p>
+                            <div className="space-y-2 text-slate-300">
+                                <p><span className="text-pink-400">user@selene</span><span className="text-slate-500">:~$</span> <span className="text-white">selene chat</span></p>
+                                <p className="text-slate-500">▸ Loading MedGemma 4B via Ollama... <span className="text-emerald-400">✓</span></p>
+                                <p className="text-slate-500">▸ Chroma RAG index ready (847 chunks) <span className="text-emerald-400">✓</span></p>
+                                <p className="text-slate-500">▸ Symptom log: 23 entries found <span className="text-emerald-400">✓</span></p>
+                                <p className="text-slate-400 mt-3"><span className="text-violet-400">SELENE&gt;</span> Hello. I've reviewed your last 30 days of symptom logs. Your sleep disruption events correlate with your reported hot flash frequency. Here's what the research says about this pattern...</p>
+                                <p className="mt-3"><span className="text-emerald-400">you&gt;</span> Can you generate a report for my doctor?</p>
+                                <p className="text-slate-400"><span className="text-violet-400">SELENE&gt;</span> Generating clinical PDF... <span className="text-slate-500">saved to</span> <span className="text-blue-400">~/selene-reports/visit-2026-04-28.pdf</span></p>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 flex flex-wrap gap-3 justify-center">
+                            {["Python", "MedGemma 4B", "Ollama", "ChromaDB", "LangChain", "Open Source", "CC BY 4.0", "Privacy-First"].map((tag, i) => (
+                                <span key={i} className="px-4 py-1.5 bg-slate-700 text-slate-300 text-xs font-mono rounded-full border border-slate-600">{tag}</span>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         const Impact = () => {
             return (
                 <div id="impact" className="py-20 bg-violet-600 text-white">
@@ -356,6 +435,7 @@
                     <Hero />
                     <Mission />
                     <Features />
+                    <TechStack />
                     <Impact />
                     <Footer />
                 </div>
