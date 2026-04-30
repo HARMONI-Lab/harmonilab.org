@@ -275,7 +275,7 @@
                     color: "bg-violet-600",
                     items: [
                         { name: "MedGemma 1.5 4B", desc: "Google's biomedical-tuned vision-language model, running fully on-device via Ollama for zero data egress." },
-                        { name: "Ollama", desc: "Local LLM runtime. No cloud API calls — all inference stays on the user's machine." },
+                        { name: "Ollama", desc: "Local LLM runtime. No cloud API calls and all inference stays on the user's machine." },
                     ]
                 },
                 {
@@ -290,7 +290,7 @@
                     label: "Data & Output",
                     color: "bg-pink-600",
                     items: [
-                        { name: "Longitudinal Symptom Tracker", desc: "Structured local storage of user symptom data across time — the core research dataset for hormonal trajectory modeling." },
+                        { name: "Longitudinal Symptom Tracker", desc: "Structured local storage of user symptom data across time - the core research dataset for hormonal trajectory modeling." },
                         { name: "Clinical PDF Reports", desc: "Auto-generated visit-ready reports (CC BY 4.0) summarizing symptom burden and evidence-based context for clinician review." },
                     ]
                 },
@@ -337,41 +337,41 @@
         const Screenshots = () => {
             const screens = [
                 {
-                    src: "images/Untitled_design__3_.png",
+                    src: "images/daily_attune_screenshot.png",
                     title: "Daily Attune",
-                    desc: "Structured daily symptom check-in — sleep quality, hot flash intensity, and cognitive state — logged locally for longitudinal analysis."
+                    desc: "Structured daily symptom check-in: sleep quality, hot flash intensity, and cognitive state, logged locally for longitudinal analysis."
                 },
                 {
-                    src: "images/Untitled_design__2_.png",
+                    src: "images/chat_screenshot.png",
                     title: "Chat with SELENE",
                     desc: "RAG-powered conversational interface grounded in peer-reviewed menopause literature, running fully on-device via MedGemma 1.5 4B."
                 },
                 {
-                    src: "images/Untitled_design__1_.png",
+                    src: "images/summary_screenshot.png",
                     title: "Clinical AI Summary",
-                    desc: "Auto-generated report summarizing symptom trends, severity scores, and patterns — formatted for clinician review."
+                    desc: "Auto-generated report summarizing symptom trends, severity scores, and patterns, formatted for clinician review."
                 },
                 {
-                    src: "images/Untitled_design__4_.png",
+                    src: "images/design_screenshot.png",
                     title: "Designed for Real Life",
-                    desc: "A privacy-first companion built for the moments between appointments — wherever women need it most."
+                    desc: "A privacy-first companion built for the moments between appointments - wherever women need it most."
                 },
             ];
 
             return (
                 <div id="screenshots" className="py-20 bg-white">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-7xl rounded-2xl  mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-14">
                             <h2 className="text-sm font-bold text-violet-600 uppercase tracking-wide mb-2">MVP Preview</h2>
                             <h3 className="text-3xl font-bold text-slate-900 mb-4">SELENE in Action</h3>
                             <p className="text-slate-600 max-w-xl mx-auto">
-                                Current prototype running MedGemma 1.5 4B locally via Ollama with Chroma RAG. Pre-alpha — active development.
+                                Current prototype running MedGemma 1.5 4B locally via Ollama with Chroma RAG. Pre-alpha in active development.
                             </p>
                         </div>
 
-                        <div className="grid md:grid-cols-2 gap-10">
+                        <div className="grid md:grid-cols-3 gap-10">
                             {screens.map((s, i) => (
-                                <div key={i} className="group">
+                                <div key={i} className={`group ${i === screens.length - 1 ? 'md:col-start-2' : ''}`}>
                                     <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-100 mb-4 bg-slate-50">
                                         <img
                                             src={s.src}
