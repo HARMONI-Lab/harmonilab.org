@@ -246,31 +246,6 @@
             </header>
         );
 
-        // ---------- Trust ----------
-        const TrustBadges = () => {
-            const badges = [
-                { label: "Privacy-First", desc: "On-device processing" },
-                { label: "Research-Backed", desc: "Evidence-based approach" },
-                { label: "Open Source", desc: "Transparent & auditable" },
-                { label: "HIPAA Compliant", desc: "Data protection ready" }
-            ];
-            return (
-                <section className="py-10 border-y border-rule bg-cream/40">
-                    <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                            {badges.map((b,i) => (
-                                <div key={i} className="flex flex-col">
-                                    <span className="eyebrow mb-1">— {String(i+1).padStart(2,'0')}</span>
-                                    <p className="font-display text-xl text-ink">{b.label}</p>
-                                    <p className="text-[13px] text-ink/60 mt-1">{b.desc}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            );
-        };
-
         // ---------- Mission ----------
         const Mission = () => (
             <section id="mission" className="py-28 lg:py-36">
@@ -479,10 +454,10 @@
                             <p className="text-[16px] leading-[1.75] text-ink/70 mb-5">
                                 Our core thesis: hormonal trajectory, not just hormone levels, shapes cognitive aging and stroke risk in women. We are building a multimodal AI framework, combining biosignals, longitudinal symptom data, and neuroimaging, to make this risk computationally visible.
                             </p>
-                            <p className="text-[16px] leading-[1.75] text-ink/70 mb-10">
+                            <p className="text-[16px] leading-[1.75] text-ink/70 mb-6">
                                 HARMONI Lab's planned commercial model includes API access for clinical and research institutions and a direct-to-consumer subscription for longitudinal symptom tracking, currently in development.
                             </p>
-                            <div className="grid grid-cols-2 gap-px bg-rule border border-rule">
+                            <div className="grid grid-cols-2  ">
                                 {[
                                     { label: "Founded", value: "2026" },
                                     { label: "Location", value: "Atlanta, Georgia" },
@@ -497,7 +472,8 @@
 
                         <div className="lg:col-span-5">
                             <div className="mb-6 overflow-hidden rounded-lg">
-                                <img src="images/demo.png" alt="SELENE in use" className="w-full object-cover rounded-lg" />
+                            </div>
+                            <div className="mb-6 overflow-hidden rounded-lg">
                             </div>
                             <div className="border border-rule p-8 bg-cream/40">
                                 <p className="eyebrow mb-5">Founder &amp; Principal Investigator</p>
@@ -783,7 +759,6 @@
             <div className="min-h-screen bg-paper text-ink selection:bg-plum-200 selection:text-plum-900">
                 <Navigation />
                 <Hero />
-                <TrustBadges />
                 <Mission />
                 <Research />
                 <Initiatives />
