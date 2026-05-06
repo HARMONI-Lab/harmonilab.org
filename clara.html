@@ -1,126 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CLARA | Clinical Logic Auditor</title>
+    <title>CLARA | HARMONI Lab — Auditing Clinical Logic</title>
 
-    <!-- Resource Hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link rel="preconnect" href="https://unpkg.com">
 
-    <!-- SEO & Social Meta Tags -->
-    <meta name="description"
-        content="CLARA is an AI intelligence layer designed to detect cognitive biases in medical consultations, preventing diagnostic errors before they impact patient outcomes.">
-    <meta property="og:title" content="CLARA | Clinical Logic Auditor">
-    <meta property="og:description"
-        content="CLARA is an AI intelligence layer designed to detect cognitive biases in medical consultations.">
-    <meta property="og:image" content="https://harmonilab.org/clara-og.jpg">
-    <meta property="og:url" content="https://harmonilab.org/clara.html">
-    <meta property="og:type" content="article">
+    <meta name="description" content="CLARA detects cognitive biases in medical consultations in real time, surfacing evidence-based prompts to prevent diagnostic errors.">
+    <meta property="og:title" content="CLARA | HARMONI Lab — Auditing Clinical Logic">
+    <meta property="og:description" content="CLARA detects cognitive biases in medical consultations in real time, surfacing evidence-based prompts to prevent diagnostic errors.">
+    <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@harmonilab">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              serif: ['"Fraunces"', 'Georgia', 'serif'],
+              sans:  ['"Inter"', 'system-ui', 'sans-serif'],
+              mono:  ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+            },
+            colors: {
+              ink:   '#1a1320',
+              paper: '#fbf9f6',
+              cream: '#f3eee7',
+              rule:  '#e6e0d6',
+              plum:  { 50:'#f7f2fb',100:'#ece0f5',200:'#d6bdea',300:'#b994d8',400:'#956bbf',500:'#7344a3',600:'#5a2f87',700:'#46256a',800:'#321a4c',900:'#1f1030' },
+              accent:'#5a2f87',
+            },
+            letterSpacing: { tightest: '-0.04em' },
+          }
+        }
+      }
+    </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
+        body { font-family:'Inter',sans-serif; background:#fbf9f6; color:#1a1320; -webkit-font-smoothing:antialiased; }
+        html { scroll-behavior:smooth; }
+        .font-display { font-family:'Fraunces',Georgia,serif; font-optical-sizing:auto; font-variation-settings:"SOFT" 50; letter-spacing:-0.025em; }
+        .eyebrow { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#5a2f87; }
+        .rule { border-color:#e6e0d6; }
+        .paper-grain {
+            background-color:#fbf9f6;
+            background-image:
+              radial-gradient(circle at 20% 10%, rgba(115,68,163,0.06), transparent 40%),
+              radial-gradient(circle at 80% 90%, rgba(185,148,216,0.07), transparent 45%);
         }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        .ink-link { background-image:linear-gradient(currentColor,currentColor); background-size:0% 1px; background-repeat:no-repeat; background-position:0 100%; transition:background-size .4s ease; }
+        .ink-link:hover { background-size:100% 1px; }
+        .glow { background:radial-gradient(closest-side, rgba(149,107,191,0.35), rgba(149,107,191,0)); filter:blur(40px); }
+        .dropcap::first-letter { font-family:'Fraunces',Georgia,serif; font-weight:500; float:left; font-size:4.5rem; line-height:0.85; padding:0.35rem 0.75rem 0 0; color:#5a2f87; }
+        .sec-num { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.2em; color:#956bbf; }
     </style>
 
-    <!-- React & ReactDOM via UMD CDN -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <!-- Babel standalone for JSX transformation -->
     <script src="https://unpkg.com/@babel/standalone@7.23.5/babel.min.js"></script>
-    <!-- Favicon: use ICO for broader compatibility -->
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
-
-<body class="bg-white text-slate-900">
+<body>
     <div id="root"></div>
 
     <script type="text/babel">
         const { useState, useEffect } = React;
         const { createRoot } = ReactDOM;
 
-        // Icon components
-        const Menu = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>;
-        const X = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>;
-        const ArrowRight = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>;
-        const ChevronRight = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>;
-        const Brain = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .52 8.13 4 4 0 0 0 7.977-2.055A5.005 5.005 0 0 0 12 5Z" /><path d="M9 13a4.5 4.5 0 0 0 3-4" /><path d="M6.003 5.125A3 3 0 1 1 12 5" /></svg>;
-        const Shield = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>;
-        const Zap = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>;
-        const Eye = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>;
-        // const Github = (props) => <svg {...props} width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>;
-        const LinkedIn = (props) => <svg {...props} width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>;
-        const Server = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" /></svg>;
-        const Code = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>;
+        const Menu = (p)=> <svg {...p} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>;
+        const X = (p)=> <svg {...p} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" d="M6 6l12 12M18 6L6 18"/></svg>;
+        const ArrowRight = (p)=> <svg {...p} width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>;
+        const Send = (p)=> <svg {...p} width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" strokeLinejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>;
+        const Check = (p)=> <svg {...p} width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>;
+        const LinkedIn = (p)=> <svg {...p} width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>;
 
         const Navigation = () => {
             const [isOpen, setIsOpen] = useState(false);
             const [scrolled, setScrolled] = useState(false);
-
             useEffect(() => {
-                const handleScroll = () => setScrolled(window.scrollY > 24);
-                window.addEventListener('scroll', handleScroll);
-                return () => window.removeEventListener('scroll', handleScroll);
+                const onScroll = () => setScrolled(window.scrollY > 16);
+                window.addEventListener('scroll', onScroll);
+                return () => window.removeEventListener('scroll', onScroll);
             }, []);
-
             const navLinks = [
-                { name: 'Home', href: 'index.html' },
-                { name: 'Features', href: '#features' },
-                { name: 'Biases', href: '#biases' },
-                { name: 'Tech Stack', href: '#tech' },
+                { name: 'Home',     href: 'index.html' },
+                { name: 'Mission',  href: 'index.html#mission' },
+                { name: 'Research', href: 'index.html#research' },
+                { name: 'SELENE',   href: 'selene.html' },
+                { name: 'LUCIA',    href: 'lucia.html' },
+                { name: 'CLARA',    href: 'clara.html' },
             ];
-
             return (
-                <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'backdrop-blur bg-white/80 shadow-md py-2' : 'bg-transparent py-4'}`}>
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="flex items-center justify-between h-16">
+                <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-paper/85 backdrop-blur-md border-b border-rule' : 'bg-transparent'}`}>
+                    <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                        <div className="flex items-center justify-between h-20">
                             <a href="index.html" className="flex items-center gap-3">
-                                <img src="images/brain_logo.png" alt="HARMONI logo" className="w-10 h-10" />
-                                <div className={`hidden sm:block font-semibold tracking-tight ${scrolled ? 'text-slate-800' : 'text-slate-900'}`}>
-                                    HARMONI Lab / CLARA
+                                <img src="images/brain_logo.png" alt="HARMONI logo" className="w-10 h-10 object-contain rounded-lg" />
+                                <div className="font-display text-xl tracking-tight text-ink">
+                                    HARMONI <span className="font-bold text-plum-600 font-light">Lab</span>
                                 </div>
                             </a>
-
-                            <div className="hidden md:flex items-center space-x-6">
-                                {navLinks.map((link) => (
-                                    <a key={link.name} href={link.href} className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">{link.name}</a>
+                            <div className="hidden lg:flex items-center gap-9">
+                                {navLinks.map((l) => (
+                                    <a key={l.name} href={l.href} className="ink-link text-[13px] tracking-wide text-ink/75 hover:text-ink">{l.name}</a>
                                 ))}
-                                <a href="https://ai.studio/apps/drive/1d04qEW2DRK0wyxJHNnNF0JI8wtrtMiR0?fullscreenApplet=true" target="_blank" className="px-5 py-2.5 bg-violet-600 text-white font-bold rounded-lg hover:brightness-105 transition-all text-sm">
-                                    Open App
-                                </a>
                             </div>
-
-                            <div className="md:hidden">
-                                <button onClick={() => setIsOpen(!isOpen)} className="p-2 rounded-md hover:bg-slate-100">
-                                    {isOpen ? <X className="w-5 h-5 text-slate-900" /> : <Menu className="w-5 h-5 text-slate-900" />}
+                            <div className="flex items-center gap-3">
+                                <a href="index.html#newsletter" className="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-ink text-paper text-[12px] tracking-wider uppercase font-medium hover:bg-plum-700 transition-colors">
+                                    Join Early Access
+                                </a>
+                                <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 text-ink">
+                                    {isOpen ? <X /> : <Menu />}
                                 </button>
                             </div>
                         </div>
                     </div>
-
                     {isOpen && (
-                        <div className="md:hidden backdrop-blur bg-white/80 absolute w-full border-t border-slate-200">
-                            <div className="px-4 py-4 space-y-2">
-                                {navLinks.map((link) => (
-                                    <a key={link.name} href={link.href} onClick={() => setIsOpen(false)} className="block p-2 rounded text-slate-700 font-medium hover:text-slate-900">{link.name}</a>
+                        <div className="lg:hidden bg-paper border-t border-rule">
+                            <div className="px-6 py-6 space-y-3">
+                                {navLinks.map((l) => (
+                                    <a key={l.name} href={l.href} onClick={() => setIsOpen(false)} className="block py-2 font-display text-2xl text-ink">{l.name}</a>
                                 ))}
-                                <a href="https://ai.studio/apps/drive/1d04qEW2DRK0wyxJHNnNF0JI8wtrtMiR0?fullscreenApplet=true" target="_blank" className="block text-center mt-4 px-5 py-2.5 bg-violet-600 text-white font-bold rounded-lg text-sm">
-                                    Open App
-                                </a>
                             </div>
                         </div>
                     )}
@@ -128,273 +136,267 @@
             );
         };
 
-        const Hero = () => {
-            return (
-                <div className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-gradient-to-b from-white to-slate-50">
-                    <svg className="absolute -top-16 -right-16 w-24 h-24 opacity-20 blur-3xl" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="g1" x1="0" x2="1">
-                                <stop offset="0%" stopColor="#7c3aed" />
-                                <stop offset="100%" stopColor="#0ea5e9" />
-                            </linearGradient>
-                        </defs>
-                        <circle cx="100" cy="100" r="90" fill="url(#g1)" opacity="0.8" />
-                        <circle cx="140" cy="70" r="50" fill="#7c3aed" opacity="0.3" />
-                    </svg>
-
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                        <div className="max-w-4xl">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold mb-6">
-                                <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-600 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
-                                </span>
-                                AI-POWERED PATIENT SAFETY
-                            </div>
-                            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.1] mb-6 text-slate-900">
-                                Auditing <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-blue-500">Clinical Logic</span> for a Safer Tomorrow.
+        const Hero = () => (
+            <header className="relative pt-36 lg:pt-44 pb-24 overflow-hidden paper-grain">
+                <div className="absolute -top-20 -right-20 w-[40rem] h-[40rem] glow pointer-events-none"></div>
+                <div className="max-w-[1400px] mx-auto px-6 lg:px-10 relative">
+                    <div className="flex items-center justify-between border-b border-rule pb-4 mb-12">
+                        <div className="eyebrow">Project 03 · AI-Powered Patient Safety</div>
+                        <div className="eyebrow hidden md:block">A HARMONI Lab Initiative</div>
+                    </div>
+                    <div className="grid lg:grid-cols-12 gap-10 items-end">
+                        <div className="lg:col-span-8">
+                            <p className="sec-num mb-6">§ Clara</p>
+                            <h1 className="font-display font-light text-[clamp(2.5rem,7vw,6.5rem)] leading-[0.95] tracking-tightest text-ink">
+                                Auditing <strong className="font-bold text-plum-600">clinical logic</strong> for a safer tomorrow.
                             </h1>
-                            <p className="text-lg md:text-xl text-slate-600 font-light leading-relaxed max-w-3xl mb-8">
+                        </div>
+                        <div className="lg:col-span-4">
+                            <p className="text-[17px] leading-[1.7] text-ink/70 max-w-md">
                                 CLARA is an intelligence layer designed to detect cognitive biases in medical consultations, preventing diagnostic errors before they impact patient outcomes.
                             </p>
-                            <div className="flex flex-wrap gap-4">
-                                <a href="https://ai.studio/apps/drive/1d04qEW2DRK0wyxJHNnNF0JI8wtrtMiR0?fullscreenApplet=true" target="_blank" className="px-8 py-4 bg-violet-600 text-white font-bold rounded-lg hover:brightness-105 transition-all flex items-center gap-2 shadow">
-                                    Launch Auditor <Zap className="w-4 h-4" />
+                            <div className="mt-8 flex flex-wrap gap-3">
+                                <a href="https://ai.studio/apps/drive/1d04qEW2DRK0wyxJHNnNF0JI8wtrtMiR0?fullscreenApplet=true" target="_blank" rel="noopener" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink text-paper text-[12px] tracking-wider uppercase hover:bg-plum-700 transition-colors">
+                                    Launch Auditor <ArrowRight />
                                 </a>
-                                <a href="#features" className="px-8 py-4 bg-white border border-slate-300 text-slate-700 font-bold rounded-lg hover:bg-slate-50 transition-colors">
-                                    How it works
+                                <a href="#features" className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink/30 text-ink text-[12px] tracking-wider uppercase hover:bg-ink hover:text-paper transition-colors">
+                                    How it works <ArrowRight />
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
-            );
-        };
+            </header>
+        );
 
-        const Features = () => {
-            const features = [
-                {
-                    icon: <Eye className="w-6 h-6" />,
-                    title: "Real-time Monitoring",
-                    description: "Continuously analyzes clinical dialogue as it happens, providing instant feedback on potential reasoning gaps."
-                },
-                {
-                    icon: <Shield className="w-6 h-6" />,
-                    title: "Bias Detection",
-                    description: "Identifies three critical cognitive biases that contribute to diagnostic errors in clinical settings."
-                },
-                {
-                    icon: <Brain className="w-6 h-6" />,
-                    title: "Evidence-Based Prompts",
-                    description: "Generates actionable questions grounded in clinical guidelines to ensure thorough diagnostic workup."
-                }
-            ];
+        const Features = () => (
+            <section id="features" className="py-28 lg:py-32 bg-paper border-t border-rule">
+                <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                    <div className="border-b border-rule pb-10 mb-16">
+                        <p className="sec-num mb-3">§ 01 — How It Works</p>
+                        <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
+                            Intelligent <strong className="font-bold text-plum-600">clinical oversight</strong>.
+                        </h2>
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-px bg-rule border border-rule">
+                        {[
+                            { t:'Real-time Monitoring',    d:'Continuously analyzes clinical dialogue as it happens, providing instant feedback on potential reasoning gaps.' },
+                            { t:'Bias Detection',          d:'Identifies three critical cognitive biases that contribute to diagnostic errors in clinical settings.' },
+                            { t:'Evidence-Based Prompts',  d:'Generates actionable questions grounded in clinical guidelines to ensure thorough diagnostic workup.' },
+                        ].map((f,i)=>(
+                            <div key={i} className="bg-paper p-10 hover:bg-plum-50 transition-colors">
+                                <p className="sec-num mb-4">{`0${i+1}`}</p>
+                                <h4 className="font-display text-2xl text-ink mb-3">{f.t}</h4>
+                                <p className="text-[15px] leading-[1.7] text-ink/70">{f.d}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
 
-            return (
-                <div id="features" className="py-20">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center mb-16">
-                            <h2 className="text-xs font-bold text-violet-600 uppercase tracking-[0.2em] font-mono mb-2">How It Works</h2>
-                            <h3 className="text-3xl font-bold text-slate-900">Intelligent Clinical Oversight</h3>
-                        </div>
-
-                        <div className="grid md:grid-cols-3 gap-8">
-                            {features.map((feature, idx) => (
-                                <div key={idx} className="p-8 rounded-2xl border border-slate-200 bg-white hover:border-blue-300 hover:shadow-lg transition-all">
-                                    <div className="w-14 h-14 bg-blue-100 border border-blue-300 rounded-lg flex items-center justify-center text-blue-600 mb-6">
-                                        {feature.icon}
-                                    </div>
-                                    <h4 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h4>
-                                    <p className="text-slate-600 leading-relaxed">{feature.description}</p>
+        const Biases = () => (
+            <section id="biases" className="py-28 lg:py-32 bg-cream border-t border-rule">
+                <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                    <div className="border-b border-rule pb-10 mb-16">
+                        <p className="sec-num mb-3">§ 02 — Cognitive Audit Scope</p>
+                        <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
+                            The three <strong className="font-bold text-plum-600">silent threat</strong> detectors.
+                        </h2>
+                        <p className="text-[16px] leading-[1.7] text-ink/70 max-w-2xl mt-6">
+                            CLARA meticulously scans clinical dialogue for specific patterns of reasoning failures that are most common in medical errors.
+                        </p>
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-px bg-rule border border-rule">
+                        {[
+                            { code:'DS', t:'Diagnostic Shadowing', d:"Detects when physical symptoms are incorrectly attributed to a patient's pre-existing psychiatric history, leading to missed physical diagnoses." },
+                            { code:'PC', t:'Premature Closure',     d:'The tendency to cease the diagnostic process before all possibilities have been explored and alternatives ruled out.' },
+                            { code:'AB', t:'Anchoring Bias',        d:'Flags the over-reliance on the first piece of information received, ignoring subsequent evidence that contradicts the initial impression.' },
+                        ].map((b,i)=>(
+                            <div key={i} className="bg-paper p-10">
+                                <div className="flex items-baseline gap-4 mb-6">
+                                    <span className="font-display text-6xl text-plum-600 leading-none">{b.code}</span>
+                                    <span className="sec-num">{`Bias 0${i+1}`}</span>
                                 </div>
+                                <h4 className="font-display text-2xl text-ink mb-3">{b.t}</h4>
+                                <p className="text-[14px] leading-[1.7] text-ink/70">{b.d}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Tech = () => (
+            <section id="tech" className="py-28 lg:py-32 bg-ink text-paper">
+                <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                    <div className="border-b border-paper/15 pb-10 mb-16">
+                        <p className="sec-num text-plum-300 mb-3">§ 03 — Technical Foundation</p>
+                        <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
+                            Engineered for <strong className="font-bold text-plum-300">precision</strong>.
+                        </h2>
+                        <p className="text-[16px] leading-[1.7] text-paper/65 max-w-2xl mt-6">
+                            CLARA leverages the latest advancements in LLM technology to provide real-time, objective auditing of clinical reasoning.
+                        </p>
+                    </div>
+
+                    <div className="grid lg:grid-cols-2 gap-16 items-start">
+                        <ul className="space-y-px bg-paper/15 border border-paper/15">
+                            {[
+                                'Gemini 3 Pro via Google AI Studio',
+                                'React + Vite + TypeScript Frontend',
+                                'Async Audio-to-Transcript Pipeline',
+                            ].map((t,i)=>(
+                                <li key={i} className="bg-ink p-8 flex items-center gap-6">
+                                    <span className="sec-num text-plum-300 w-12">{`0${i+1}`}</span>
+                                    <span className="font-display text-2xl text-paper">{t}</span>
+                                </li>
                             ))}
+                        </ul>
+
+                        <div className="hidden lg:block bg-paper text-ink p-8 border border-paper/20">
+                            <p className="sec-num mb-6">Excerpt · audit.ts</p>
+                            <pre className="font-mono text-[13px] leading-[1.8] text-ink/85 whitespace-pre-wrap">
+{`// CLARA Bias Detection
+const audit = analyzeDialogue(transcript);
+if (audit.biasDetected) {
+  generatePrompt(audit.context);
+}`}
+                            </pre>
                         </div>
                     </div>
                 </div>
-            );
-        };
+            </section>
+        );
 
-        const Biases = () => {
-            const biases = [
-                {
-                    code: "DS",
-                    name: "Diagnostic Shadowing",
-                    color: "purple",
-                    description: "Detects when physical symptoms are incorrectly attributed to a patient's pre-existing psychiatric history, leading to missed physical diagnoses."
-                },
-                {
-                    code: "PC",
-                    name: "Premature Closure",
-                    color: "rose",
-                    description: "The tendency to cease the diagnostic process before all possibilities have been explored and alternatives ruled out."
-                },
-                {
-                    code: "AB",
-                    name: "Anchoring Bias",
-                    color: "blue",
-                    description: "Flags the over-reliance on the first piece of information received, ignoring subsequent evidence that contradicts the initial impression."
-                }
-            ];
+        const App = () => (
+            <div className="min-h-screen bg-paper text-ink selection:bg-plum-200 selection:text-plum-900">
+                <Navigation />
+                <Hero />
+                <Features />
+                <Biases />
+                <Tech />
+                <Footer />
+            </div>
+        );
 
-            const colorClasses = {
-                purple: { bg: "bg-purple-100", border: "border-purple-300", text: "text-purple-600", title: "text-purple-900" },
-                rose: { bg: "bg-rose-100", border: "border-rose-300", text: "text-rose-600", title: "text-rose-900" },
-                blue: { bg: "bg-blue-100", border: "border-blue-300", text: "text-blue-600", title: "text-blue-900" }
+        const ContactForm = () => {
+            const [formData, setFormData] = useState({ name:'', email:'', message:'' });
+            const [errors, setErrors] = useState({});
+            const [status, setStatus] = useState('idle');
+            const validate = () => {
+                const errs = {};
+                if (!formData.name.trim()) errs.name = 'Name is required.';
+                if (!formData.email.trim()) errs.email = 'Email is required.';
+                else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) errs.email = 'Enter a valid email.';
+                if (!formData.message.trim()) errs.message = 'Message is required.';
+                return errs;
             };
-
+            const handleChange = (e) => {
+                const { name, value } = e.target;
+                setFormData(prev => ({ ...prev, [name]: value }));
+                if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
+            };
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                const errs = validate();
+                if (Object.keys(errs).length) { setErrors(errs); return; }
+                setStatus('sending');
+                try {
+                    const res = await fetch('https://formspree.io/f/xgoolwyl', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData),
+                    });
+                    if (res.ok) { setStatus('sent'); setFormData({name:'',email:'',message:''}); }
+                    else setStatus('error');
+                } catch { setStatus('error'); }
+            };
+            if (status === 'sent') {
+                return (
+                    <div className="py-3">
+                        <Check className="mb-2 text-plum-300" />
+                        <p className="font-display text-lg text-paper">Message sent.</p>
+                        <p className="text-paper/50 text-xs mt-1">We'll get back to you soon.</p>
+                        <button onClick={()=>setStatus('idle')} className="mt-3 text-xs text-plum-300 underline">Send another</button>
+                    </div>
+                );
+            }
+            const inputBase = "w-full px-0 py-2 bg-transparent border-0 border-b border-paper/25 focus:outline-none focus:border-plum-300 text-sm text-paper placeholder-paper/40 transition-colors";
             return (
-                <div id="biases" className="py-20 bg-white">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center mb-16">
-                            <h2 className="text-xs font-bold text-violet-600 uppercase tracking-[0.2em] font-mono mb-2">Cognitive Audit Scope</h2>
-                            <h3 className="text-3xl font-bold text-slate-900 mb-4">The Three Silent Threat Detectors</h3>
-                            <p className="text-slate-600 max-w-2xl mx-auto">
-                                CLARA meticulously scans clinical dialogue for specific patterns of reasoning failures that are most common in medical errors.
+                <form onSubmit={handleSubmit} className="space-y-5">
+                    <div>
+                        <input name="name" type="text" value={formData.name} onChange={handleChange} placeholder="Your Name" className={inputBase} />
+                        {errors.name && <div className="text-xs text-red-300 mt-1">{errors.name}</div>}
+                    </div>
+                    <div>
+                        <input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="Your Email" className={inputBase} />
+                        {errors.email && <div className="text-xs text-red-300 mt-1">{errors.email}</div>}
+                    </div>
+                    <div>
+                        <textarea name="message" rows="3" value={formData.message} onChange={handleChange} placeholder="Your Message" className={`${inputBase} resize-none`}></textarea>
+                        {errors.message && <div className="text-xs text-red-300 mt-1">{errors.message}</div>}
+                    </div>
+                    <input type="text" name="_gotcha" style={{display:'none'}} />
+                    <button type="submit" disabled={status==='sending'}
+                        className="group inline-flex items-center gap-2 px-5 py-3 bg-paper text-ink rounded-full text-[12px] tracking-wider uppercase hover:bg-plum-200 transition-colors disabled:opacity-50">
+                        <Send /> <span>{status==='sending' ? 'Sending...' : 'Send Message'}</span>
+                    </button>
+                    {status === 'error' && <p className="text-xs text-red-300">Something went wrong. Please try again.</p>}
+                </form>
+            );
+        };
+
+        const Footer = () => (
+            <footer id="contact" className="bg-ink text-paper">
+                <div className="max-w-[1400px] mx-auto px-6 lg:px-10 pt-24 pb-10">
+                    <div className="grid lg:grid-cols-12 gap-12 mb-20">
+                        <div className="lg:col-span-5">
+                            <div className="flex items-center gap-3 mb-6">
+                                <img src="images/brain_logo.png" alt="HARMONI logo" className="w-12 h-12 object-contain rounded-lg" />
+                                <span className="font-display text-3xl text-paper">
+                                    HARMONI <span className="font-bold text-plum-300 font-light">Lab</span>
+                                </span>
+                            </div>
+                            <p className="text-paper/65 max-w-md text-[15px] leading-relaxed">
+                                An AI-driven project exploring the impact of hormonal changes on female brain and behavior.
                             </p>
+                            <div className="flex gap-3 mt-8">
+                                <a href="https://ga.linkedin.com/company/harmoni-lab" target="_blank" rel="noopener" className="w-10 h-10 rounded-full border border-paper/20 text-paper/70 flex items-center justify-center hover:bg-paper hover:text-ink transition-colors">
+                                    <LinkedIn />
+                                </a>
+                            </div>
                         </div>
-
-                        <div className="grid md:grid-cols-3 gap-8">
-                            {biases.map((bias, idx) => {
-                                const colors = colorClasses[bias.color];
-                                return (
-                                    <div key={idx} className="p-8 rounded-2xl border border-slate-200 bg-white hover:border-slate-300 transition-all space-y-6">
-                                        <div className={`w-14 h-14 ${colors.bg} border ${colors.border} rounded-xl flex items-center justify-center`}>
-                                            <span className={`text-2xl font-bold ${colors.text} font-mono`}>{bias.code}</span>
-                                        </div>
-                                        <div>
-                                            <h4 className={`text-xl font-bold mb-3 ${colors.title}`}>{bias.name}</h4>
-                                            <p className="text-slate-600 text-sm leading-relaxed">{bias.description}</p>
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                        <div className="lg:col-span-2">
+                            <p className="eyebrow text-plum-300 mb-5">Links</p>
+                            <ul className="space-y-3 text-[14px] text-paper/70">
+                                <li><a href="index.html#about" className="ink-link hover:text-paper">About</a></li>
+                                <li><a href="index.html#mission" className="ink-link hover:text-paper">Mission</a></li>
+                                <li><a href="index.html#research" className="ink-link hover:text-paper">Research</a></li>
+                                <li><a href="index.html#faq" className="ink-link hover:text-paper">FAQ</a></li>
+                            </ul>
+                            <p className="eyebrow text-plum-300 mt-8 mb-5">Tools</p>
+                            <ul className="space-y-3 text-[14px] text-paper/70">
+                                <li><a href="selene.html" className="ink-link hover:text-paper">SELENE</a></li>
+                                <li><a href="lucia.html" className="ink-link hover:text-paper">LUCIA</a></li>
+                                <li><a href="clara.html" className="ink-link hover:text-paper">CLARA</a></li>
+                            </ul>
+                        </div>
+                        <div className="lg:col-span-5">
+                            <p className="eyebrow text-plum-300 mb-5">Contact</p>
+                            <ContactForm />
                         </div>
                     </div>
-                </div>
-            );
-        };
-
-        const TechStack = () => {
-            const stack = [
-                { icon: <Brain className="w-5 h-5" />, text: "Gemini 3 Pro via Google AI Studio" },
-                { icon: <Code className="w-5 h-5" />, text: "React + Vite + TypeScript Frontend" },
-                { icon: <Server className="w-5 h-5" />, text: "Async Audio-to-Transcript Pipeline" }
-            ];
-
-            return (
-                <div id="tech" className="py-20">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="border border-slate-200 rounded-2xl p-12 bg-white shadow-sm">
-                            <div className="grid lg:grid-cols-2 gap-16 items-center">
-                                <div>
-                                    <h2 className="text-xs font-bold text-violet-600 uppercase tracking-[0.2em] font-mono mb-2">Technical Foundation</h2>
-                                    <h3 className="text-3xl font-bold text-slate-900 mb-6">Engineered for Precision</h3>
-                                    <p className="text-slate-600 mb-8 leading-relaxed">
-                                        CLARA leverages the latest advancements in LLM technology to provide real-time, objective auditing of clinical reasoning.
-                                    </p>
-                                    <ul className="space-y-4">
-                                        {stack.map((item, idx) => (
-                                            <li key={idx} className="flex items-center gap-3 text-sm font-medium text-slate-900">
-                                                <div className="text-blue-600">{item.icon}</div>
-                                                {item.text}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                                <div className="hidden lg:block">
-                                    <div className="bg-slate-50 rounded-lg p-6 border border-slate-200">
-                                        <div className="font-mono text-sm">
-                                            <div className="text-slate-500 mb-2">// CLARA Bias Detection</div>
-                                            <div className="text-slate-700">
-                                                <span className="text-violet-600">const</span> audit = <span className="text-blue-600">analyzeDialogue</span>(transcript);
-                                            </div>
-                                            <div className="text-slate-700 mt-1">
-                                                <span className="text-violet-600">if</span> (audit.biasDetected) {'{'}
-                                            </div>
-                                            <div className="text-slate-700 ml-4">
-                                                <span className="text-blue-600">generatePrompt</span>(audit.context);
-                                            </div>
-                                            <div className="text-slate-700">{'}'}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div className="border-t border-paper/15 mt-10 pt-8 flex flex-col md:flex-row justify-between items-center text-[12px] text-paper/45 tracking-wide">
+                        <p>&copy; {new Date().getFullYear()} HARMONI Lab LLC. All rights reserved.</p>
+                        <p className="mt-2 md:mt-0">Built with transparency and care for women's health.</p>
                     </div>
                 </div>
-            );
-        };
-
-        const Footer = () => {
-            return (
-                <footer className="py-12 border-t border-slate-200 bg-white">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="grid md:grid-cols-4 gap-8 mb-12">
-                            <div className="col-span-1 md:col-span-2">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <div className="w-8 h-8 bg-blue-100 border border-blue-300 rounded-lg flex items-center justify-center">
-                                        <Brain className="w-4 h-4 text-blue-600" />
-                                    </div>
-                                    <span className="font-bold text-slate-900">CLARA</span>
-                                </div>
-                                <p className="text-slate-600 text-sm max-w-sm">
-                                    Clinical Logic Auditor. An AI intelligence layer for patient safety.
-                                </p>
-                                <div className="flex gap-4 mt-6">
-                                    {/* <a href="https://github.com/HARMONI-Lab" target="_blank" rel="noopener" className="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center hover:bg-violet-600 hover:text-white transition-colors">
-                                        <Github className="w-5 h-5" />
-                                    </a> */}
-                                    <a href="https://ga.linkedin.com/company/harmoni-lab" target="_blank" rel="noopener" className="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center hover:bg-violet-600 hover:text-white transition-colors">
-                                        <LinkedIn className="w-5 h-5" />
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div>
-                                <h4 className="font-bold text-slate-900 mb-4">Tools</h4>
-                                <ul className="space-y-2 text-sm text-slate-600">
-                                    <li><a href="selene.html" className="hover:text-violet-600 transition-colors">SELENE</a></li>
-                                    <li><a href="lucia.html" className="hover:text-violet-600 transition-colors">LUCIA</a></li>
-                                    <li><a href="clara.html" className="hover:text-violet-600 transition-colors">CLARA</a></li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <h4 className="font-bold text-slate-900 mb-4">Links</h4>
-                                <ul className="space-y-2 text-sm text-slate-600">
-                                    <li><a href="index.html" className="hover:text-violet-600 transition-colors">Home</a></li>
-                                    <li><a href="index.html#mission" className="hover:text-violet-600 transition-colors">Mission</a></li>
-                                    <li><a href="index.html#research" className="hover:text-violet-600 transition-colors">Research</a></li>
-                                    <li><a href="index.html#contact" className="hover:text-violet-600 transition-colors">Contact</a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div className="border-t border-slate-200 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-slate-600">
-                            <p>&copy; {new Date().getFullYear()} HARMONI Lab LLC. All rights reserved.</p>
-                            <p className="mt-2 md:mt-0 font-mono text-xs tracking-tight">CLINICAL LOGIC AUDITOR. DESIGNED FOR PATIENT SAFETY</p>
-                        </div>
-                    </div>
-                </footer>
-            );
-        };
-
-        const App = () => {
-            return (
-                <div className="min-h-screen font-sans selection:bg-violet-100 selection:text-violet-900">
-                    <Navigation />
-                    <Hero />
-                    <Features />
-                    <Biases />
-                    <TechStack />
-                    <Footer />
-                </div>
-            );
-        };
+            </footer>
+        );
 
         const root = createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
 </body>
-
 </html>

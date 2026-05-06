@@ -1,124 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUCIA | Bias-Aware AI Agent</title>
+    <title>LUCIA | HARMONI Lab — Closing the Gender Diagnostic Gap</title>
 
-    <!-- Resource Hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link rel="preconnect" href="https://unpkg.com">
 
-    <!-- SEO & Social Meta Tags -->
-    <meta name="description"
-        content="LUCIA: Bridging the gender diagnostic gap with Multi-Agent AI systems for clinical insight and analysis.">
-    <meta property="og:title" content="LUCIA | Bias-Aware AI Agent">
-    <meta property="og:description"
-        content="LUCIA: Bridging the gender diagnostic gap with Multi-Agent AI systems for clinical insight and analysis.">
-    <meta property="og:image" content="https://harmonilab.org/lucia-og.jpg">
-    <meta property="og:url" content="https://harmonilab.org/lucia.html">
-    <meta property="og:type" content="article">
+    <meta name="description" content="LUCIA is a multi-agent AI system that audits clinical encounters for gender bias, helping close the four-year diagnostic gap women face.">
+    <meta property="og:title" content="LUCIA | HARMONI Lab — Closing the Gender Diagnostic Gap">
+    <meta property="og:description" content="LUCIA is a multi-agent AI system that audits clinical encounters for gender bias, helping close the four-year diagnostic gap women face.">
+    <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@harmonilab">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              serif: ['"Fraunces"', 'Georgia', 'serif'],
+              sans:  ['"Inter"', 'system-ui', 'sans-serif'],
+              mono:  ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+            },
+            colors: {
+              ink:   '#1a1320',
+              paper: '#fbf9f6',
+              cream: '#f3eee7',
+              rule:  '#e6e0d6',
+              plum:  { 50:'#f7f2fb',100:'#ece0f5',200:'#d6bdea',300:'#b994d8',400:'#956bbf',500:'#7344a3',600:'#5a2f87',700:'#46256a',800:'#321a4c',900:'#1f1030' },
+              accent:'#5a2f87',
+            },
+            letterSpacing: { tightest: '-0.04em' },
+          }
+        }
+      }
+    </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">    <!-- Favicon: use ICO for broader compatibility -->
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
+        body { font-family:'Inter',sans-serif; background:#fbf9f6; color:#1a1320; -webkit-font-smoothing:antialiased; }
+        html { scroll-behavior:smooth; }
+        .font-display { font-family:'Fraunces',Georgia,serif; font-optical-sizing:auto; font-variation-settings:"SOFT" 50; letter-spacing:-0.025em; }
+        .eyebrow { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#5a2f87; }
+        .rule { border-color:#e6e0d6; }
+        .paper-grain {
+            background-color:#fbf9f6;
+            background-image:
+              radial-gradient(circle at 20% 10%, rgba(115,68,163,0.06), transparent 40%),
+              radial-gradient(circle at 80% 90%, rgba(185,148,216,0.07), transparent 45%);
         }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        .ink-link { background-image:linear-gradient(currentColor,currentColor); background-size:0% 1px; background-repeat:no-repeat; background-position:0 100%; transition:background-size .4s ease; }
+        .ink-link:hover { background-size:100% 1px; }
+        .glow { background:radial-gradient(closest-side, rgba(149,107,191,0.35), rgba(149,107,191,0)); filter:blur(40px); }
+        .dropcap::first-letter { font-family:'Fraunces',Georgia,serif; font-weight:500; float:left; font-size:4.5rem; line-height:0.85; padding:0.35rem 0.75rem 0 0; color:#5a2f87; }
+        .sec-num { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.2em; color:#956bbf; }
     </style>
 
-    <!-- React & ReactDOM via UMD CDN -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <!-- Babel standalone for JSX transformation -->
     <script src="https://unpkg.com/@babel/standalone@7.23.5/babel.min.js"></script>
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
-
-<body class="bg-white text-slate-900">
+<body>
     <div id="root"></div>
 
     <script type="text/babel">
         const { useState, useEffect } = React;
         const { createRoot } = ReactDOM;
-        
-        // Icon components
-        const Menu = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>;
-        const X = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>;
-        const ArrowRight = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>;
-        const ChevronRight = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>;
-        const ShieldCheck = (props) => <svg {...props} width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 15.5c-2.38 0-4.5-2.12-4.5-4.5s2.12-4.5 4.5-4.5 4.5 2.12 4.5 4.5-2.12 4.5-4.5 4.5zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>;
-        const Users = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>;
-        const Brain = (props) => <svg {...props} width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg>;
-        const AlertTriangle = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>;
-        const FileText = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>;
-        const Search = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>;
-        const Clock = (props) => <svg {...props} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
-        // const Github = (props) => <svg {...props} width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>;
-        const LinkedIn = (props) => <svg {...props} width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>;
+
+        const Menu = (p)=> <svg {...p} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>;
+        const X = (p)=> <svg {...p} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" d="M6 6l12 12M18 6L6 18"/></svg>;
+        const ArrowRight = (p)=> <svg {...p} width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>;
+        const Send = (p)=> <svg {...p} width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" strokeLinejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>;
+        const Check = (p)=> <svg {...p} width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>;
+        const LinkedIn = (p)=> <svg {...p} width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>;
 
         const Navigation = () => {
             const [isOpen, setIsOpen] = useState(false);
             const [scrolled, setScrolled] = useState(false);
-
             useEffect(() => {
-                const handleScroll = () => setScrolled(window.scrollY > 24);
-                window.addEventListener('scroll', handleScroll);
-                return () => window.removeEventListener('scroll', handleScroll);
+                const onScroll = () => setScrolled(window.scrollY > 16);
+                window.addEventListener('scroll', onScroll);
+                return () => window.removeEventListener('scroll', onScroll);
             }, []);
-
             const navLinks = [
-                { name: 'Home', href: 'index.html' },
-                { name: 'The Gap', href: '#problem' },
-                { name: 'Architecture', href: '#architecture' },
-                { name: 'Demo', href: '#demo' },
-                { name: 'Roadmap', href: '#future' },
+                { name: 'Home',     href: 'index.html' },
+                { name: 'Mission',  href: 'index.html#mission' },
+                { name: 'Research', href: 'index.html#research' },
+                { name: 'SELENE',   href: 'selene.html' },
+                { name: 'LUCIA',    href: 'lucia.html' },
+                { name: 'CLARA',    href: 'clara.html' },
             ];
-
             return (
-                <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'backdrop-blur bg-white/80 shadow-md py-2' : 'bg-transparent py-4'}`}>
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="flex items-center justify-between h-16">
+                <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-paper/85 backdrop-blur-md border-b border-rule' : 'bg-transparent'}`}>
+                    <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                        <div className="flex items-center justify-between h-20">
                             <a href="index.html" className="flex items-center gap-3">
-                                <img src="images/brain_logo.png" alt="HARMONI logo" className="w-10 h-10" />
-                                <div className={`hidden sm:block font-semibold tracking-tight ${scrolled ? 'text-slate-800' : 'text-slate-900'}`}>
-                                    HARMONI Lab / LUCIA
+                                <img src="images/brain_logo.png" alt="HARMONI logo" className="w-10 h-10 object-contain rounded-lg" />
+                                <div className="font-display text-xl tracking-tight text-ink">
+                                    HARMONI <span className="font-bold text-plum-600 font-light">Lab</span>
                                 </div>
                             </a>
-
-                            <div className="hidden md:flex items-center space-x-6">
-                                {navLinks.map((link) => (
-                                    <a key={link.name} href={link.href} className={`text-sm font-medium hover:text-violet-600 transition-colors ${scrolled ? 'text-slate-700' : 'text-slate-800'}`}>{link.name}</a>
+                            <div className="hidden lg:flex items-center gap-9">
+                                {navLinks.map((l) => (
+                                    <a key={l.name} href={l.href} className="ink-link text-[13px] tracking-wide text-ink/75 hover:text-ink">{l.name}</a>
                                 ))}
-                                <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-violet-700 bg-violet-50 px-3 py-1 rounded-full border border-violet-100">
-                                    <ShieldCheck className="w-3 h-3" />
-                                    For Clinicians
-                                </span>
                             </div>
-
-                            <div className="md:hidden">
-                                <button onClick={() => setIsOpen(!isOpen)} className="p-2 rounded-md bg-white/10 backdrop-blur-md">
-                                    {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                            <div className="flex items-center gap-3">
+                                <a href="index.html#newsletter" className="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-ink text-paper text-[12px] tracking-wider uppercase font-medium hover:bg-plum-700 transition-colors">
+                                    Join Early Access
+                                </a>
+                                <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 text-ink">
+                                    {isOpen ? <X /> : <Menu />}
                                 </button>
                             </div>
                         </div>
                     </div>
-
                     {isOpen && (
-                        <div className="md:hidden bg-white shadow-xl absolute w-full">
-                            <div className="px-4 py-4 space-y-2">
-                                {navLinks.map((link) => (
-                                    <a key={link.name} href={link.href} onClick={() => setIsOpen(false)} className="block p-2 rounded text-slate-700 font-medium">{link.name}</a>
+                        <div className="lg:hidden bg-paper border-t border-rule">
+                            <div className="px-6 py-6 space-y-3">
+                                {navLinks.map((l) => (
+                                    <a key={l.name} href={l.href} onClick={() => setIsOpen(false)} className="block py-2 font-display text-2xl text-ink">{l.name}</a>
                                 ))}
                             </div>
                         </div>
@@ -127,292 +136,315 @@
             );
         };
 
-        const Hero = () => {
-            return (
-                <div className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-gradient-to-b from-white to-slate-50">
-                    <svg className="absolute -top-16 -right-16 w-24 h-24 opacity-20 blur-3xl" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="g1" x1="0" x2="1">
-                                <stop offset="0%" stopColor="#7c3aed" />
-                                <stop offset="100%" stopColor="#0ea5e9" />
-                            </linearGradient>
-                        </defs>
-                        <circle cx="100" cy="100" r="90" fill="url(#g1)" opacity="0.8"/>
-                        <circle cx="140" cy="70" r="50" fill="#7c3aed" opacity="0.3"/>
-                    </svg>
-                    <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-amber-100 opacity-30 blur-3xl"></div>
-
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                        <div className="max-w-4xl mx-auto text-center">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-6">
-                                <ShieldCheck className="w-3 h-3" />
-                                Bias-Aware Clinical AI
-                            </div>
-                            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 tracking-tight mb-4">
-                                <span className="text-violet-600">LUCIA</span>
+        const Hero = () => (
+            <header className="relative pt-36 lg:pt-44 pb-24 overflow-hidden paper-grain">
+                <div className="absolute -top-20 -right-20 w-[40rem] h-[40rem] glow pointer-events-none"></div>
+                <div className="max-w-[1400px] mx-auto px-6 lg:px-10 relative">
+                    <div className="flex items-center justify-between border-b border-rule pb-4 mb-12">
+                        <div className="eyebrow">Project 02 · Bias-Aware Clinical AI</div>
+                        <div className="eyebrow hidden md:block">A HARMONI Lab Initiative</div>
+                    </div>
+                    <div className="grid lg:grid-cols-12 gap-10 items-end">
+                        <div className="lg:col-span-8">
+                            <p className="sec-num mb-6">§ Lucia</p>
+                            <h1 className="font-display font-light text-[clamp(3rem,9vw,8rem)] leading-[0.9] tracking-tightest text-ink">
+                                LUCIA
                             </h1>
-                            <p className="text-xl text-slate-500 italic mb-2">"A bridge, not a wedge."</p>
-                            <p className="text-lg text-slate-600 mb-8 leading-relaxed max-w-2xl mx-auto">
+                            <p className="font-bold text-plum-600 text-2xl md:text-3xl mt-4">
+                                "A bridge, not a wedge."
+                            </p>
+                        </div>
+                        <div className="lg:col-span-4">
+                            <p className="text-[17px] leading-[1.7] text-ink/70 max-w-md">
                                 Closing the gender diagnostic gap with Multi-Agent AI systems. LUCIA acts as a collaborative layer between patient narratives and clinical diagnosis.
                             </p>
-                            <div className="flex flex-col sm:flex-row justify-center gap-4">
-                                <a href="#demo" className="px-6 py-3 bg-violet-600 text-white font-semibold rounded-lg hover:brightness-105 transition-all shadow flex items-center justify-center gap-2">
-                                    See Demo <ArrowRight className="w-4 h-4" />
+                            <div className="mt-8 flex flex-wrap gap-3">
+                                <a href="#demo" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink text-paper text-[12px] tracking-wider uppercase hover:bg-plum-700 transition-colors">
+                                    See Demo <ArrowRight />
                                 </a>
-                                <a href="index.html#initiatives" className="px-6 py-3 bg-white text-slate-700 font-semibold rounded-lg border border-slate-200 hover:border-violet-300 hover:text-violet-600 transition-all">
-                                    Other Initiatives
+                                <a href="index.html#initiatives" className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink/30 text-ink text-[12px] tracking-wider uppercase hover:bg-ink hover:text-paper transition-colors">
+                                    Other Initiatives <ArrowRight />
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
-            );
-        };
+            </header>
+        );
 
-        const Problem = () => {
-            const stats = [
-                { value: "4 Years", label: "Average diagnostic delay for women", icon: <Clock className="w-6 h-6" /> },
-                { value: "700+", label: "Conditions with gender disparities", icon: <AlertTriangle className="w-6 h-6" /> }
-            ];
-
-            return (
-                <div id="problem" className="py-20 bg-white">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="grid lg:grid-cols-2 gap-16 items-center">
-                            <div>
-                                <h2 className="text-sm font-bold text-violet-600 uppercase tracking-wide mb-2">The Diagnostic Gap</h2>
-                                <h3 className="text-3xl font-bold text-slate-900 mb-6">Why Women Wait Longer</h3>
-                                <p className="text-slate-600 mb-6 leading-relaxed">
-                                    Women face on average a <strong className="text-slate-900">four-year diagnostic delay</strong> compared to men across hundreds of conditions. This "diagnostic shadowing" often occurs when physical symptoms are attributed to mental health issues.
+        const Problem = () => (
+            <section id="problem" className="py-28 lg:py-32 bg-paper border-t border-rule">
+                <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                    <div className="grid lg:grid-cols-12 gap-16">
+                        <div className="lg:col-span-6">
+                            <p className="sec-num mb-3">§ 01 — The Diagnostic Gap</p>
+                            <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest mb-10">
+                                Why women <strong className="font-bold text-plum-600">wait longer</strong>.
+                            </h2>
+                            <p className="dropcap text-[17px] leading-[1.8] text-ink/85 mb-6">
+                                Women face on average a <strong className="text-ink">four-year diagnostic delay</strong> compared to men across hundreds of conditions. This "diagnostic shadowing" often occurs when physical symptoms are attributed to mental health issues.
+                            </p>
+                            <p className="text-[17px] leading-[1.8] text-ink/75 mb-8">
+                                This disparity is rooted in cognitive fatigue and a historical lack of female physiological data in medical research. LUCIA addresses this by providing intelligent oversight during clinical encounters.
+                            </p>
+                            <div className="border-l-2 border-plum-600 pl-6 py-2">
+                                <p className="text-[18px] font-bold leading-[1.6] text-ink/80">
+                                    "Diagnostic shadowing" — when physical symptoms are incorrectly attributed to psychiatric conditions — disproportionately affects women.
                                 </p>
-                                <p className="text-slate-600 mb-6 leading-relaxed">
-                                    This disparity is rooted in cognitive fatigue and a historical lack of female physiological data in medical research. LUCIA addresses this by providing intelligent oversight during clinical encounters.
-                                </p>
-                                <div className="bg-amber-50 border-l-4 border-amber-400 p-6 rounded-r-lg">
-                                    <p className="text-amber-800 font-medium">
-                                        "Diagnostic shadowing" when physical symptoms are incorrectly attributed to psychiatric conditions disproportionately affects women.
-                                    </p>
-                                </div>
                             </div>
-
-                            <div className="space-y-6">
-                                {stats.map((stat, idx) => (
-                                    <div key={idx} className="bg-slate-50 rounded-2xl p-8 border border-slate-100 flex items-center gap-6">
-                                        <div className="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
-                                            {stat.icon}
-                                        </div>
-                                        <div>
-                                            <p className="text-3xl font-bold text-slate-900">{stat.value}</p>
-                                            <p className="text-slate-600">{stat.label}</p>
-                                        </div>
-                                    </div>
-                                ))}
+                        </div>
+                        <div className="lg:col-span-5 lg:col-start-8 space-y-6 self-center">
+                            <div className="border border-rule p-10 bg-cream">
+                                <p className="sec-num mb-4">Stat 01</p>
+                                <p className="font-display text-6xl text-plum-600 mb-2">4 Years</p>
+                                <p className="text-[15px] text-ink/70">Average diagnostic delay for women</p>
+                            </div>
+                            <div className="border border-rule p-10 bg-cream">
+                                <p className="sec-num mb-4">Stat 02</p>
+                                <p className="font-display text-6xl text-plum-600 mb-2">700+</p>
+                                <p className="text-[15px] text-ink/70">Conditions with gender disparities</p>
                             </div>
                         </div>
                     </div>
                 </div>
-            );
-        };
+            </section>
+        );
 
-        const Architecture = () => {
-            const agents = [
-                {
-                    name: "Agent 1: The Scribe",
-                    icon: <FileText className="w-6 h-6" />,
-                    color: "bg-violet-600",
-                    description: "Extracts patient-reported sensations into a structured Review of Systems (ROS), mapping symptoms to physiological clusters with precision and empathy."
-                },
-                {
-                    name: "Agent 2: The Auditor",
-                    icon: <Search className="w-6 h-6" />,
-                    color: "bg-violet-600",
-                    description: "Scans the interaction for bias markers and checks findings against the AXIOM Knowledge Base, flagging potential diagnostic oversights."
-                }
-            ];
-
-            return (
-                <div id="architecture" className="py-20 bg-slate-50">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center mb-16">
-                            <h2 className="text-sm font-bold text-violet-600 uppercase tracking-wide mb-2">Dual-Stream Architecture</h2>
-                            <h3 className="text-3xl font-bold text-slate-900 mb-4">Separating Listening from Auditing</h3>
-                            <p className="text-slate-600 max-w-2xl mx-auto">
-                                LUCIA utilizes Multi-Agent Orchestration to separate the "listening" from the "auditing," preventing the AI from simply confirming existing biases.
+        const Architecture = () => (
+            <section id="architecture" className="py-28 lg:py-32 bg-cream border-t border-rule">
+                <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                    <div className="border-b border-rule pb-10 mb-16">
+                        <p className="sec-num mb-3">§ 02 — Dual-Stream Architecture</p>
+                        <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
+                            Separating <strong className="font-bold text-plum-600">listening</strong> from <strong className="font-bold text-plum-600">auditing</strong>.
+                        </h2>
+                        <p className="text-[16px] leading-[1.7] text-ink/70 max-w-2xl mt-6">
+                            LUCIA utilizes Multi-Agent Orchestration to separate the "listening" from the "auditing," preventing the AI from simply confirming existing biases.
+                        </p>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-px bg-rule border border-rule">
+                        <div className="bg-paper p-12">
+                            <p className="sec-num mb-4">Agent 01</p>
+                            <h4 className="font-display text-3xl text-ink mb-4">The Scribe</h4>
+                            <p className="text-[15px] leading-[1.8] text-ink/75">
+                                Extracts patient-reported sensations into a structured Review of Systems (ROS), mapping symptoms to physiological clusters with precision and empathy.
                             </p>
                         </div>
-
-                        <div className="grid md:grid-cols-2 gap-8">
-                            {agents.map((agent, idx) => (
-                                <div key={idx} className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-lg transition-shadow">
-                                    <div className={`${agent.color} w-14 h-14 rounded-xl text-white flex items-center justify-center mb-6`}>
-                                        {agent.icon}
-                                    </div>
-                                    <h4 className="text-xl font-bold text-slate-900 mb-3">{agent.name}</h4>
-                                    <p className="text-slate-600 leading-relaxed">{agent.description}</p>
-                                </div>
-                            ))}
+                        <div className="bg-paper p-12">
+                            <p className="sec-num mb-4">Agent 02</p>
+                            <h4 className="font-display text-3xl text-ink mb-4">The Auditor</h4>
+                            <p className="text-[15px] leading-[1.8] text-ink/75">
+                                Scans the interaction for bias markers and checks findings against the AXIOM Knowledge Base, flagging potential diagnostic oversights.
+                            </p>
                         </div>
                     </div>
                 </div>
-            );
-        };
+            </section>
+        );
 
-        const Demo = () => {
-            return (
-                <div id="demo" className="py-20 bg-white">
-                    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center mb-12">
-                            <h2 className="text-sm font-bold text-violet-600 uppercase tracking-wide mb-2">In Action</h2>
-                            <h3 className="text-3xl font-bold text-slate-900 mb-4">The "Dismissal" Scenario</h3>
-                            <p className="text-slate-600">How LUCIA transforms a frustrating clinical encounter into a powerful advocacy asset.</p>
+        const Demo = () => (
+            <section id="demo" className="py-28 lg:py-32 bg-paper border-t border-rule">
+                <div className="max-w-[1100px] mx-auto px-6 lg:px-10">
+                    <div className="border-b border-rule pb-10 mb-16">
+                        <p className="sec-num mb-3">§ 03 — In Action</p>
+                        <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
+                            The <strong className="font-bold text-plum-600">"Dismissal"</strong> Scenario.
+                        </h2>
+                        <p className="text-[16px] leading-[1.7] text-ink/70 max-w-2xl mt-6">
+                            How LUCIA transforms a frustrating clinical encounter into a powerful advocacy asset.
+                        </p>
+                    </div>
+
+                    <div className="bg-ink text-paper p-10 lg:p-14">
+                        <div>
+                            <p className="eyebrow text-plum-300 mb-3">Patient Narrative</p>
+                            <div className="border-l-2 border-plum-300 pl-6 py-2">
+                                <p className="font-bold text-[20px] leading-[1.6] text-paper/90">
+                                    "I've been waking up with stiff, swollen joints… He told me that at 48, this is just 'empty nest syndrome' and told me to try meditation to calm my nerves."
+                                </p>
+                            </div>
                         </div>
 
-                        <div className="bg-slate-900 rounded-2xl p-8 text-white shadow-xl">
-                            <div className="space-y-6">
+                        <div className="border-t border-paper/15 mt-10 pt-10">
+                            <p className="eyebrow text-plum-300 mb-6">LUCIA Intelligence</p>
+                            <div className="grid md:grid-cols-2 gap-10">
                                 <div>
-                                    <p className="text-violet-400 text-sm font-semibold uppercase tracking-wider mb-2">Patient Narrative</p>
-                                    <div className="bg-slate-800 rounded-xl p-4 border-l-4 border-amber-400">
-                                        <p className="text-slate-300 italic">
-                                            "I've been waking up with stiff, swollen joints... He told me that at 48, this is just 'empty nest syndrome' and told me to try meditation to calm my nerves."
-                                        </p>
-                                    </div>
+                                    <p className="font-display text-xl text-plum-300 mb-2">Detected Pattern</p>
+                                    <p className="text-[14px] leading-[1.7] text-paper/70">Attribution of physical swelling to 'nerves'.</p>
                                 </div>
-
-                                <div className="border-t border-slate-700 pt-6">
-                                    <p className="text-violet-400 text-sm font-semibold uppercase tracking-wider mb-4">LUCIA Intelligence</p>
-                                    <div className="space-y-3">
-                                        <div className="flex items-start gap-3">
-                                            <div className="w-8 h-8 rounded-full bg-violet-500/20 text-violet-400 flex items-center justify-center flex-shrink-0">
-                                                <AlertTriangle className="w-4 h-4" />
-                                            </div>
-                                            <div>
-                                                <p className="font-semibold text-violet-400">Detected Pattern</p>
-                                                <p className="text-slate-400 text-sm">Attribution of physical swelling to 'nerves'</p>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-start gap-3">
-                                            <div className="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center flex-shrink-0">
-                                                <Brain className="w-4 h-4" />
-                                            </div>
-                                            <div>
-                                                <p className="font-semibold text-amber-400">AXIOM Insight</p>
-                                                <p className="text-slate-400 text-sm">Gender-bias risk detected in autoimmune symptom interpretation</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="border-t border-slate-700 pt-6">
-                                    <p className="text-violet-400 text-sm font-semibold uppercase tracking-wider mb-2">Actionable Question</p>
-                                    <p className="text-white bg-violet-500/20 border border-violet-500/30 rounded-xl p-4">
-                                        "What further evaluations could help understand the inflammatory markers in my joints, beyond perimenopausal changes?"
-                                    </p>
+                                <div>
+                                    <p className="font-display text-xl text-plum-300 mb-2">AXIOM Insight</p>
+                                    <p className="text-[14px] leading-[1.7] text-paper/70">Gender-bias risk detected in autoimmune symptom interpretation.</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            );
-        };
 
-        const Future = () => {
-            const roadmap = [
-                { title: "Vertex AI Ready", desc: "Built on Google Agent Development Kit for immediate clinical deployment." },
-                { title: "Anonymized Research", desc: "Empowering women to donate their narratives to update global medical guidelines." },
-                { title: "EHR Integration", desc: "Seamless connection with electronic health record systems for real-time support." }
-            ];
-
-            return (
-                <div id="future" className="py-20 bg-slate-900 text-white">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center mb-12">
-                            <h2 className="text-sm font-bold text-violet-400 uppercase tracking-wide mb-2">The Horizon</h2>
-                            <p className="text-slate-400 mt-4 max-w-2xl mx-auto">
-                                LUCIA is building towards longitudinal clinical equity, transforming how women's health narratives are heard and acted upon.
+                        <div className="border-t border-paper/15 mt-10 pt-10">
+                            <p className="eyebrow text-plum-300 mb-4">Actionable Question</p>
+                            <p className="font-display text-[20px] leading-[1.6] text-paper bg-plum-900/40 border border-plum-300/30 p-6">
+                                "What further evaluations could help understand the inflammatory markers in my joints, beyond perimenopausal changes?"
                             </p>
                         </div>
-
-                        <div className="grid md:grid-cols-3 gap-6">
-                            {roadmap.map((item, idx) => (
-                                <div key={idx} className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700 hover:border-violet-500/30 transition-colors">
-                                    <h4 className="text-lg font-bold text-white mb-2">{item.title}</h4>
-                                    <p className="text-slate-400 text-sm">{item.desc}</p>
-                                </div>
-                            ))}
-                        </div>
                     </div>
                 </div>
+            </section>
+        );
+
+        const Future = () => (
+            <section id="future" className="py-28 lg:py-32 bg-cream border-t border-rule">
+                <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                    <div className="border-b border-rule pb-10 mb-16">
+                        <p className="sec-num mb-3">§ 04 — The Horizon</p>
+                        <p className="text-[18px] leading-[1.7] text-ink/75 max-w-2xl">
+                            LUCIA is building towards longitudinal clinical equity, transforming how women's health narratives are heard and acted upon.
+                        </p>
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-px bg-rule border border-rule">
+                        {[
+                            { t:'Vertex AI Ready',     d:'Built on Google Agent Development Kit for immediate clinical deployment.' },
+                            { t:'Anonymized Research', d:'Empowering women to donate their narratives to update global medical guidelines.' },
+                            { t:'EHR Integration',     d:'Seamless connection with electronic health record systems for real-time support.' },
+                        ].map((f,i)=>(
+                            <div key={i} className="bg-paper p-10">
+                                <p className="sec-num mb-4">{`0${i+1}`}</p>
+                                <h4 className="font-display text-2xl text-ink mb-3">{f.t}</h4>
+                                <p className="text-[14px] leading-[1.7] text-ink/70">{f.d}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        const App = () => (
+            <div className="min-h-screen bg-paper text-ink selection:bg-plum-200 selection:text-plum-900">
+                <Navigation />
+                <Hero />
+                <Problem />
+                <Architecture />
+                <Demo />
+                <Future />
+                <Footer />
+            </div>
+        );
+
+        const ContactForm = () => {
+            const [formData, setFormData] = useState({ name:'', email:'', message:'' });
+            const [errors, setErrors] = useState({});
+            const [status, setStatus] = useState('idle');
+            const validate = () => {
+                const errs = {};
+                if (!formData.name.trim()) errs.name = 'Name is required.';
+                if (!formData.email.trim()) errs.email = 'Email is required.';
+                else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) errs.email = 'Enter a valid email.';
+                if (!formData.message.trim()) errs.message = 'Message is required.';
+                return errs;
+            };
+            const handleChange = (e) => {
+                const { name, value } = e.target;
+                setFormData(prev => ({ ...prev, [name]: value }));
+                if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
+            };
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                const errs = validate();
+                if (Object.keys(errs).length) { setErrors(errs); return; }
+                setStatus('sending');
+                try {
+                    const res = await fetch('https://formspree.io/f/xgoolwyl', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData),
+                    });
+                    if (res.ok) { setStatus('sent'); setFormData({name:'',email:'',message:''}); }
+                    else setStatus('error');
+                } catch { setStatus('error'); }
+            };
+            if (status === 'sent') {
+                return (
+                    <div className="py-3">
+                        <Check className="mb-2 text-plum-300" />
+                        <p className="font-display text-lg text-paper">Message sent.</p>
+                        <p className="text-paper/50 text-xs mt-1">We'll get back to you soon.</p>
+                        <button onClick={()=>setStatus('idle')} className="mt-3 text-xs text-plum-300 underline">Send another</button>
+                    </div>
+                );
+            }
+            const inputBase = "w-full px-0 py-2 bg-transparent border-0 border-b border-paper/25 focus:outline-none focus:border-plum-300 text-sm text-paper placeholder-paper/40 transition-colors";
+            return (
+                <form onSubmit={handleSubmit} className="space-y-5">
+                    <div>
+                        <input name="name" type="text" value={formData.name} onChange={handleChange} placeholder="Your Name" className={inputBase} />
+                        {errors.name && <div className="text-xs text-red-300 mt-1">{errors.name}</div>}
+                    </div>
+                    <div>
+                        <input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="Your Email" className={inputBase} />
+                        {errors.email && <div className="text-xs text-red-300 mt-1">{errors.email}</div>}
+                    </div>
+                    <div>
+                        <textarea name="message" rows="3" value={formData.message} onChange={handleChange} placeholder="Your Message" className={`${inputBase} resize-none`}></textarea>
+                        {errors.message && <div className="text-xs text-red-300 mt-1">{errors.message}</div>}
+                    </div>
+                    <input type="text" name="_gotcha" style={{display:'none'}} />
+                    <button type="submit" disabled={status==='sending'}
+                        className="group inline-flex items-center gap-2 px-5 py-3 bg-paper text-ink rounded-full text-[12px] tracking-wider uppercase hover:bg-plum-200 transition-colors disabled:opacity-50">
+                        <Send /> <span>{status==='sending' ? 'Sending...' : 'Send Message'}</span>
+                    </button>
+                    {status === 'error' && <p className="text-xs text-red-300">Something went wrong. Please try again.</p>}
+                </form>
             );
         };
 
-        const Footer = () => {
-            return (
-                <footer className="bg-slate-900 text-white pt-16 pb-8 border-t border-slate-800">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="grid md:grid-cols-4 gap-8 mb-12">
-                            <div className="col-span-1 md:col-span-2">
-                                <span className="text-xl font-bold text-white">
-                                    HARMONI <span className="text-violet-400">Lab</span>
+        const Footer = () => (
+            <footer id="contact" className="bg-ink text-paper">
+                <div className="max-w-[1400px] mx-auto px-6 lg:px-10 pt-24 pb-10">
+                    <div className="grid lg:grid-cols-12 gap-12 mb-20">
+                        <div className="lg:col-span-5">
+                            <div className="flex items-center gap-3 mb-6">
+                                <img src="images/brain_logo.png" alt="HARMONI logo" className="w-12 h-12 object-contain rounded-lg" />
+                                <span className="font-display text-3xl text-paper">
+                                    HARMONI <span className="font-bold text-plum-300 font-light">Lab</span>
                                 </span>
-                                <p className="mt-4 text-slate-400 max-w-sm text-sm">
-                                    An AI-driven project exploring the impact of hormonal changes on female brain and behavior.
-                                </p>
-                                <div className="flex gap-4 mt-6">
-                                    {/* <a href="https://github.com/HARMONI-Lab" target="_blank" rel="noopener" className="w-10 h-10 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center hover:bg-violet-600 hover:text-white transition-colors">
-                                        <Github className="w-5 h-5" />
-                                    </a> */}
-                                    <a href="https://ga.linkedin.com/company/harmoni-lab" target="_blank" rel="noopener" className="w-10 h-10 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center hover:bg-violet-600 hover:text-white transition-colors">
-                                        <LinkedIn className="w-5 h-5" />
-                                    </a>
-                                </div>
                             </div>
-
-                            <div>
-                                <h4 className="font-bold text-white mb-4">Tools</h4>
-                                <ul className="space-y-2 text-sm text-slate-400">
-                                    <li><a href="selene.html" className="hover:text-violet-400 transition-colors">SELENE</a></li>
-                                    <li><a href="lucia.html" className="hover:text-violet-400 transition-colors">LUCIA</a></li>
-                                    <li><a href="clara.html" className="hover:text-violet-400 transition-colors">CLARA</a></li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <h4 className="font-bold text-white mb-4">Links</h4>
-                                <ul className="space-y-2 text-sm text-slate-400">
-                                    <li><a href="index.html" className="hover:text-violet-400 transition-colors">Home</a></li>
-                                    <li><a href="index.html#mission" className="hover:text-violet-400 transition-colors">Mission</a></li>
-                                    <li><a href="index.html#research" className="hover:text-violet-400 transition-colors">Research</a></li>
-                                    <li><a href="index.html#contact" className="hover:text-violet-400 transition-colors">Contact</a></li>
-                                </ul>
+                            <p className="text-paper/65 max-w-md text-[15px] leading-relaxed">
+                                An AI-driven project exploring the impact of hormonal changes on female brain and behavior.
+                            </p>
+                            <div className="flex gap-3 mt-8">
+                                <a href="https://ga.linkedin.com/company/harmoni-lab" target="_blank" rel="noopener" className="w-10 h-10 rounded-full border border-paper/20 text-paper/70 flex items-center justify-center hover:bg-paper hover:text-ink transition-colors">
+                                    <LinkedIn />
+                                </a>
                             </div>
                         </div>
-
-                        <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
-                            <p>&copy; {new Date().getFullYear()} HARMONI Lab LLC. All rights reserved.</p>
-                            <p className="mt-2 md:mt-0">LUCIA: Bias-Aware AI Agent | Built with Google ADK & Gemini</p>
+                        <div className="lg:col-span-2">
+                            <p className="eyebrow text-plum-300 mb-5">Links</p>
+                            <ul className="space-y-3 text-[14px] text-paper/70">
+                                <li><a href="index.html#about" className="ink-link hover:text-paper">About</a></li>
+                                <li><a href="index.html#mission" className="ink-link hover:text-paper">Mission</a></li>
+                                <li><a href="index.html#research" className="ink-link hover:text-paper">Research</a></li>
+                                <li><a href="index.html#faq" className="ink-link hover:text-paper">FAQ</a></li>
+                            </ul>
+                            <p className="eyebrow text-plum-300 mt-8 mb-5">Tools</p>
+                            <ul className="space-y-3 text-[14px] text-paper/70">
+                                <li><a href="selene.html" className="ink-link hover:text-paper">SELENE</a></li>
+                                <li><a href="lucia.html" className="ink-link hover:text-paper">LUCIA</a></li>
+                                <li><a href="clara.html" className="ink-link hover:text-paper">CLARA</a></li>
+                            </ul>
+                        </div>
+                        <div className="lg:col-span-5">
+                            <p className="eyebrow text-plum-300 mb-5">Contact</p>
+                            <ContactForm />
                         </div>
                     </div>
-                </footer>
-            );
-        };
-
-        const App = () => {
-            return (
-                <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-violet-100 selection:text-violet-900">
-                    <Navigation />
-                    <Hero />
-                    <Problem />
-                    <Architecture />
-                    <Demo />
-                    <Future />
-                    <Footer />
+                    <div className="border-t border-paper/15 mt-10 pt-8 flex flex-col md:flex-row justify-between items-center text-[12px] text-paper/45 tracking-wide">
+                        <p>&copy; {new Date().getFullYear()} HARMONI Lab LLC. All rights reserved.</p>
+                        <p className="mt-2 md:mt-0">Built with transparency and care for women's health.</p>
+                    </div>
                 </div>
-            );
-        };
+            </footer>
+        );
 
         const root = createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
 </body>
-
 </html>
