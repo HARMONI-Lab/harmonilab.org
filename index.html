@@ -78,14 +78,6 @@
         /* Hairline rules */
         .rule { border-color: #e6e0d6; }
 
-        /* Subtle paper grain */
-        .paper-grain {
-            background-color: #fbf9f6;
-            background-image:
-              radial-gradient(circle at 20% 10%, rgba(115,68,163,0.06), transparent 40%),
-              radial-gradient(circle at 80% 90%, rgba(185,148,216,0.07), transparent 45%);
-        }
-
         .ink-link {
             background-image: linear-gradient(currentColor, currentColor);
             background-size: 0% 1px;
@@ -94,12 +86,6 @@
             transition: background-size 0.4s ease;
         }
         .ink-link:hover { background-size: 100% 1px; }
-
-        /* Marquee/glow blob behind hero */
-        .glow {
-            background: radial-gradient(closest-side, rgba(149,107,191,0.35), rgba(149,107,191,0));
-            filter: blur(40px);
-        }
 
         /* Drop cap for editorial feel */
         .dropcap::first-letter {
@@ -210,10 +196,7 @@
 
         // ---------- Hero ----------
         const Hero = () => (
-            <header className="relative pt-36 lg:pt-44 pb-20 lg:pb-28 overflow-hidden paper-grain">
-                <div className="absolute -top-20 -right-20 w-[40rem] h-[40rem] glow pointer-events-none"></div>
-                <div className="absolute -bottom-32 -left-20 w-[30rem] h-[30rem] glow opacity-60 pointer-events-none"></div>
-
+            <header className="relative pt-36 lg:pt-44 pb-20 lg:pb-28 overflow-hidden">
                 <div className="max-w-[1400px] mx-auto px-6 lg:px-10 relative">
                     {/* Top meta strip */}
                     <div className="flex items-center justify-between border-b border-rule pb-4 mb-12">
@@ -354,7 +337,6 @@
         // ---------- Initiatives ----------
         const Initiatives = () => (
             <section id="initiatives" className="py-28 lg:py-36 bg-ink text-paper relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-[40rem] h-[40rem] glow opacity-40 pointer-events-none"></div>
                 <div className="max-w-[1400px] mx-auto px-6 lg:px-10 relative">
                     <div className="flex items-center gap-4 mb-8">
                         <span className="sec-num text-plum-300">§ 03</span>
@@ -586,7 +568,6 @@
 
             return (
                 <section id="newsletter" className="py-28 lg:py-32 bg-ink text-paper relative overflow-hidden">
-                    <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[40rem] h-[40rem] glow opacity-50 pointer-events-none"></div>
                     <div className="max-w-3xl mx-auto px-6 lg:px-10 text-center relative">
                         <span className="sec-num text-plum-300">§ 07 — Stay Updated</span>
                         <h2 className="font-display font-light text-[clamp(2rem,5vw,4rem)] leading-[1.05] tracking-tightest mt-6 mb-6">
@@ -741,7 +722,7 @@
                     <div className="border-t border-paper/15 pt-10">
                         <p className="eyebrow text-plum-300 text-center mb-8">Supported by</p>
                         <div className="flex flex-col sm:flex-row gap-10 justify-center items-center">
-                            <a href="https://elevenlabs.io/startup-grants"><img src="https://eleven-public-cdn.elevenlabs.io/payloadcms/cy7rxce8uki-IIElevenLabsGrants%201.webp" alt="ElevenLabs" className="rounded-lg" style={{width:'220px'}} /></a>
+                            <a href="https://elevenlabs.io/startup-grants"><img src="https://eleven-public-cdn.elevenlabs.io/payloadcms/cy7rxce8uki-IIElevenLabsGrants%201.webp" alt="ElevenLabs" style={{width:'220px'}} /></a>
                             <a href="https://aws.amazon.com/activate/" className="rounded-lg overflow-hidden bg-paper p-2"><img src="images/awsactivate.jpeg" alt="AWS Activate" className="rounded-lg" style={{width:'200px'}} /></a>
                         </div>
                     </div>

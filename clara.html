@@ -49,15 +49,8 @@
         .font-display { font-family:'Fraunces',Georgia,serif; font-optical-sizing:auto; font-variation-settings:"SOFT" 50; letter-spacing:-0.025em; }
         .eyebrow { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#5a2f87; }
         .rule { border-color:#e6e0d6; }
-        .paper-grain {
-            background-color:#fbf9f6;
-            background-image:
-              radial-gradient(circle at 20% 10%, rgba(115,68,163,0.06), transparent 40%),
-              radial-gradient(circle at 80% 90%, rgba(185,148,216,0.07), transparent 45%);
-        }
         .ink-link { background-image:linear-gradient(currentColor,currentColor); background-size:0% 1px; background-repeat:no-repeat; background-position:0 100%; transition:background-size .4s ease; }
         .ink-link:hover { background-size:100% 1px; }
-        .glow { background:radial-gradient(closest-side, rgba(149,107,191,0.35), rgba(149,107,191,0)); filter:blur(40px); }
         .dropcap::first-letter { font-family:'Fraunces',Georgia,serif; font-weight:500; float:left; font-size:4.5rem; line-height:0.85; padding:0.35rem 0.75rem 0 0; color:#5a2f87; }
         .sec-num { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.2em; color:#956bbf; }
     </style>
@@ -137,8 +130,7 @@
         };
 
         const Hero = () => (
-            <header className="relative pt-36 lg:pt-44 pb-24 overflow-hidden paper-grain">
-                <div className="absolute -top-20 -right-20 w-[40rem] h-[40rem] glow pointer-events-none"></div>
+            <header className="relative pt-36 lg:pt-44 pb-24 overflow-hidden">
                 <div className="max-w-[1400px] mx-auto px-6 lg:px-10 relative">
                     <div className="flex items-center justify-between border-b border-rule pb-4 mb-12">
                         <div className="eyebrow">Project 03 · AI-Powered Patient Safety</div>
