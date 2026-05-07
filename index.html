@@ -196,33 +196,32 @@
 
         // ---------- Hero ----------
         const Hero = () => (
-            <header className="relative pt-36 lg:pt-44 pb-20 lg:pb-28 overflow-hidden">
+            <header className="relative pt-36 lg:pt-44 pb-20 lg:pb-28 overflow-hidden paper-grain">
+                <div className="absolute -top-20 -right-20 w-[40rem] h-[40rem] glow pointer-events-none"></div>
+                <div className="absolute -bottom-32 -left-20 w-[30rem] h-[30rem] glow opacity-60 pointer-events-none"></div>
+
                 <div className="max-w-[1400px] mx-auto px-6 lg:px-10 relative">
                     {/* Top meta strip */}
                     <div className="flex items-center justify-between border-b border-rule pb-4 mb-12">
                       <p className="eyebrow mb-6">An independent AI-native research lab</p>
                     </div>
 
-                    <div className="grid lg:grid-cols-12 gap-10 items-end">
-                        <div className="lg:col-span-8">          
+                    <div className="text-left">
                             <h1 className="font-display font-light text-[clamp(2.75rem,7.5vw,7rem)] leading-[0.95] tracking-tightest text-ink">
                                 Deciphering<br/>
                                 the <span className="font-bold text-plum-600">Female</span><br/>
                                 Brain.
                             </h1>
-                        </div>
-                        <div className="lg:col-span-4 lg:pb-4">
-                            <p className="text-[15px] leading-relaxed text-ink/70 max-w-sm">
-                                We combine computational neuroscience, AI, and clinical research to understand hormonal influences on brain and behavior and translate findings into better care.
-                            </p>
-                            <div className="mt-8 flex flex-wrap gap-3">
-                                <a href="#research" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink text-paper text-[13px] tracking-wide hover:bg-plum-700 transition-colors">
-                                    Explore Research <ArrowRight />
-                                </a>
-                                <a href="#contact" className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink/20 text-ink text-[13px] tracking-wide hover:bg-ink hover:text-paper transition-colors">
-                                    Contact Us
-                                </a>
-                            </div>
+                        <p className="mt-8 text-[17px] lg:text-[18px] leading-relaxed text-ink/70 max-w-2xl">
+                            We combine computational neuroscience, AI, and clinical research to understand hormonal influences on brain and behavior and translate findings into better care.
+                        </p>
+                        <div className="mt-8 flex flex-wrap gap-3">
+                            <a href="#research" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink text-paper text-[13px] tracking-wide hover:bg-plum-700 transition-colors">
+                                Explore Research <ArrowRight />
+                            </a>
+                            <a href="#contact" className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink/20 text-ink text-[13px] tracking-wide hover:bg-ink hover:text-paper transition-colors">
+                                Contact Us
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -431,7 +430,7 @@
                                 HARMONI <span className="font-bold text-plum-600">Lab</span> LLC
                             </h2>
                             <p className="text-[17px] leading-[1.75] text-ink/80 mb-5">
-                                HARMONI Lab LLC <span className="font-medium text-ink">Hormonal And Reproductive Modulation Of Neurocognition Initiative</span> is an independent AI research lab incorporated in Georgia in 2026. We build computational tools to decode hormonal influences on the female brain, with a focus on the menopausal transition as a cerebrovascular inflection point.
+                                HARMONI <span className="font-medium text-ink">Hormonal And Reproductive Modulation Of Neurocognition Initiative</span> Lab LLC is an independent AI research lab incorporated in Georgia in 2026. We build computational tools to decode hormonal influences on the female brain, with a focus on the menopausal transition as a cerebrovascular inflection point.
                             </p>
                             <p className="text-[16px] leading-[1.75] text-ink/70 mb-5">
                                 Our core thesis: hormonal trajectory, not just hormone levels, shapes cognitive aging and stroke risk in women. We are building a multimodal AI framework, combining biosignals, longitudinal symptom data, and neuroimaging, to make this risk computationally visible.
