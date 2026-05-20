@@ -3,392 +3,328 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CLARA | HARMONI Lab — Auditing Clinical Logic</title>
-
+    <title>CLARA | HARMONI Lab - Auditing Clinical Logic</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    <link rel="preconnect" href="https://unpkg.com">
-
-    <meta name="description" content="CLARA detects cognitive biases in medical consultations in real time, surfacing evidence-based prompts to prevent diagnostic errors.">
-    <meta property="og:title" content="CLARA | HARMONI Lab — Auditing Clinical Logic">
-    <meta property="og:description" content="CLARA detects cognitive biases in medical consultations in real time, surfacing evidence-based prompts to prevent diagnostic errors.">
+    <meta name="description" content="CLARA detects cognitive biases in medical consultations in real time, surfacing evidence-based prompts from AXIOM's knowledge base to prevent diagnostic errors.">
+    <meta property="og:title" content="CLARA | HARMONI Lab - Auditing Clinical Logic">
     <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@harmonilab">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              serif: ['"Fraunces"', 'Georgia', 'serif'],
-              sans:  ['"Inter"', 'system-ui', 'sans-serif'],
-              mono:  ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
-            },
-            colors: {
-              ink:   '#1a1320',
-              paper: '#fbf9f6',
-              cream: '#f3eee7',
-              rule:  '#e6e0d6',
-              plum:  { 50:'#f7f2fb',100:'#ece0f5',200:'#d6bdea',300:'#b994d8',400:'#956bbf',500:'#7344a3',600:'#5a2f87',700:'#46256a',800:'#321a4c',900:'#1f1030' },
-              accent:'#5a2f87',
-            },
-            letterSpacing: { tightest: '-0.04em' },
-          }
-        }
+        theme: { extend: {
+          fontFamily: { serif:['"Fraunces"','Georgia','serif'], sans:['"Inter"','system-ui','sans-serif'], mono:['"JetBrains Mono"','ui-monospace','monospace'] },
+          colors: { ink:'#1a1320', paper:'#fbf9f6', cream:'#f3eee7', rule:'#e6e0d6', plum:{ 50:'#f7f2fb',100:'#ece0f5',200:'#d6bdea',300:'#b994d8',400:'#956bbf',500:'#7344a3',600:'#5a2f87',700:'#46256a',800:'#321a4c',900:'#1f1030' } },
+          letterSpacing: { tightest:'-0.04em' }
+        }}
       }
     </script>
-
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-    <style>
-        body { font-family:'Inter',sans-serif; background:#fbf9f6; color:#1a1320; -webkit-font-smoothing:antialiased; }
-        html { scroll-behavior:smooth; }
-        .font-display { font-family:'Fraunces',Georgia,serif; font-optical-sizing:auto; font-variation-settings:"SOFT" 50; letter-spacing:-0.025em; }
-        .eyebrow { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#5a2f87; }
-        .rule { border-color:#e6e0d6; }
-        .ink-link { background-image:linear-gradient(currentColor,currentColor); background-size:0% 1px; background-repeat:no-repeat; background-position:0 100%; transition:background-size .4s ease; }
-        .ink-link:hover { background-size:100% 1px; }
-        .dropcap::first-letter { font-family:'Fraunces',Georgia,serif; font-weight:500; float:left; font-size:4.5rem; line-height:0.85; padding:0.35rem 0.75rem 0 0; color:#5a2f87; }
-        .sec-num { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.2em; color:#956bbf; }
-    </style>
-
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-
+    <style>
+        body{font-family:'Inter',sans-serif;background:#fbf9f6;color:#1a1320;-webkit-font-smoothing:antialiased;}
+        html{scroll-behavior:smooth;}
+        .font-display{font-family:'Fraunces',Georgia,serif;font-optical-sizing:auto;font-variation-settings:"SOFT" 50;letter-spacing:-0.025em;}
+        .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#5a2f87;}
+        .rule{border-color:#e6e0d6;}
+        .ink-link{background-image:linear-gradient(currentColor,currentColor);background-size:0% 1px;background-repeat:no-repeat;background-position:0 100%;transition:background-size .4s ease;}
+        .ink-link:hover{background-size:100% 1px;}
+        .dropcap::first-letter{font-family:'Fraunces',Georgia,serif;font-weight:500;float:left;font-size:4.5rem;line-height:0.85;padding:0.35rem 0.75rem 0 0;color:#5a2f87;}
+        .sec-num{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:#956bbf;}
+        .mono{font-family:'JetBrains Mono',monospace;}
+    </style>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone@7.23.5/babel.min.js"></script>
 </head>
 <body>
-    <div id="root"></div>
+<div id="root"></div>
+<script type="text/babel">
+    const { useState, useEffect } = React;
+    const { createRoot } = ReactDOM;
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-        const { createRoot } = ReactDOM;
+    const Menu=(p)=><svg {...p} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>;
+    const X=(p)=><svg {...p} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" d="M6 6l12 12M18 6L6 18"/></svg>;
+    const ArrowRight=(p)=><svg {...p} width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>;
+    const Send=(p)=><svg {...p} width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" strokeLinejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>;
+    const Check=(p)=><svg {...p} width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>;
+    const LinkedIn=(p)=><svg {...p} width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>;
 
-        const Menu = (p)=> <svg {...p} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>;
-        const X = (p)=> <svg {...p} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" d="M6 6l12 12M18 6L6 18"/></svg>;
-        const ArrowRight = (p)=> <svg {...p} width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>;
-        const Send = (p)=> <svg {...p} width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" strokeLinejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>;
-        const Check = (p)=> <svg {...p} width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>;
-        const LinkedIn = (p)=> <svg {...p} width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>;
-
-        const Navigation = () => {
-            const [isOpen, setIsOpen] = useState(false);
-            const [scrolled, setScrolled] = useState(false);
-            useEffect(() => {
-                const onScroll = () => setScrolled(window.scrollY > 16);
-                window.addEventListener('scroll', onScroll);
-                return () => window.removeEventListener('scroll', onScroll);
-            }, []);
-            const navLinks = [
-                { name: 'Home',     href: 'index.html' },
-                { name: 'Mission',  href: 'index.html#mission' },
-                { name: 'Research', href: 'index.html#research' },
-                { name: 'SELENE',   href: 'selene.html' },
-                { name: 'LUCIA',    href: 'lucia.html' },
-                { name: 'CLARA',    href: 'clara.html' },
-            ];
-            return (
-                <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-paper/85 backdrop-blur-md border-b border-rule' : 'bg-transparent'}`}>
-                    <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-                        <div className="flex items-center justify-between h-20">
-                            <a href="index.html" className="flex items-center gap-3">
-                                <img src="images/brain_logo.png" alt="HARMONI logo" className="w-10 h-10 object-contain rounded-lg" />
-                                <div className="font-display text-xl tracking-tight text-ink">
-                                    HARMONI <span className="font-bold text-plum-600">Lab</span>
-                                </div>
-                            </a>
-                            <div className="hidden lg:flex items-center gap-9">
-                                {navLinks.map((l) => (
-                                    <a key={l.name} href={l.href} className="ink-link text-[13px] tracking-wide text-ink/75 hover:text-ink">{l.name}</a>
-                                ))}
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <a href="index.html#newsletter" className="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-ink text-paper text-[12px] tracking-wider uppercase font-medium hover:bg-plum-700 transition-colors">
-                                    Join Early Access
-                                </a>
-                                <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 text-ink">
-                                    {isOpen ? <X /> : <Menu />}
-                                </button>
-                            </div>
+    const Navigation = () => {
+        const [isOpen, setIsOpen] = useState(false);
+        const [scrolled, setScrolled] = useState(false);
+        useEffect(()=>{ const fn=()=>setScrolled(window.scrollY>16); window.addEventListener('scroll',fn); return ()=>window.removeEventListener('scroll',fn); },[]);
+        const links = [
+            {name:'Home',href:'index.html'},{name:'Mission',href:'index.html#mission'},{name:'Research',href:'index.html#research'},
+            {name:'AXIOM',href:'axiom.html'},{name:'SELENE',href:'selene.html'},{name:'LUCIA',href:'lucia.html'},{name:'CLARA',href:'clara.html'},
+        ];
+        return (
+            <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled?'bg-paper/85 backdrop-blur-md border-b border-rule':'bg-transparent'}`}>
+                <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                    <div className="flex items-center justify-between h-20">
+                        <a href="index.html" className="flex items-center gap-3">
+                            <img src="images/brain_logo.png" alt="HARMONI logo" className="w-10 h-10 object-contain rounded-lg"/>
+                            <div className="font-display text-xl tracking-tight text-ink">HARMONI <span className="font-bold text-plum-600">Lab</span></div>
+                        </a>
+                        <div className="hidden lg:flex items-center gap-9">
+                            {links.map(l=><a key={l.name} href={l.href} className={`ink-link text-[13px] tracking-wide hover:text-ink ${l.name==='AXIOM'?'text-plum-600 font-medium':'text-ink/75'}`}>{l.name}</a>)}
                         </div>
-                    </div>
-                    {isOpen && (
-                        <div className="lg:hidden bg-paper border-t border-rule">
-                            <div className="px-6 py-6 space-y-3">
-                                {navLinks.map((l) => (
-                                    <a key={l.name} href={l.href} onClick={() => setIsOpen(false)} className="block py-2 font-display text-2xl text-ink">{l.name}</a>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                </nav>
-            );
-        };
-
-        const Hero = () => (
-            <header className="relative pt-36 lg:pt-44 pb-24 overflow-hidden">
-                <div className="max-w-[1400px] mx-auto px-6 lg:px-10 relative">
-                    <div className="flex items-center justify-between border-b border-rule pb-4 mb-12">
-                        <div className="eyebrow">Project 03 · AI-Powered Patient Safety</div>
-                        <div className="eyebrow hidden md:block">A HARMONI Lab Initiative</div>
-                    </div>
-                    <div className="grid lg:grid-cols-12 gap-10 items-end">
-                        <div className="lg:col-span-8">
-                            <p className="sec-num mb-6">§ Clara</p>
-                            <h1 className="font-display font-light text-[clamp(2.5rem,7vw,6.5rem)] leading-[0.95] tracking-tightest text-ink">
-                                Auditing <strong className="font-bold text-plum-600">clinical logic</strong> for a safer tomorrow.
-                            </h1>
-                        </div>
-                        <div className="lg:col-span-4">
-                            <p className="text-[17px] leading-[1.7] text-ink/70 max-w-md">
-                                CLARA is an intelligence layer designed to detect cognitive biases in medical consultations, preventing diagnostic errors before they impact patient outcomes.
-                            </p>
-                            <div className="mt-8 flex flex-wrap gap-3">
-                                <a href="https://ai.studio/apps/drive/1d04qEW2DRK0wyxJHNnNF0JI8wtrtMiR0?fullscreenApplet=true" target="_blank" rel="noopener" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink text-paper text-[12px] tracking-wider uppercase hover:bg-plum-700 transition-colors">
-                                    Launch Auditor <ArrowRight />
-                                </a>
-                                <a href="#features" className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink/30 text-ink text-[12px] tracking-wider uppercase hover:bg-ink hover:text-paper transition-colors">
-                                    How it works <ArrowRight />
-                                </a>
-                            </div>
+                        <div className="flex items-center gap-3">
+                            <a href="index.html#newsletter" className="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-ink text-paper text-[12px] tracking-wider uppercase font-medium hover:bg-plum-700 transition-colors">Join Early Access</a>
+                            <button onClick={()=>setIsOpen(!isOpen)} className="lg:hidden p-2 text-ink">{isOpen?<X/>:<Menu/>}</button>
                         </div>
                     </div>
                 </div>
-            </header>
+                {isOpen&&<div className="lg:hidden bg-paper border-t border-rule"><div className="px-6 py-6 space-y-3">{links.map(l=><a key={l.name} href={l.href} onClick={()=>setIsOpen(false)} className="block py-2 font-display text-2xl text-ink">{l.name}</a>)}</div></div>}
+            </nav>
         );
+    };
 
-        const Features = () => (
-            <section id="features" className="py-28 lg:py-32 bg-paper border-t border-rule">
-                <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-                    <div className="border-b border-rule pb-10 mb-16">
-                        <p className="sec-num mb-3">§ 01 — How It Works</p>
-                        <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
-                            Intelligent <strong className="font-bold text-plum-600">clinical oversight</strong>.
-                        </h2>
-                    </div>
-                    <div className="grid md:grid-cols-3 gap-px bg-rule border border-rule">
-                        {[
-                            { t:'Real-time Monitoring',    d:'Continuously analyzes clinical dialogue as it happens, providing instant feedback on potential reasoning gaps.' },
-                            { t:'Bias Detection',          d:'Identifies three critical cognitive biases that contribute to diagnostic errors in clinical settings.' },
-                            { t:'Evidence-Based Prompts',  d:'Generates actionable questions grounded in clinical guidelines to ensure thorough diagnostic workup.' },
-                        ].map((f,i)=>(
-                            <div key={i} className="bg-paper p-10 hover:bg-plum-50 transition-colors">
-                                <p className="sec-num mb-4">{`0${i+1}`}</p>
-                                <h4 className="font-display text-2xl text-ink mb-3">{f.t}</h4>
-                                <p className="text-[15px] leading-[1.7] text-ink/70">{f.d}</p>
-                            </div>
-                        ))}
-                    </div>
+    const Hero = () => (
+        <header className="relative pt-36 lg:pt-44 pb-24 overflow-hidden">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10 relative">
+                <div className="flex items-center justify-between border-b border-rule pb-4 mb-12">
+                    <div className="eyebrow">Project 04 · Clinical Tool</div>
+                    <div className="eyebrow hidden md:block">A HARMONI Lab Initiative</div>
                 </div>
-            </section>
-        );
-
-        const Biases = () => (
-            <section id="biases" className="py-28 lg:py-32 bg-cream border-t border-rule">
-                <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-                    <div className="border-b border-rule pb-10 mb-16">
-                        <p className="sec-num mb-3">§ 02 — Cognitive Audit Scope</p>
-                        <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
-                            The three <strong className="font-bold text-plum-600">silent threat</strong> detectors.
-                        </h2>
-                        <p className="text-[16px] leading-[1.7] text-ink/70 max-w-2xl mt-6">
-                            CLARA meticulously scans clinical dialogue for specific patterns of reasoning failures that are most common in medical errors.
+                <div className="grid lg:grid-cols-12 gap-10 items-end">
+                    <div className="lg:col-span-8">
+                        <p className="sec-num mb-6">§ Clara</p>
+                        <h1 className="font-display font-light text-[clamp(2.5rem,7vw,6.5rem)] leading-[0.95] tracking-tightest text-ink">
+                            Auditing <strong className="font-bold text-plum-600">clinical logic</strong><br/>for a safer tomorrow.
+                        </h1>
+                    </div>
+                    <div className="lg:col-span-4">
+                        <a href="axiom.html" className="flex items-center gap-3 mb-6 px-4 py-3 bg-plum-50 border border-plum-200 rounded-sm hover:bg-plum-100 transition-colors w-fit">
+                            <span className="mono text-[10px] text-plum-600 tracking-widest uppercase">Powered by</span>
+                            <span className="font-display text-lg text-plum-700 font-bold">AXIOM</span>
+                            <ArrowRight className="text-plum-500"/>
+                        </a>
+                        <p className="text-[17px] leading-[1.7] text-ink/70 max-w-md mb-8">
+                            An intelligence layer that detects cognitive biases in medical consultations in real time - generating evidence-backed prompts grounded in AXIOM's peer-reviewed knowledge base.
                         </p>
-                    </div>
-                    <div className="grid md:grid-cols-3 gap-px bg-rule border border-rule">
-                        {[
-                            { code:'DS', t:'Diagnostic Shadowing', d:"Detects when physical symptoms are incorrectly attributed to a patient's pre-existing psychiatric history, leading to missed physical diagnoses." },
-                            { code:'PC', t:'Premature Closure',     d:'The tendency to cease the diagnostic process before all possibilities have been explored and alternatives ruled out.' },
-                            { code:'AB', t:'Anchoring Bias',        d:'Flags the over-reliance on the first piece of information received, ignoring subsequent evidence that contradicts the initial impression.' },
-                        ].map((b,i)=>(
-                            <div key={i} className="bg-paper p-10">
-                                <div className="flex items-baseline gap-4 mb-6">
-                                    <span className="font-display text-6xl text-plum-600 leading-none">{b.code}</span>
-                                    <span className="sec-num">{`Bias 0${i+1}`}</span>
-                                </div>
-                                <h4 className="font-display text-2xl text-ink mb-3">{b.t}</h4>
-                                <p className="text-[14px] leading-[1.7] text-ink/70">{b.d}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-        );
-
-        const Tech = () => (
-            <section id="tech" className="py-28 lg:py-32 bg-ink text-paper">
-                <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-                    <div className="border-b border-paper/15 pb-10 mb-16">
-                        <p className="sec-num text-plum-300 mb-3">§ 03 — Technical Foundation</p>
-                        <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
-                            Engineered for <strong className="font-bold text-plum-300">precision</strong>.
-                        </h2>
-                        <p className="text-[16px] leading-[1.7] text-paper/65 max-w-2xl mt-6">
-                            CLARA leverages the latest advancements in LLM technology to provide real-time, objective auditing of clinical reasoning.
-                        </p>
-                    </div>
-
-                    <div className="grid lg:grid-cols-2 gap-16 items-start">
-                        <ul className="space-y-px bg-paper/15 border border-paper/15">
-                            {[
-                                'Gemini 3 Pro via Google AI Studio',
-                                'React + Vite + TypeScript Frontend',
-                                'Async Audio-to-Transcript Pipeline',
-                            ].map((t,i)=>(
-                                <li key={i} className="bg-ink p-8 flex items-center gap-6">
-                                    <span className="sec-num text-plum-300 w-12">{`0${i+1}`}</span>
-                                    <span className="font-display text-2xl text-paper">{t}</span>
-                                </li>
-                            ))}
-                        </ul>
-
-                        <div className="hidden lg:block bg-paper text-ink p-8 border border-paper/20">
-                            <p className="sec-num mb-6">Excerpt · audit.ts</p>
-                            <pre className="font-mono text-[13px] leading-[1.8] text-ink/85 whitespace-pre-wrap">
-{`// CLARA Bias Detection
-const audit = analyzeDialogue(transcript);
-if (audit.biasDetected) {
-  generatePrompt(audit.context);
-}`}
-                            </pre>
+                        <div className="flex flex-wrap gap-3">
+                            <a href="https://ai.studio/apps/drive/1d04qEW2DRK0wyxJHNnNF0JI8wtrtMiR0?fullscreenApplet=true" target="_blank" rel="noopener" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink text-paper text-[12px] tracking-wider uppercase hover:bg-plum-700 transition-colors">Launch Auditor <ArrowRight/></a>
+                            <a href="#biases" className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink/30 text-ink text-[12px] tracking-wider uppercase hover:bg-ink hover:text-paper transition-colors">How it works <ArrowRight/></a>
                         </div>
                     </div>
                 </div>
-            </section>
-        );
-
-        const App = () => (
-            <div className="min-h-screen bg-paper text-ink selection:bg-plum-200 selection:text-plum-900">
-                <Navigation />
-                <Hero />
-                <Features />
-                <Biases />
-                <Tech />
-                <Footer />
             </div>
-        );
+        </header>
+    );
 
-        const ContactForm = () => {
-            const [formData, setFormData] = useState({ name:'', email:'', message:'' });
-            const [errors, setErrors] = useState({});
-            const [status, setStatus] = useState('idle');
-            const validate = () => {
-                const errs = {};
-                if (!formData.name.trim()) errs.name = 'Name is required.';
-                if (!formData.email.trim()) errs.email = 'Email is required.';
-                else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) errs.email = 'Enter a valid email.';
-                if (!formData.message.trim()) errs.message = 'Message is required.';
-                return errs;
-            };
-            const handleChange = (e) => {
-                const { name, value } = e.target;
-                setFormData(prev => ({ ...prev, [name]: value }));
-                if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
-            };
-            const handleSubmit = async (e) => {
-                e.preventDefault();
-                const errs = validate();
-                if (Object.keys(errs).length) { setErrors(errs); return; }
-                setStatus('sending');
-                try {
-                    const res = await fetch('https://formspree.io/f/xgoolwyl', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(formData),
-                    });
-                    if (res.ok) { setStatus('sent'); setFormData({name:'',email:'',message:''}); }
-                    else setStatus('error');
-                } catch { setStatus('error'); }
-            };
-            if (status === 'sent') {
-                return (
-                    <div className="py-3">
-                        <Check className="mb-2 text-plum-300" />
-                        <p className="font-display text-lg text-paper">Message sent.</p>
-                        <p className="text-paper/50 text-xs mt-1">We'll get back to you soon.</p>
-                        <button onClick={()=>setStatus('idle')} className="mt-3 text-xs text-plum-300 underline">Send another</button>
-                    </div>
-                );
-            }
-            const inputBase = "w-full px-0 py-2 bg-transparent border-0 border-b border-paper/25 focus:outline-none focus:border-plum-300 text-sm text-paper placeholder-paper/40 transition-colors";
-            return (
-                <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                        <input name="name" type="text" value={formData.name} onChange={handleChange} placeholder="Your Name" className={inputBase} />
-                        {errors.name && <div className="text-xs text-red-300 mt-1">{errors.name}</div>}
-                    </div>
-                    <div>
-                        <input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="Your Email" className={inputBase} />
-                        {errors.email && <div className="text-xs text-red-300 mt-1">{errors.email}</div>}
-                    </div>
-                    <div>
-                        <textarea name="message" rows="3" value={formData.message} onChange={handleChange} placeholder="Your Message" className={`${inputBase} resize-none`}></textarea>
-                        {errors.message && <div className="text-xs text-red-300 mt-1">{errors.message}</div>}
-                    </div>
-                    <input type="text" name="_gotcha" style={{display:'none'}} />
-                    <button type="submit" disabled={status==='sending'}
-                        className="group inline-flex items-center gap-2 px-5 py-3 bg-paper text-ink rounded-full text-[12px] tracking-wider uppercase hover:bg-plum-200 transition-colors disabled:opacity-50">
-                        <Send /> <span>{status==='sending' ? 'Sending...' : 'Send Message'}</span>
-                    </button>
-                    {status === 'error' && <p className="text-xs text-red-300">Something went wrong. Please try again.</p>}
-                </form>
-            );
-        };
+    const Features = () => (
+        <section className="py-28 lg:py-32 bg-paper border-t border-rule">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                <div className="border-b border-rule pb-10 mb-16">
+                    <p className="sec-num mb-3">§ 01 - How It Works</p>
+                    <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
+                        Intelligent <strong className="font-bold text-plum-600">clinical oversight</strong>.
+                    </h2>
+                    <p className="text-[16px] leading-[1.7] text-ink/70 max-w-2xl mt-6">
+                        CLARA listens, identifies reasoning failures, and generates prompts - grounded in AXIOM's literature base - before those failures reach the patient.
+                    </p>
+                </div>
+                <div className="grid md:grid-cols-3 gap-px bg-rule border border-rule">
+                    {[
+                        {t:'Real-time Monitoring',   d:'Continuously analyzes clinical dialogue as it unfolds, providing instant feedback on potential reasoning gaps without interrupting the encounter.'},
+                        {t:'Bias Detection',         d:'Identifies three critical cognitive biases that account for a disproportionate share of diagnostic errors in women\'s health consultations.'},
+                        {t:'AXIOM-Grounded Prompts', d:'Generates actionable questions backed by clinical guidelines retrieved from AXIOM\'s knowledge graph - not generic AI suggestions.'},
+                    ].map((f,i)=>(
+                        <div key={i} className="bg-paper p-10 hover:bg-plum-50 transition-colors">
+                            <p className="sec-num mb-4">{`0${i+1}`}</p>
+                            <h4 className="font-display text-2xl text-ink mb-3">{f.t}</h4>
+                            <p className="text-[15px] leading-[1.7] text-ink/70">{f.d}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
 
-        const Footer = () => (
-            <footer id="contact" className="bg-ink text-paper">
-                <div className="max-w-[1400px] mx-auto px-6 lg:px-10 pt-24 pb-10">
-                    <div className="grid lg:grid-cols-12 gap-12 mb-20">
-                        <div className="lg:col-span-5">
-                            <div className="flex items-center gap-3 mb-6">
-                                <img src="images/brain_logo.png" alt="HARMONI logo" className="w-12 h-12 object-contain rounded-lg" />
-                                <span className="font-display text-3xl text-paper">
-                                    HARMONI <span className="font-bold text-plum-300 font-light">Lab</span>
-                                </span>
+    const Biases = () => (
+        <section id="biases" className="py-28 lg:py-32 bg-cream border-t border-rule">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                <div className="border-b border-rule pb-10 mb-16">
+                    <p className="sec-num mb-3">§ 02 - Cognitive Audit Scope</p>
+                    <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
+                        The three <strong className="font-bold text-plum-600">silent threat</strong> detectors.
+                    </h2>
+                    <p className="text-[16px] leading-[1.7] text-ink/70 max-w-2xl mt-6">
+                        CLARA meticulously scans clinical dialogue for patterns of reasoning failure most common in women's health misdiagnosis. When a pattern is detected, it queries AXIOM for counter-evidence.
+                    </p>
+                </div>
+                <div className="grid md:grid-cols-3 gap-px bg-rule border border-rule">
+                    {[
+                        {code:'DS', t:'Diagnostic Shadowing', d:"Detects when physical symptoms are incorrectly attributed to a patient's pre-existing psychiatric history, leading to missed physical diagnoses. AXIOM checks whether the symptom cluster has documented physical etiologies in the literature."},
+                        {code:'PC', t:'Premature Closure',     d:'The tendency to cease diagnostic reasoning before all possibilities are explored. CLARA flags when a diagnosis is accepted without documented exclusion of alternatives - and retrieves what those alternatives are from AXIOM.'},
+                        {code:'AB', t:'Anchoring Bias',        d:'Over-reliance on the first piece of information received, ignoring subsequent evidence. CLARA monitors for diagnostic statements made before a full symptom history is gathered, grounding its counter-prompt in AXIOM evidence.'},
+                    ].map((b,i)=>(
+                        <div key={i} className="bg-paper p-10">
+                            <div className="flex items-baseline gap-4 mb-6">
+                                <span className="font-display text-6xl text-plum-600 leading-none">{b.code}</span>
+                                <span className="sec-num">{`Bias 0${i+1}`}</span>
                             </div>
-                            <p className="text-paper/65 max-w-md text-[15px] leading-relaxed">
-                                An AI-driven project exploring the impact of hormonal changes on female brain and behavior.
-                            </p>
-                            <div className="flex gap-3 mt-8">
-                                <a href="https://ga.linkedin.com/company/harmoni-lab" target="_blank" rel="noopener" className="w-10 h-10 rounded-full border border-paper/20 text-paper/70 flex items-center justify-center hover:bg-paper hover:text-ink transition-colors">
-                                    <LinkedIn />
-                                </a>
-                            </div>
+                            <h4 className="font-display text-2xl text-ink mb-3">{b.t}</h4>
+                            <p className="text-[14px] leading-[1.7] text-ink/70">{b.d}</p>
                         </div>
-                        <div className="lg:col-span-2">
-                            <p className="eyebrow text-plum-300 mb-5">Links</p>
-                            <ul className="space-y-3 text-[14px] text-paper/70">
-                                <li><a href="index.html#about" className="ink-link hover:text-paper">About</a></li>
-                                <li><a href="index.html#mission" className="ink-link hover:text-paper">Mission</a></li>
-                                <li><a href="index.html#research" className="ink-link hover:text-paper">Research</a></li>
-                                <li><a href="index.html#faq" className="ink-link hover:text-paper">FAQ</a></li>
-                            </ul>
-                            <p className="eyebrow text-plum-300 mt-8 mb-5">Tools</p>
-                            <ul className="space-y-3 text-[14px] text-paper/70">
-                                <li><a href="selene.html" className="ink-link hover:text-paper">SELENE</a></li>
-                                <li><a href="lucia.html" className="ink-link hover:text-paper">LUCIA</a></li>
-                                <li><a href="clara.html" className="ink-link hover:text-paper">CLARA</a></li>
-                            </ul>
-                        </div>
-                        <div className="lg:col-span-5">
-                            <p className="eyebrow text-plum-300 mb-5">Contact</p>
-                            <ContactForm />
-                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+
+    const AxiomBridge = () => (
+        <section className="py-20 bg-plum-50 border-y border-plum-200">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                <div className="grid lg:grid-cols-12 gap-10 items-center">
+                    <div className="lg:col-span-2">
+                        <p className="eyebrow text-plum-600 mb-2">Evidence layer</p>
+                        <p className="font-display text-5xl text-plum-700 font-bold">AXIOM</p>
                     </div>
-                    <div className="border-t border-paper/15 mt-10 pt-8 flex flex-col md:flex-row justify-between items-center text-[12px] text-paper/45 tracking-wide">
-                        <p>&copy; {new Date().getFullYear()} HARMONI Lab LLC. All rights reserved.</p>
-                        <p className="mt-2 md:mt-0">Built with transparency and care for women's health.</p>
+                    <div className="lg:col-span-7">
+                        <p className="text-[16px] leading-[1.75] text-plum-900/75">
+                            CLARA's bias detection is only as good as the evidence it can cite. When CLARA identifies a potential case of premature closure or anchoring bias, it does not rely on training data to generate the counter-prompt. It queries AXIOM's hybrid knowledge graph - retrieving documented relationships between the flagged symptom cluster and alternative diagnoses, scored by study type and recency, filtered for retractions. The clinician sees a question. Behind it is a graph traversal over primary literature.
+                        </p>
+                    </div>
+                    <div className="lg:col-span-3 flex lg:justify-end">
+                        <a href="axiom.html" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-plum-600 text-paper text-[12px] tracking-wider uppercase hover:bg-plum-700 transition-colors">
+                            AXIOM full overview <ArrowRight/>
+                        </a>
                     </div>
                 </div>
-            </footer>
-        );
+            </div>
+        </section>
+    );
 
-        const root = createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+    const Tech = () => (
+        <section className="py-28 lg:py-32 bg-ink text-paper">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                <div className="border-b border-paper/15 pb-10 mb-16">
+                    <p className="sec-num text-plum-300 mb-3">§ 03 - Technical Foundation</p>
+                    <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
+                        Engineered for <strong className="font-bold text-plum-300">precision</strong>.
+                    </h2>
+                    <p className="text-[16px] leading-[1.7] text-paper/65 max-w-2xl mt-6">
+                        CLARA leverages Gemini's audio-to-transcript pipeline for real-time clinical dialogue processing, with AXIOM providing the evidence substrate for every generated prompt.
+                    </p>
+                </div>
+                <div className="grid lg:grid-cols-2 gap-16 items-start">
+                    <ul className="space-y-px bg-paper/15 border border-paper/15">
+                        {[
+                            {t:'Gemini 3 Pro via Google AI Studio', d:'Multimodal reasoning over clinical audio transcripts in real time.'},
+                            {t:'AXIOM Knowledge Base',               d:'Evidence grounding for all generated prompts - graph traversal over primary menopause literature.'},
+                            {t:'React + Vite + TypeScript Frontend', d:'Lightweight interface for clinicians. Minimal friction, maximum signal.'},
+                            {t:'Async Audio-to-Transcript Pipeline', d:'Low-latency transcription enabling real-time bias detection without disrupting the encounter.'},
+                        ].map((t,i)=>(
+                            <li key={i} className="bg-ink p-8 flex items-start gap-6 border-b border-paper/10">
+                                <span className="sec-num text-plum-300 w-12 flex-shrink-0 pt-0.5">{`0${i+1}`}</span>
+                                <div>
+                                    <p className="font-display text-xl text-paper mb-1">{t.t}</p>
+                                    <p className="text-[13px] leading-[1.7] text-paper/55">{t.d}</p>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                    <div className="hidden lg:block bg-paper text-ink p-8 border border-paper/20">
+                        <p className="sec-num mb-6">Excerpt · clara-audit.ts</p>
+                        <pre className="mono text-[13px] leading-[1.8] text-ink/85 whitespace-pre-wrap">{`// CLARA Bias Detection + AXIOM grounding
+const audit = analyzeDialogue(transcript);
+
+if (audit.biasDetected) {
+  // Query AXIOM for counter-evidence
+  const evidence = await axiom.queryEvidence({
+    question: audit.context,
+    format: "json",
+  });
+
+  // Generate grounded clinical prompt
+  generatePrompt(audit.context, evidence);
+}`}</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+
+    const Roadmap = () => (
+        <section className="py-28 lg:py-32 bg-paper border-t border-rule">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                <div className="border-b border-rule pb-10 mb-16">
+                    <p className="sec-num mb-3">§ 04 - Roadmap</p>
+                    <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
+                        What comes <strong className="font-bold text-plum-600">next</strong>.
+                    </h2>
+                </div>
+                <div className="grid md:grid-cols-3 gap-px bg-rule border border-rule">
+                    {[
+                        {t:'Expanded Bias Library',  d:'Beyond the initial three bias types, CLARA will detect a broader taxonomy of reasoning failures documented in the gender medicine literature - each grounded by AXIOM retrieval.'},
+                        {t:'EHR Integration',         d:'Direct connection with electronic health records allows CLARA to cross-reference prior diagnoses and flag longitudinal inconsistencies in real time.'},
+                        {t:'Anonymized Outcomes',    d:'With consent, CLARA\'s flagged encounters contribute to AXIOM\'s graph - turning individual bias detections into systematic evidence for women\'s health research.'},
+                    ].map((r,i)=>(
+                        <div key={i} className="bg-paper p-10">
+                            <p className="sec-num mb-4">{`0${i+1}`}</p>
+                            <h4 className="font-display text-2xl text-ink mb-3">{r.t}</h4>
+                            <p className="text-[14px] leading-[1.7] text-ink/70">{r.d}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+
+    const ContactForm = () => {
+        const [d,setD]=useState({name:'',email:'',message:''});
+        const [e,setE]=useState({});
+        const [s,setS]=useState('idle');
+        const validate=()=>{const er={};if(!d.name.trim())er.name='Required.';if(!d.email.trim())er.email='Required.';else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email))er.email='Invalid.';if(!d.message.trim())er.message='Required.';return er;};
+        const onChange=ev=>{const{name,value}=ev.target;setD(p=>({...p,[name]:value}));if(e[name])setE(p=>({...p,[name]:''}));};
+        const onSubmit=async ev=>{ev.preventDefault();const er=validate();if(Object.keys(er).length){setE(er);return;}setS('sending');try{const r=await fetch('https://formspree.io/f/xgoolwyl',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});if(r.ok){setS('sent');setD({name:'',email:'',message:''});}else setS('error');}catch{setS('error');}};
+        if(s==='sent')return(<div className="py-3"><Check className="mb-2 text-plum-300"/><p className="font-display text-lg text-paper">Message sent.</p><button onClick={()=>setS('idle')} className="mt-3 text-xs text-plum-300 underline">Send another</button></div>);
+        const ib="w-full px-0 py-2 bg-transparent border-0 border-b border-paper/25 focus:outline-none focus:border-plum-300 text-sm text-paper placeholder-paper/40 transition-colors";
+        return(<form onSubmit={onSubmit} className="space-y-5"><div><input name="name" type="text" value={d.name} onChange={onChange} placeholder="Your Name" className={ib}/>{e.name&&<div className="text-xs text-red-300 mt-1">{e.name}</div>}</div><div><input name="email" type="email" value={d.email} onChange={onChange} placeholder="Your Email" className={ib}/>{e.email&&<div className="text-xs text-red-300 mt-1">{e.email}</div>}</div><div><textarea name="message" rows="3" value={d.message} onChange={onChange} placeholder="Your Message" className={`${ib} resize-none`}/>{e.message&&<div className="text-xs text-red-300 mt-1">{e.message}</div>}</div><input type="text" name="_gotcha" style={{display:'none'}}/><button type="submit" disabled={s==='sending'} className="inline-flex items-center gap-2 px-5 py-3 bg-paper text-ink rounded-full text-[12px] tracking-wider uppercase hover:bg-plum-200 transition-colors disabled:opacity-50"><Send/><span>{s==='sending'?'Sending...':'Send'}</span></button>{s==='error'&&<p className="text-xs text-red-300">Something went wrong.</p>}</form>);
+    };
+
+    const Footer = () => (
+        <footer id="contact" className="bg-ink text-paper">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10 pt-24 pb-10">
+                <div className="grid lg:grid-cols-12 gap-12 mb-20">
+                    <div className="lg:col-span-5">
+                        <div className="flex items-center gap-3 mb-6"><img src="images/brain_logo.png" alt="HARMONI logo" className="w-12 h-12 object-contain rounded-lg"/><span className="font-display text-3xl text-paper">HARMONI <span className="font-bold text-plum-300">Lab</span></span></div>
+                        <p className="text-paper/65 max-w-md text-[15px] leading-relaxed">An independent AI research lab. AXIOM is our open-source flagship evidence engine powering all clinical tools.</p>
+                        <div className="flex gap-3 mt-8"><a href="https://ga.linkedin.com/company/harmoni-lab" target="_blank" rel="noopener" className="w-10 h-10 rounded-full border border-paper/20 text-paper/70 flex items-center justify-center hover:bg-paper hover:text-ink transition-colors"><LinkedIn/></a></div>
+                    </div>
+                    <div className="lg:col-span-2">
+                        <p className="eyebrow text-plum-300 mb-5">Links</p>
+                        <ul className="space-y-3 text-[14px] text-paper/70">
+                            <li><a href="index.html#about" className="ink-link hover:text-paper">About</a></li>
+                            <li><a href="index.html#mission" className="ink-link hover:text-paper">Mission</a></li>
+                            <li><a href="index.html#research" className="ink-link hover:text-paper">Research</a></li>
+                        </ul>
+                        <p className="eyebrow text-plum-300 mt-8 mb-5">Tools</p>
+                        <ul className="space-y-3 text-[14px] text-paper/70">
+                            <li><a href="axiom.html" className="ink-link hover:text-paper text-plum-300 font-medium">AXIOM ↗</a></li>
+                            <li><a href="selene.html" className="ink-link hover:text-paper">SELENE</a></li>
+                            <li><a href="lucia.html" className="ink-link hover:text-paper">LUCIA</a></li>
+                            <li><a href="clara.html" className="ink-link hover:text-paper">CLARA</a></li>
+                        </ul>
+                    </div>
+                    <div className="lg:col-span-5"><p className="eyebrow text-plum-300 mb-5">Contact</p><ContactForm/></div>
+                </div>
+                <div className="border-t border-paper/15 mt-10 pt-8 flex flex-col md:flex-row justify-between items-center text-[12px] text-paper/45 tracking-wide">
+                    <p>&copy; {new Date().getFullYear()} HARMONI Lab LLC. All rights reserved.</p>
+                    <p className="mt-2 md:mt-0">Built with transparency and care for women's health.</p>
+                </div>
+            </div>
+        </footer>
+    );
+
+    const App = () => (
+        <div className="min-h-screen bg-paper text-ink selection:bg-plum-200 selection:text-plum-900">
+            <Navigation/><Hero/><Features/><Biases/><AxiomBridge/><Tech/><Roadmap/><Footer/>
+        </div>
+    );
+    createRoot(document.getElementById('root')).render(<App/>);
+</script>
 </body>
 </html>

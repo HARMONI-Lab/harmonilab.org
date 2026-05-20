@@ -1,23 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HARMONI Lab | Deciphering the Female Brain</title>
 
-    <!-- Resource Hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link rel="preconnect" href="https://unpkg.com">
 
-    <!-- SEO & Social Meta Tags -->
-    <meta name="description"
-        content="HARMONI Lab explores the impact of hormonal changes on brain and behavior within neurology, psychiatry, and psychology.">
+    <meta name="description" content="HARMONI Lab builds AI infrastructure for women's health research, combining computational neuroscience, knowledge graphs, and clinical tools to decode hormonal influences on the female brain.">
     <meta property="og:title" content="HARMONI Lab | Deciphering the Female Brain">
-    <meta property="og:description"
-        content="HARMONI Lab explores the impact of hormonal changes on brain and behavior within neurology, psychiatry, and psychology.">
+    <meta property="og:description" content="HARMONI Lab builds AI infrastructure for women's health research: AXIOM, SELENE, LUCIA, and CLARA.">
     <meta property="og:image" content="https://harmonilab.org/og-image.jpg">
     <meta property="og:url" content="https://harmonilab.org">
     <meta property="og:type" content="website">
@@ -40,7 +35,6 @@
               cream:  '#f3eee7',
               rule:   '#e6e0d6',
               plum:   { 50:'#f7f2fb', 100:'#ece0f5', 200:'#d6bdea', 300:'#b994d8', 400:'#956bbf', 500:'#7344a3', 600:'#5a2f87', 700:'#46256a', 800:'#321a4c', 900:'#1f1030' },
-              accent: '#5a2f87',
             },
             letterSpacing: { tightest: '-0.04em' },
           }
@@ -49,396 +43,363 @@
     </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #fbf9f6;
-            color: #1a1320;
-            -webkit-font-smoothing: antialiased;
-        }
-        html { scroll-behavior: smooth; }
-
-        .font-display {
-            font-family: 'Fraunces', Georgia, serif;
-            font-optical-sizing: auto;
-            font-variation-settings: "SOFT" 50;
-            letter-spacing: -0.025em;
-        }
-
-        /* Editorial number caps */
-        .eyebrow {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: #5a2f87;
-        }
-
-        /* Hairline rules */
-        .rule { border-color: #e6e0d6; }
-
-        .ink-link {
-            background-image: linear-gradient(currentColor, currentColor);
-            background-size: 0% 1px;
-            background-repeat: no-repeat;
-            background-position: 0 100%;
-            transition: background-size 0.4s ease;
-        }
-        .ink-link:hover { background-size: 100% 1px; }
-
-        /* Drop cap for editorial feel */
-        .dropcap::first-letter {
-            font-family: 'Fraunces', Georgia, serif;
-            font-weight: 500;
-            float: left;
-            font-size: 4.5rem;
-            line-height: 0.85;
-            padding: 0.35rem 0.75rem 0 0;
-            color: #5a2f87;
-        }
-
-        /* Section number */
-        .sec-num {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            letter-spacing: 0.2em;
-            color: #956bbf;
-        }
-
-        details > summary { list-style: none; cursor: pointer; }
-        details > summary::-webkit-details-marker { display: none; }
-    </style>
-
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-    <!-- React & ReactDOM via UMD CDN -->
+    <style>
+        body { font-family:'Inter',sans-serif; background:#fbf9f6; color:#1a1320; -webkit-font-smoothing:antialiased; }
+        html { scroll-behavior:smooth; }
+        .font-display { font-family:'Fraunces',Georgia,serif; font-optical-sizing:auto; font-variation-settings:"SOFT" 50; letter-spacing:-0.025em; }
+        .eyebrow { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#5a2f87; }
+        .rule { border-color:#e6e0d6; }
+        .ink-link { background-image:linear-gradient(currentColor,currentColor); background-size:0% 1px; background-repeat:no-repeat; background-position:0 100%; transition:background-size .4s ease; }
+        .ink-link:hover { background-size:100% 1px; }
+        .dropcap::first-letter { font-family:'Fraunces',Georgia,serif; font-weight:500; float:left; font-size:4.5rem; line-height:0.85; padding:0.35rem 0.75rem 0 0; color:#5a2f87; }
+        .sec-num { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.2em; color:#956bbf; }
+        .mono { font-family:'JetBrains Mono',monospace; }
+        details > summary { list-style:none; cursor:pointer; }
+        details > summary::-webkit-details-marker { display:none; }
+    </style>
+
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone@7.23.5/babel.min.js"></script>
 </head>
-
 <body>
-    <div id="root"></div>
+<div id="root"></div>
+<script type="text/babel">
+    const { useState, useEffect } = React;
+    const { createRoot } = ReactDOM;
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-        const { createRoot } = ReactDOM;
+    const Menu=(p)=><svg {...p} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>;
+    const X=(p)=><svg {...p} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" d="M6 6l12 12M18 6L6 18"/></svg>;
+    const ArrowRight=(p)=><svg {...p} width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>;
+    const Plus=(p)=><svg {...p} width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" d="M12 5v14M5 12h14"/></svg>;
+    const Send=(p)=><svg {...p} width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" strokeLinejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>;
+    const Check=(p)=><svg {...p} width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>;
+    const LinkedIn=(p)=><svg {...p} width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>;
 
-        // ---------- Icons ----------
-        const Menu = (p)=> <svg {...p} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>;
-        const X = (p)=> <svg {...p} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" d="M6 6l12 12M18 6L6 18"/></svg>;
-        const ArrowRight = (p)=> <svg {...p} width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>;
-        const Plus = (p)=> <svg {...p} width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" d="M12 5v14M5 12h14"/></svg>;
-        const Send = (p)=> <svg {...p} width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" strokeLinejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>;
-        const Check = (p)=> <svg {...p} width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>;
-        const LinkedIn = (p)=> <svg {...p} width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>;
-
-        // ---------- Navigation ----------
-        const Navigation = () => {
-            const [isOpen, setIsOpen] = useState(false);
-            const [scrolled, setScrolled] = useState(false);
-            useEffect(() => {
-                const onScroll = () => setScrolled(window.scrollY > 16);
-                window.addEventListener('scroll', onScroll);
-                return () => window.removeEventListener('scroll', onScroll);
-            }, []);
-
-            const navLinks = [
-                { name: 'About', href: '#about' },
-                { name: 'Mission', href: '#mission' },
-                { name: 'Research', href: '#research' },
-                { name: 'Initiatives', href: '#initiatives' },
-                { name: 'Contributors', href: '#team' },
-                { name: 'Contact', href: '#contact' },
-            ];
-
-            return (
-                <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-paper/85 backdrop-blur-md border-b border-rule' : 'bg-transparent'}`}>
-                    <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-                        <div className="flex items-center justify-between h-20">
-                            <a href="#" className="flex items-center gap-3">
-                                <img src="images/brain_logo.png" alt="HARMONI logo" className="w-10 h-10 object-contain rounded-lg" />
-                                <div className="font-display text-xl tracking-tight text-ink">
-                                    HARMONI <span className="font-bold text-plum-600">Lab</span>
-                                </div>
-                            </a>
-
-                            <div className="hidden lg:flex items-center gap-9">
-                                {navLinks.map((l) => (
-                                    <a key={l.name} href={l.href} className="ink-link text-[13px] tracking-wide text-ink/75 hover:text-ink">{l.name}</a>
-                                ))}
-                            </div>
-
-                            <div className="flex items-center gap-3">
-                                <a href="#newsletter" className="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-ink text-paper text-[12px] tracking-wider uppercase font-medium hover:bg-plum-700 transition-colors">
-                                    Join Early Access
-                                </a>
-                                <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 text-ink">
-                                    {isOpen ? <X /> : <Menu />}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    {isOpen && (
-                        <div className="lg:hidden bg-paper border-t border-rule">
-                            <div className="px-6 py-6 space-y-3">
-                                {navLinks.map((l) => (
-                                    <a key={l.name} href={l.href} onClick={() => setIsOpen(false)} className="block py-2 font-display text-2xl text-ink">{l.name}</a>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                </nav>
-            );
-        };
-
-        // ---------- Hero ----------
-        const Hero = () => (
-            <header className="relative pt-36 lg:pt-44 pb-20 lg:pb-28 overflow-hidden paper-grain">
-                <div className="absolute -top-20 -right-20 w-[40rem] h-[40rem] glow pointer-events-none"></div>
-                <div className="absolute -bottom-32 -left-20 w-[30rem] h-[30rem] glow opacity-60 pointer-events-none"></div>
-
-                <div className="max-w-[1400px] mx-auto px-6 lg:px-10 relative">
-                    {/* Top meta strip */}
-                    <div className="flex items-center justify-between border-b border-rule pb-4 mb-12">
-                      <p className="eyebrow mb-6">An independent AI-native research lab</p>
-                    </div>
-
-                    <div className="text-left">
-                            <h1 className="font-display font-light text-[clamp(2.75rem,7.5vw,7rem)] leading-[0.95] tracking-tightest text-ink">
-                                Deciphering<br/>
-                                the <span className="font-bold text-plum-600">Female</span><br/>
-                                Brain.
-                            </h1>
-                        <p className="mt-8 text-[17px] lg:text-[18px] leading-relaxed text-ink/70 max-w-2xl">
-                            We combine computational neuroscience, AI, and clinical research to understand hormonal influences on brain and behavior and translate findings into better care.
-                        </p>
-                        <div className="mt-8 flex flex-wrap gap-3">
-                            <a href="#research" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink text-paper text-[13px] tracking-wide hover:bg-plum-700 transition-colors">
-                                Explore Research <ArrowRight />
-                            </a>
-                            <a href="#contact" className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink/20 text-ink text-[13px] tracking-wide hover:bg-ink hover:text-paper transition-colors">
-                                Contact Us
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </header>
-        );
-
-        // ---------- Mission ----------
-        const Mission = () => (
-            <section id="mission" className="py-28 lg:py-36 border-t border-rule">
+    const Navigation = () => {
+        const [isOpen, setIsOpen] = useState(false);
+        const [scrolled, setScrolled] = useState(false);
+        useEffect(() => {
+            const fn = () => setScrolled(window.scrollY > 16);
+            window.addEventListener('scroll', fn);
+            return () => window.removeEventListener('scroll', fn);
+        }, []);
+        const links = [
+            { name:'About',     href:'#about' },
+            { name:'Mission',   href:'#mission' },
+            { name:'Research',  href:'#research' },
+            { name:'AXIOM',     href:'axiom.html', highlight: true },
+            { name:'Tools',     href:'#tools' },
+            { name:'Contact',   href:'#contact' },
+        ];
+        return (
+            <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled?'bg-paper/85 backdrop-blur-md border-b border-rule':'bg-transparent'}`}>
                 <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-                    <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
-                        <div className="lg:col-span-7">
-                            <div className="flex items-center gap-4 mb-8">
-                                <span className="sec-num">§ 01</span>
-                                <span className="eyebrow">Our Scientific Premise</span>
-                            </div>
-                            <h2 className="font-display font-light text-[clamp(2.25rem,5vw,4.5rem)] leading-[1.02] tracking-tightest text-ink mb-10">
-                                Beyond <span className="font-bold text-plum-600">Hormonal</span> Levels
-                            </h2>
-                            <p className="dropcap text-[17px] leading-[1.7] text-ink/80 mb-6">
-                                Female-specific mood disorders are not simply caused by absolute hormone levels, but rather by an individual's unique neurobiological sensitivity to hormonal changes.
-                            </p>
-                            <p className="text-[16px] leading-[1.75] text-ink/70 mb-10 max-w-2xl">
-                                This sensitivity is mediated by a complex interplay of neurobiological pathways, including key neurotransmitter systems, the HPA axis, and neuroinflammation. We employ a multi-modal, data-driven approach to unravel this intricate landscape.
-                            </p>
-                            <blockquote className="border-l-2 border-plum-500 pl-6 max-w-2xl">
-                                <p className="font-bold text-2xl text-ink leading-snug">
-                                    "We are moving from a one-size-fits-all approach to highly targeted, individualized care for women's brain health."
-                                </p>
-                            </blockquote>
+                    <div className="flex items-center justify-between h-20">
+                        <a href="#" className="flex items-center gap-3">
+                            <img src="images/brain_logo.png" alt="HARMONI logo" className="w-10 h-10 object-contain rounded-lg"/>
+                            <div className="font-display text-xl tracking-tight text-ink">HARMONI <span className="font-bold text-plum-600">Lab</span></div>
+                        </a>
+                        <div className="hidden lg:flex items-center gap-9">
+                            {links.map(l=>(
+                                <a key={l.name} href={l.href} className={`ink-link text-[13px] tracking-wide hover:text-ink ${l.highlight?'text-plum-600 font-medium':'text-ink/75'}`}>{l.name}</a>
+                            ))}
                         </div>
-
-                        <div className="lg:col-span-5">
-                            <div className="border border-rule rounded-sm p-8 bg-cream/40">
-                                <div className="eyebrow mb-6">Methods Index</div>
-                                <ul className="divide-y divide-rule">
-                                    {[
-                                        { t: "Neuroimaging", d: "Functional and structural connectivity analysis." },
-                                        { t: "Genomics", d: "Genetic and epigenetic marker identification." },
-                                        { t: "AI Modeling", d: "Predictive frameworks for risk stratification." },
-                                        { t: "Clinical Data", d: "Longitudinal health records and hormonal profiles." },
-                                    ].map((m, i) => (
-                                        <li key={i} className="py-5 flex items-start gap-5">
-                                            <span className="sec-num pt-1 w-8">{String(i+1).padStart(2,'0')}</span>
-                                            <div>
-                                                <p className="font-display text-xl text-ink">{m.t}</p>
-                                                <p className="text-[14px] text-ink/65 mt-0.5">{m.d}</p>
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
+                        <div className="flex items-center gap-3">
+                            <a href="#newsletter" className="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-ink text-paper text-[12px] tracking-wider uppercase font-medium hover:bg-plum-700 transition-colors">Join Early Access</a>
+                            <button onClick={()=>setIsOpen(!isOpen)} className="lg:hidden p-2 text-ink">{isOpen?<X/>:<Menu/>}</button>
                         </div>
                     </div>
                 </div>
-            </section>
-        );
-
-        // ---------- Research ----------
-        const Research = () => {
-            const objectives = [
-                {
-                    title: "Neurobiological Mechanisms",
-                    description: "Explaining the mechanisms underlying perimenopausal depression and anxiety through integrated multi-modal data analysis of brain structure and function.",
-                },
-                {
-                    title: "Genetic & Epigenetic Factors",
-                    description: "Identifying variants and modifications related to neurotransmitter systems (serotonin, GABA) that modulate the brain's response to hormonal changes.",
-                },
-                {
-                    title: "Predictive AI Framework",
-                    description: "Developing models that integrate genetic, hormonal, and neuroimaging data to accurately predict individual risk and enable personalized intervention.",
-                }
-            ];
-            return (
-                <section id="research" className="py-28 lg:py-36 bg-cream/50 border-y border-rule">
-                    <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-                        <div className="grid lg:grid-cols-12 gap-12 mb-20">
-                            <div className="lg:col-span-5">
-                                <div className="flex items-center gap-4 mb-8">
-                                    <span className="sec-num">§ 02</span>
-                                    <span className="eyebrow">Pillars</span>
-                                </div>
-                                <h2 className="font-display font-light text-[clamp(2.25rem,5vw,4.5rem)] leading-[1.02] tracking-tightest text-ink">
-                                    Research <br/><span className="font-bold text-plum-600">Objectives</span>
-                                </h2>
-                            </div>
-                            <div className="lg:col-span-6 lg:col-start-7 lg:pt-8">
-                                <p className="text-[17px] leading-[1.7] text-ink/70 max-w-xl">
-                                    Our work focuses on three core pillars to transform the understanding of women's neurocognition.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="grid md:grid-cols-3 border-t border-rule">
-                            {objectives.map((o, i) => (
-                                <article key={i} className={`py-10 md:py-12 md:px-8 ${i>0 ? 'md:border-l border-rule' : ''} group`}>
-                                    <div className="flex items-baseline justify-between mb-8">
-                                        <span className="font-display text-5xl text-plum-300 group-hover:text-plum-600 transition-colors">{String(i+1).padStart(2,'0')}</span>
-                                        <span className="eyebrow">Objective</span>
-                                    </div>
-                                    <h3 className="font-display text-2xl leading-snug text-ink mb-4">{o.title}</h3>
-                                    <p className="text-[15px] leading-[1.7] text-ink/70">{o.description}</p>
-                                </article>
+                {isOpen && (
+                    <div className="lg:hidden bg-paper border-t border-rule">
+                        <div className="px-6 py-6 space-y-3">
+                            {links.map(l=>(
+                                <a key={l.name} href={l.href} onClick={()=>setIsOpen(false)} className="block py-2 font-display text-2xl text-ink">{l.name}</a>
                             ))}
                         </div>
                     </div>
-                </section>
-            );
-        };
+                )}
+            </nav>
+        );
+    };
 
-        // ---------- Initiatives ----------
-        const Initiatives = () => (
-            <section id="initiatives" className="py-28 lg:py-36 bg-ink text-paper relative overflow-hidden">
-                <div className="max-w-[1400px] mx-auto px-6 lg:px-10 relative">
-                    <div className="flex items-center gap-4 mb-8">
-                        <span className="sec-num text-plum-300">§ 03</span>
-                        <span className="eyebrow text-plum-300">Initiatives</span>
+    const Hero = () => (
+        <header className="relative pt-36 lg:pt-44 pb-20 lg:pb-28 overflow-hidden">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10 relative">
+                <div className="flex items-center justify-between border-b border-rule pb-4 mb-12">
+                    <p className="eyebrow">An independent AI-native research lab</p>
+                    <p className="eyebrow hidden md:block">Atlanta, Georgia · Est. 2026</p>
+                </div>
+                <div className="grid lg:grid-cols-12 gap-10 items-end">
+                    <div className="lg:col-span-8">
+                        <h1 className="font-display font-light text-[clamp(2.75rem,7.5vw,7rem)] leading-[0.95] tracking-tightest text-ink">
+                            Deciphering<br/>
+                            the <span className="font-bold text-plum-600">Female</span><br/>
+                            Brain.
+                        </h1>
                     </div>
-                    <div className="grid lg:grid-cols-12 gap-10 mb-16 items-end">
-                        <h2 className="lg:col-span-8 font-display font-light text-[clamp(2.25rem,5vw,4.5rem)] leading-[1.02] tracking-tightest">
-                            Current <span className="font-bold text-plum-300">Initiatives</span>
-                        </h2>
-                        <p className="lg:col-span-4 text-[16px] leading-relaxed text-paper/65">
-                            HARMONI Lab builds tools and frameworks to support the next generation of women's health research.
+                    <div className="lg:col-span-4">
+                        <p className="text-[17px] lg:text-[18px] leading-relaxed text-ink/70 mb-8">
+                            We build AI infrastructure and clinical tools to understand how hormonal changes shape cognition, and to translate that understanding into better care for women.
                         </p>
+                        <div className="flex flex-wrap gap-3">
+                            <a href="axiom.html" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink text-paper text-[13px] tracking-wide hover:bg-plum-700 transition-colors">
+                                Explore AXIOM <ArrowRight/>
+                            </a>
+                            <a href="#research" className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink/20 text-ink text-[13px] tracking-wide hover:bg-ink hover:text-paper transition-colors">
+                                Our Research
+                            </a>
+                        </div>
                     </div>
+                </div>
 
-                    {/* SELENE flagship */}
-                    <a href="selene.html" className="block group border-t border-paper/15 py-10 lg:py-14 hover:bg-paper/[0.03] transition-colors -mx-6 px-6 lg:-mx-10 lg:px-10">
-                        <div className="grid lg:grid-cols-12 gap-8 items-start">
-                            <div className="lg:col-span-2">
-                                <span className="sec-num text-plum-300">— Flagship</span>
-                            </div>
-                            <div className="lg:col-span-7">
-                                <h3 className="font-display text-5xl lg:text-7xl text-paper leading-none mb-3 group-hover:font-bold group-hover:text-plum-200 transition-all">SELENE</h3>
-                                <p className="font-mono text-xs tracking-widest uppercase text-plum-300 mb-5">Psychoeducational Support</p>
-                                <p className="text-[15px] leading-[1.75] text-paper/70 max-w-2xl">
-                                    A privacy-first medical intelligence engine specifically designed to support women through the menopause transition. It bridges the gap between lived experience and medical evidence by providing medically grounded, research-backed insights while keeping all user data strictly on their own device.
-                                </p>
-                            </div>
-                            <div className="lg:col-span-3 flex lg:justify-end">
-                                <span className="inline-flex items-center gap-2 text-[13px] tracking-wide text-paper/80 group-hover:text-plum-200 transition-colors">
-                                    More about SELENE <ArrowRight />
-                                </span>
-                            </div>
-                        </div>
-                    </a>
+                {/* AXIOM callout strip - the flagship signal */}
+                <a href="axiom.html" className="group mt-16 flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-10 border border-plum-200 bg-plum-50 hover:bg-plum-100 transition-colors px-8 py-6 rounded-sm">
+                    <div className="flex items-center gap-4 flex-shrink-0">
+                        <span className="eyebrow">Flagship</span>
+                        <span className="font-display text-3xl text-plum-700 font-bold">AXIOM</span>
+                    </div>
+                    <p className="text-[14px] leading-[1.7] text-plum-800/75 flex-1">
+                        Our hybrid Graph RAG evidence engine - a local-first scientific knowledge base powering every tool in the lab. Combines vector search, knowledge graph traversal, retraction checking, and an MCP server exposing 7 tools to AI agents.
+                    </p>
+                    <span className="inline-flex items-center gap-2 text-[12px] tracking-wider uppercase text-plum-600 group-hover:text-plum-800 transition-colors flex-shrink-0">
+                        Full overview <ArrowRight/>
+                    </span>
+                </a>
+            </div>
+        </header>
+    );
 
-                    {/* LUCIA */}
-                    <a href="lucia.html" className="block group border-t border-paper/15 py-10 lg:py-14 hover:bg-paper/[0.03] transition-colors -mx-6 px-6 lg:-mx-10 lg:px-10">
-                        <div className="grid lg:grid-cols-12 gap-8 items-start">
-                            <div className="lg:col-span-2">
-                                <span className="sec-num text-plum-300">— Diagnostics</span>
-                            </div>
-                            <div className="lg:col-span-7">
-                                <h3 className="font-display text-4xl lg:text-6xl text-paper leading-none mb-3 group-hover:font-bold group-hover:text-plum-200 transition-all">LUCIA</h3>
-                                <p className="font-mono text-xs tracking-widest uppercase text-plum-300 mb-5">Bias-Aware Clinical Agent</p>
-                                <p className="text-[15px] leading-[1.75] text-paper/70 max-w-2xl">
-                                    A dual-agent platform closing the gender diagnostic gap. LUCIA acts as an intelligent "digital scribe" for clinicians while simultaneously running a bias audit to flag "diagnostic shadowing".
-                                </p>
-                            </div>
-                            <div className="lg:col-span-3 flex lg:justify-end">
-                                <span className="inline-flex items-center gap-2 text-[13px] tracking-wide text-paper/80 group-hover:text-plum-200 transition-colors">
-                                    More about LUCIA <ArrowRight />
-                                </span>
-                            </div>
+    const Mission = () => (
+        <section id="mission" className="py-28 lg:py-36 border-t border-rule">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
+                    <div className="lg:col-span-7">
+                        <div className="flex items-center gap-4 mb-8">
+                            <span className="sec-num">§ 01</span>
+                            <span className="eyebrow">Our Scientific Premise</span>
                         </div>
-                    </a>
+                        <h2 className="font-display font-light text-[clamp(2.25rem,5vw,4.5rem)] leading-[1.02] tracking-tightest text-ink mb-10">
+                            Beyond <span className="font-bold text-plum-600">Hormonal</span> Levels
+                        </h2>
+                        <p className="dropcap text-[17px] leading-[1.7] text-ink/80 mb-6">
+                            Female-specific mood disorders are not simply caused by absolute hormone levels, but by an individual's unique neurobiological sensitivity to hormonal changes - a sensitivity mediated by neurotransmitter systems, the HPA axis, and neuroinflammation.
+                        </p>
+                        <p className="text-[16px] leading-[1.75] text-ink/70 mb-10 max-w-2xl">
+                            We employ a multi-modal, data-driven approach to unravel this landscape. AXIOM is the evidence infrastructure that makes this research computationally tractable: a knowledge graph built from primary literature, queryable by humans and AI agents alike.
+                        </p>
+                        <blockquote className="border-l-2 border-plum-500 pl-6 max-w-2xl">
+                            <p className="font-bold text-2xl text-ink leading-snug">
+                                "We are moving from a one-size-fits-all approach to highly targeted, individualized care for women's brain health."
+                            </p>
+                        </blockquote>
+                    </div>
+                    <div className="lg:col-span-5">
+                        <div className="border border-rule rounded-sm p-8 bg-cream/40">
+                            <div className="eyebrow mb-6">Methods Index</div>
+                            <ul className="divide-y divide-rule">
+                                {[
+                                    { t:'Neuroimaging',   d:'Functional and structural connectivity analysis.' },
+                                    { t:'Genomics',       d:'Genetic and epigenetic marker identification.' },
+                                    { t:'AI Modeling',    d:'Predictive frameworks for risk stratification.' },
+                                    { t:'Clinical Data',  d:'Longitudinal health records and hormonal profiles.' },
+                                    { t:'Knowledge Graphs', d:'Graph RAG over curated menopause literature via AXIOM.' },
+                                ].map((m,i)=>(
+                                    <li key={i} className="py-5 flex items-start gap-5">
+                                        <span className="sec-num pt-1 w-8">{String(i+1).padStart(2,'0')}</span>
+                                        <div>
+                                            <p className="font-display text-xl text-ink">{m.t}</p>
+                                            <p className="text-[14px] text-ink/65 mt-0.5">{m.d}</p>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
 
-                    {/* CLARA */}
-                    <a href="clara.html" className="block group border-y border-paper/15 py-10 lg:py-14 hover:bg-paper/[0.03] transition-colors -mx-6 px-6 lg:-mx-10 lg:px-10">
-                        <div className="grid lg:grid-cols-12 gap-8 items-start">
-                            <div className="lg:col-span-2">
-                                <span className="sec-num text-plum-300">— Intake</span>
+    const Research = () => {
+        const objectives = [
+            { title:'Neurobiological Mechanisms', description:'Explaining the mechanisms underlying perimenopausal depression and anxiety through integrated multi-modal data analysis of brain structure and function.' },
+            { title:'Genetic & Epigenetic Factors', description:'Identifying variants and modifications related to neurotransmitter systems (serotonin, GABA) that modulate the brain\'s response to hormonal changes.' },
+            { title:'Predictive AI Framework', description:'Developing models that integrate genetic, hormonal, and neuroimaging data to predict individual risk and enable personalized intervention. AXIOM provides the evidence substrate.' },
+        ];
+        return (
+            <section id="research" className="py-28 lg:py-36 bg-cream/50 border-y border-rule">
+                <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                    <div className="grid lg:grid-cols-12 gap-12 mb-20">
+                        <div className="lg:col-span-5">
+                            <div className="flex items-center gap-4 mb-8">
+                                <span className="sec-num">§ 02</span>
+                                <span className="eyebrow">Pillars</span>
                             </div>
-                            <div className="lg:col-span-7">
-                                <h3 className="font-display text-4xl lg:text-6xl text-paper leading-none mb-3 group-hover:font-bold group-hover:text-plum-200 transition-all">CLARA</h3>
-                                <p className="font-mono text-xs tracking-widest uppercase text-plum-300 mb-5">Contextual Learning &amp; Reasoning</p>
-                                <p className="text-[15px] leading-[1.75] text-paper/70 max-w-2xl">
-                                    CLARA is an intelligence layer designed to detect cognitive biases in medical consultations, preventing diagnostic errors before they impact patient outcomes.
-                                </p>
-                            </div>
-                            <div className="lg:col-span-3 flex lg:justify-end">
-                                <span className="inline-flex items-center gap-2 text-[13px] tracking-wide text-paper/80 group-hover:text-plum-200 transition-colors">
-                                    More about CLARA <ArrowRight />
-                                </span>
-                            </div>
+                            <h2 className="font-display font-light text-[clamp(2.25rem,5vw,4.5rem)] leading-[1.02] tracking-tightest text-ink">
+                                Research <br/><span className="font-bold text-plum-600">Objectives</span>
+                            </h2>
                         </div>
-                    </a>
+                        <div className="lg:col-span-6 lg:col-start-7 lg:pt-8">
+                            <p className="text-[17px] leading-[1.7] text-ink/70 max-w-xl">
+                                Our work focuses on three core pillars to transform the understanding of women's neurocognition. Each pillar depends on AXIOM as a shared evidence layer.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="grid md:grid-cols-3 border-t border-rule">
+                        {objectives.map((o,i)=>(
+                            <article key={i} className={`py-10 md:py-12 md:px-8 ${i>0?'md:border-l border-rule':''} group`}>
+                                <div className="flex items-baseline justify-between mb-8">
+                                    <span className="font-display text-5xl text-plum-300 group-hover:text-plum-600 transition-colors">{String(i+1).padStart(2,'0')}</span>
+                                    <span className="eyebrow">Objective</span>
+                                </div>
+                                <h3 className="font-display text-2xl leading-snug text-ink mb-4">{o.title}</h3>
+                                <p className="text-[15px] leading-[1.7] text-ink/70">{o.description}</p>
+                            </article>
+                        ))}
+                    </div>
                 </div>
             </section>
         );
+    };
 
-        // ---------- About ----------
-        const About = () => (
-            <section id="about" className="py-28 lg:py-36">
-                <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-                    <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
-                        <div className="lg:col-span-7">
-                            <div className="flex items-center gap-4 mb-8">
-                                <span className="sec-num">§ 04</span>
-                                <span className="eyebrow">About</span>
+    const Tools = () => (
+        <section id="tools" className="py-28 lg:py-36 bg-ink text-paper relative overflow-hidden">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10 relative">
+                <div className="flex items-center gap-4 mb-8">
+                    <span className="sec-num text-plum-300">§ 03</span>
+                    <span className="eyebrow text-plum-300">Tools & Infrastructure</span>
+                </div>
+                <div className="grid lg:grid-cols-12 gap-10 mb-16 items-end">
+                    <h2 className="lg:col-span-8 font-display font-light text-[clamp(2.25rem,5vw,4.5rem)] leading-[1.02] tracking-tightest">
+                        Four tools.<br/><span className="font-bold text-plum-300">One knowledge engine.</span>
+                    </h2>
+                    <p className="lg:col-span-4 text-[16px] leading-relaxed text-paper/65">
+                        AXIOM is the foundation. SELENE, LUCIA, and CLARA are domain-specific applications built on top of it.
+                    </p>
+                </div>
+
+                {/* AXIOM - Flagship */}
+                <a href="axiom.html" className="block group border-t border-paper/15 py-12 lg:py-16 hover:bg-paper/[0.04] transition-colors -mx-6 px-6 lg:-mx-10 lg:px-10">
+                    <div className="grid lg:grid-cols-12 gap-8 items-start">
+                        <div className="lg:col-span-2">
+                            <span className="sec-num text-plum-300">- Flagship</span>
+                            <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 bg-plum-600/30 border border-plum-300/30 rounded-full">
+                                <span className="w-1.5 h-1.5 rounded-full bg-plum-300"/>
+                                <span className="mono text-[10px] text-plum-300 tracking-widest uppercase">Open Beta</span>
                             </div>
-                            <h2 className="font-display font-light text-[clamp(2.25rem,5vw,4.5rem)] leading-[1.02] tracking-tightest text-ink mb-10">
-                                HARMONI <span className="font-bold text-plum-600">Lab</span> LLC
-                            </h2>
-                            <p className="text-[17px] leading-[1.75] text-ink/80 mb-5">
-                                HARMONI <span className="font-medium text-ink">Hormonal And Reproductive Modulation Of Neurocognition Initiative</span> Lab LLC is an independent AI research lab incorporated in Georgia in 2026. We build computational tools to decode hormonal influences on the female brain, with a focus on the menopausal transition as a cerebrovascular inflection point.
+                        </div>
+                        <div className="lg:col-span-7">
+                            <h3 className="font-display text-6xl lg:text-8xl text-paper leading-none mb-3 group-hover:text-plum-200 transition-colors">AXIOM</h3>
+                            <p className="mono text-xs tracking-widest uppercase text-plum-300 mb-5">Hybrid Graph RAG · Scientific Evidence Engine</p>
+                            <p className="text-[15px] leading-[1.75] text-paper/70 max-w-2xl">
+                                A local-first, retraction-aware knowledge base over menopause research literature. Combines vector search over ChromaDB with 2-hop traversal of a NetworkX knowledge graph, composite confidence scoring by study type and recency, and a 7-tool MCP server. This is the infrastructure layer every other tool calls.
                             </p>
-                            <p className="text-[16px] leading-[1.75] text-ink/70 mb-5">
-                                Our core thesis: hormonal trajectory, not just hormone levels, shapes cognitive aging and stroke risk in women. We are building a multimodal AI framework, combining biosignals, longitudinal symptom data, and neuroimaging, to make this risk computationally visible.
+                            <div className="mt-6 flex flex-wrap gap-2">
+                                {['FastAPI','MCP Server','NetworkX Graph','ChromaDB','Ollama','React Explorer','Docker'].map(t=>(
+                                    <span key={t} className="px-3 py-1 border border-paper/15 mono text-[11px] text-paper/50 rounded-full">{t}</span>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="lg:col-span-3 flex lg:justify-end">
+                            <span className="inline-flex items-center gap-2 text-[13px] tracking-wide text-paper/80 group-hover:text-plum-200 transition-colors">
+                                Full overview <ArrowRight/>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                {/* SELENE */}
+                <a href="selene.html" className="block group border-t border-paper/15 py-10 lg:py-14 hover:bg-paper/[0.03] transition-colors -mx-6 px-6 lg:-mx-10 lg:px-10">
+                    <div className="grid lg:grid-cols-12 gap-8 items-start">
+                        <div className="lg:col-span-2">
+                            <span className="sec-num text-plum-300">- Consumer</span>
+                        </div>
+                        <div className="lg:col-span-7">
+                            <h3 className="font-display text-4xl lg:text-6xl text-paper leading-none mb-3 group-hover:text-plum-200 transition-colors">SELENE</h3>
+                            <p className="mono text-xs tracking-widest uppercase text-plum-300 mb-5">Psychoeducational Support · Powered by AXIOM</p>
+                            <p className="text-[15px] leading-[1.75] text-paper/70 max-w-2xl">
+                                A privacy-first AI companion for the menopause transition. Runs MedGemma locally via Ollama with AXIOM's hybrid retrieval grounding every response in peer-reviewed evidence.
                             </p>
-                            <p className="text-[16px] leading-[1.75] text-ink/70 mb-6">
-                                HARMONI Lab's planned commercial model includes API access for clinical and research institutions and a direct-to-consumer subscription for longitudinal symptom tracking, currently in development.
+                        </div>
+                        <div className="lg:col-span-3 flex lg:justify-end">
+                            <span className="inline-flex items-center gap-2 text-[13px] tracking-wide text-paper/80 group-hover:text-plum-200 transition-colors">
+                                More about SELENE <ArrowRight/>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                {/* LUCIA */}
+                <a href="lucia.html" className="block group border-t border-paper/15 py-10 lg:py-14 hover:bg-paper/[0.03] transition-colors -mx-6 px-6 lg:-mx-10 lg:px-10">
+                    <div className="grid lg:grid-cols-12 gap-8 items-start">
+                        <div className="lg:col-span-2">
+                            <span className="sec-num text-plum-300">- Clinical</span>
+                        </div>
+                        <div className="lg:col-span-7">
+                            <h3 className="font-display text-4xl lg:text-6xl text-paper leading-none mb-3 group-hover:text-plum-200 transition-colors">LUCIA</h3>
+                            <p className="mono text-xs tracking-widest uppercase text-plum-300 mb-5">Bias-Aware Clinical Agent · Powered by AXIOM</p>
+                            <p className="text-[15px] leading-[1.75] text-paper/70 max-w-2xl">
+                                A dual-agent platform closing the four-year gender diagnostic gap. The Auditor agent checks findings against the AXIOM Knowledge Base when flagging diagnostic oversights.
                             </p>
-                            <div className="grid grid-cols-2  ">
+                        </div>
+                        <div className="lg:col-span-3 flex lg:justify-end">
+                            <span className="inline-flex items-center gap-2 text-[13px] tracking-wide text-paper/80 group-hover:text-plum-200 transition-colors">
+                                More about LUCIA <ArrowRight/>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                {/* CLARA */}
+                <a href="clara.html" className="block group border-y border-paper/15 py-10 lg:py-14 hover:bg-paper/[0.03] transition-colors -mx-6 px-6 lg:-mx-10 lg:px-10">
+                    <div className="grid lg:grid-cols-12 gap-8 items-start">
+                        <div className="lg:col-span-2">
+                            <span className="sec-num text-plum-300">- Clinical</span>
+                        </div>
+                        <div className="lg:col-span-7">
+                            <h3 className="font-display text-4xl lg:text-6xl text-paper leading-none mb-3 group-hover:text-plum-200 transition-colors">CLARA</h3>
+                            <p className="mono text-xs tracking-widest uppercase text-plum-300 mb-5">Cognitive Bias Detection · Powered by AXIOM</p>
+                            <p className="text-[15px] leading-[1.75] text-paper/70 max-w-2xl">
+                                An intelligence layer that detects cognitive biases in medical consultations in real time, generating evidence-backed prompts grounded in AXIOM's literature base.
+                            </p>
+                        </div>
+                        <div className="lg:col-span-3 flex lg:justify-end">
+                            <span className="inline-flex items-center gap-2 text-[13px] tracking-wide text-paper/80 group-hover:text-plum-200 transition-colors">
+                                More about CLARA <ArrowRight/>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    );
+
+    const About = () => (
+        <section id="about" className="py-28 lg:py-36">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
+                    <div className="lg:col-span-7">
+                        <div className="flex items-center gap-4 mb-8">
+                            <span className="sec-num">§ 04</span>
+                            <span className="eyebrow">About</span>
+                        </div>
+                        <h2 className="font-display font-light text-[clamp(2.25rem,5vw,4.5rem)] leading-[1.02] tracking-tightest text-ink mb-10">
+                            HARMONI <span className="font-bold text-plum-600">Lab</span> LLC
+                        </h2>
+                        <p className="text-[17px] leading-[1.75] text-ink/80 mb-5">
+                            <span className="font-medium text-ink">Hormonal And Reproductive Modulation Of Neurocognition Initiative</span> HARMONI Lab LLC is an independent AI research lab incorporated in Georgia in 2026. We build computational tools to decode hormonal influences on the female brain, with a focus on the menopausal transition as a cerebrovascular inflection point.
+                        </p>
+                        <p className="text-[16px] leading-[1.75] text-ink/70 mb-5">
+                            Our core thesis: hormonal trajectory, not just hormone levels, shapes cognitive aging and stroke risk in women. AXIOM is our primary research instrument - a hybrid evidence engine that makes this risk computationally visible by grounding every inference in primary literature.
+                        </p>
+                        <p className="text-[16px] leading-[1.75] text-ink/70 mb-10">
+                            Planned commercial model: API access for clinical and research institutions; direct-to-consumer subscription for longitudinal symptom tracking. Currently in development.
+                        </p>
+                        <div className="grid grid-cols-2  ">
                                 {[
                                     { label: "Founded", value: "2026" },
                                     { label: "Location", value: "Atlanta, Georgia" },
@@ -448,310 +409,227 @@
                                         <p className="font-display text-2xl text-ink">{item.value}</p>
                                     </div>
                                 ))}
-                            </div>
-                        </div>
-
-                        <div className="lg:col-span-5">
-                            <div className="mb-6 overflow-hidden rounded-lg">
-                            </div>
-                            <div className="mb-6 overflow-hidden rounded-lg">
-                            </div>
-                            <div className="border border-rule p-8 bg-cream/40">
-                                <p className="eyebrow mb-5"> Scientific Founder </p>
-                                <div className="flex items-center gap-4 mb-6">
-                                    <div className="w-24 h-24 rounded-full overflow-hidden bg-ink text-paper flex items-center justify-center font-display text-lg">
-                                        <img src="images/profile.jpg" alt="Inna Campo, Ph.D." className="w-full h-full object-cover" />
-                                    </div>
-                                    <div>
-                                        <p className="font-display text-2xl text-ink leading-tight">Inna Campo, Ph.D.</p>
-                                        <p className="text-[12px] tracking-wide uppercase text-plum-600 mt-1"> Scientific Founder </p>
-                                    </div>
-                                </div>
-                                <p className="text-[14px] leading-[1.75] text-ink/75 mb-3">
-                                    AI/ML Researcher with a career spanning outbreak detection at the CDC (recipient of the Charles C. Shepard Science Award), large-scale bioinformatics, and production ML at IBM. Holds a Ph.D. in Computer Science, three granted US patents.
-                                </p>
-                                <p className="text-[14px] leading-[1.75] text-ink/75 mb-6">
-                                    At HARMONI Lab, her work focuses on building privacy-first AI tools for women's health and developing the computational phenotype of cerebrovascular risk during menopause, a problem she describes as "waiting for the technology to catch up."
-                                </p>
-                                <div className="flex flex-wrap gap-2">
-                                    {["Computational Biology", "HPC & Parallel Algorithms", "NGS & Outbreak Detection", "Production ML", "Women's Neurocognition"].map((tag, i) => (
-                                        <span key={i} className="px-3 py-1 border border-plum-200 bg-plum-50 text-plum-700 text-[11px] tracking-wide rounded-full">{tag}</span>
-                                    ))}
-                                </div>
-                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
-        );
-
-        // ---------- Team / Open collaboration ----------
-        const Team = () => (
-            <section id="team" className="py-24 lg:py-32 bg-cream/50 border-y border-rule">
-                <div className="max-w-3xl mx-auto px-6 lg:px-10 text-center">
-                    <span className="sec-num">§ 05</span>
-                    <h2 className="font-display font-light text-[clamp(2rem,4.5vw,3.75rem)] leading-tight tracking-tightest text-ink mt-6 mb-6">
-                        Open <span className="font-bold text-plum-600">Collaboration</span>
-                    </h2>
-                    <p className="text-[17px] leading-[1.8] text-ink/70">
-                        HARMONI Lab is a founder-led research movement advancing women’s health through open science. HARMONI Lab aims to become a collaborative research platform connecting scientists, engineers, and volunteers around shared challenges in innovation and discovery.
-                    </p>
-                </div>
-            </section>
-        );
-
-        // ---------- FAQ ----------
-        const FAQ = () => {
-            const faqs = [
-                { q: "How does HARMONI Lab protect my data?", a: "All our tools prioritize privacy-first design. SELENE runs entirely on your device with no data transmitted to external servers. LUCIA and CLARA process only anonymized, aggregated insights for research purposes with explicit consent." },
-                { q: "Are the AI recommendations medically validated?", a: "Our AI systems are designed as supportive tools, not replacements for medical advice. All outputs are grounded in peer-reviewed research and clinical guidelines, with transparent source citations for every recommendation." },
-                { q: "Can clinicians integrate these tools into their practice?", a: "Yes! CLARA and LUCIA are designed for clinical workflows. We offer API access and integration support for healthcare institutions. Contact us to learn about our pilot program for clinics." },
-                { q: "How can I contribute to the research?", a: "We welcome contributions! You can participate through beta testing our tools, sharing anonymized health narratives for research, contributing code, or collaborating on academic publications. Join our early access program to get started." }
-            ];
-            return (
-                <section id="faq" className="py-28 lg:py-36">
-                    <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-                        <div className="grid lg:grid-cols-12 gap-12">
-                            <div className="lg:col-span-4">
-                                <div className="flex items-center gap-4 mb-6">
-                                    <span className="sec-num">§ 06</span>
-                                    <span className="eyebrow">FAQ</span>
+                    <div className="lg:col-span-5">
+                        <div className="border border-rule p-8 bg-cream/40">
+                            <p className="eyebrow mb-5">Scientific Founder</p>
+                            <div className="flex items-center gap-4 mb-6">
+                                <div className="w-24 h-24 rounded-full overflow-hidden bg-ink">
+                                    <img src="images/profile.jpg" alt="Inna Campo, Ph.D." className="w-full h-full object-cover"/>
                                 </div>
-                                <h2 className="font-display font-light text-[clamp(2rem,4.5vw,3.75rem)] leading-[1.02] tracking-tightest text-ink">
-                                    Frequently <br/><span className="font-bold text-plum-600">Asked.</span>
-                                </h2>
-                            </div>
-                            <div className="lg:col-span-8">
-                                <div className="border-t border-ink/15">
-                                    {faqs.map((f, i) => (
-                                        <details key={i} className="group border-b border-ink/15 py-6">
-                                            <summary className="flex items-start justify-between gap-6">
-                                                <div className="flex items-baseline gap-5">
-                                                    <span className="sec-num">{String(i+1).padStart(2,'0')}</span>
-                                                    <span className="font-display text-xl lg:text-2xl text-ink leading-snug">{f.q}</span>
-                                                </div>
-                                                <span className="mt-2 text-ink/60 group-open:rotate-45 transition-transform"><Plus /></span>
-                                            </summary>
-                                            <div className="pl-12 pr-12 mt-4 text-[15px] leading-[1.75] text-ink/70 max-w-2xl">{f.a}</div>
-                                        </details>
-                                    ))}
+                                <div>
+                                    <p className="font-display text-2xl text-ink leading-tight">Inna Campo, Ph.D.</p>
+                                    <p className="text-[12px] tracking-wide uppercase text-plum-600 mt-1">Scientific Founder</p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </section>
-            );
-        };
-
-        // ---------- Newsletter ----------
-        const Newsletter = () => {
-            const [email, setEmail] = useState('');
-            const [status, setStatus] = useState('idle');
-            const [error, setError] = useState('');
-
-            const handleSubmit = async (e) => {
-                e.preventDefault();
-                setError('');
-                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError('Enter a valid email address.'); return; }
-                setStatus('sending');
-                try {
-                    const res = await fetch('https://formspree.io/f/xgoolwyl', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email }),
-                    });
-                    if (res.ok) { setStatus('sent'); setEmail(''); }
-                    else { setStatus('error'); setError('Submission failed. Please try again later.'); }
-                } catch { setStatus('error'); setError('Network error. Please try again.'); }
-            };
-
-            return (
-                <section id="newsletter" className="py-28 lg:py-32 bg-ink text-paper relative overflow-hidden">
-                    <div className="max-w-3xl mx-auto px-6 lg:px-10 text-center relative">
-                        <span className="sec-num text-plum-300">§ 07 — Stay Updated</span>
-                        <h2 className="font-display font-light text-[clamp(2rem,5vw,4rem)] leading-[1.05] tracking-tightest mt-6 mb-6">
-                            Join Our <span className="font-bold text-plum-300">Early Access</span> Program
-                        </h2>
-                        <p className="text-[16px] leading-[1.7] text-paper/70 max-w-xl mx-auto mb-10">
-                            Be the first to test new features, access research updates, and shape the future of AI-driven women's health tools.
-                        </p>
-
-                        {status !== 'sent' ? (
-                            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
-                                <input
-                                    type="email" value={email} onChange={(e)=>setEmail(e.target.value)} required
-                                    placeholder="Enter your email"
-                                    className="flex-1 px-5 py-4 bg-transparent border border-paper/30 rounded-full text-paper placeholder-paper/40 focus:outline-none focus:border-plum-300 text-[14px]"
-                                    disabled={status==='sending'}
-                                />
-                                <button type="submit" disabled={status==='sending'}
-                                    className="px-7 py-4 bg-paper text-ink font-medium rounded-full text-[13px] tracking-wide uppercase hover:bg-plum-200 transition-colors disabled:opacity-50">
-                                    {status === 'sending' ? 'Sending...' : 'Join Waitlist'}
-                                </button>
-                            </form>
-                        ) : (
-                            <div className="border border-paper/20 rounded-sm p-8 max-w-md mx-auto">
-                                <Check className="mx-auto mb-3 text-plum-300" />
-                                <p className="font-display text-2xl">You're on the list.</p>
-                                <p className="text-paper/60 text-sm mt-1">We'll be in touch with updates soon.</p>
-                            </div>
-                        )}
-                        {error && <p className="text-sm text-amber-200 mt-4">{error}</p>}
-                        <p className="text-xs text-paper/40 mt-5 tracking-wide">No spam, ever. Unsubscribe anytime.</p>
-                    </div>
-                </section>
-            );
-        };
-
-        // ---------- Contact form (footer) ----------
-        const ContactForm = () => {
-            const [formData, setFormData] = useState({ name:'', email:'', message:'' });
-            const [errors, setErrors] = useState({});
-            const [status, setStatus] = useState('idle');
-
-            const validate = () => {
-                const errs = {};
-                if (!formData.name.trim()) errs.name = 'Name is required.';
-                if (!formData.email.trim()) errs.email = 'Email is required.';
-                else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) errs.email = 'Enter a valid email.';
-                if (!formData.message.trim()) errs.message = 'Message is required.';
-                return errs;
-            };
-            const handleChange = (e) => {
-                const { name, value } = e.target;
-                setFormData(prev => ({ ...prev, [name]: value }));
-                if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
-            };
-            const handleSubmit = async (e) => {
-                e.preventDefault();
-                const errs = validate();
-                if (Object.keys(errs).length) { setErrors(errs); return; }
-                setStatus('sending');
-                try {
-                    const res = await fetch('https://formspree.io/f/xgoolwyl', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(formData),
-                    });
-                    if (res.ok) { setStatus('sent'); setFormData({name:'',email:'',message:''}); }
-                    else setStatus('error');
-                } catch { setStatus('error'); }
-            };
-
-            if (status === 'sent') {
-                return (
-                    <div className="py-3">
-                        <Check className="mb-2 text-plum-300" />
-                        <p className="font-display text-lg text-paper">Message sent.</p>
-                        <p className="text-paper/50 text-xs mt-1">We'll get back to you soon.</p>
-                        <button onClick={()=>setStatus('idle')} className="mt-3 text-xs text-plum-300 underline">Send another</button>
-                    </div>
-                );
-            }
-
-            const inputBase = "w-full px-0 py-2 bg-transparent border-0 border-b border-paper/25 focus:outline-none focus:border-plum-300 text-sm text-paper placeholder-paper/40 transition-colors";
-            return (
-                <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                        <input name="name" type="text" value={formData.name} onChange={handleChange} placeholder="Your Name" className={inputBase} />
-                        {errors.name && <div className="text-xs text-red-300 mt-1">{errors.name}</div>}
-                    </div>
-                    <div>
-                        <input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="Your Email" className={inputBase} />
-                        {errors.email && <div className="text-xs text-red-300 mt-1">{errors.email}</div>}
-                    </div>
-                    <div>
-                        <textarea name="message" rows="3" value={formData.message} onChange={handleChange} placeholder="Your Message" className={`${inputBase} resize-none`}></textarea>
-                        {errors.message && <div className="text-xs text-red-300 mt-1">{errors.message}</div>}
-                    </div>
-                    <input type="text" name="_gotcha" style={{display:'none'}} />
-                    <button type="submit" disabled={status==='sending'}
-                        className="group inline-flex items-center gap-2 px-5 py-3 bg-paper text-ink rounded-full text-[12px] tracking-wider uppercase hover:bg-plum-200 transition-colors disabled:opacity-50">
-                        <Send /> <span>{status==='sending' ? 'Sending...' : 'Send Message'}</span>
-                    </button>
-                    {status === 'error' && <p className="text-xs text-red-300">Something went wrong. Please try again.</p>}
-                </form>
-            );
-        };
-
-        // ---------- Footer ----------
-        const Footer = () => (
-            <footer id="contact" className="bg-ink text-paper">
-                <div className="max-w-[1400px] mx-auto px-6 lg:px-10 pt-24 pb-10">
-                    <div className="grid lg:grid-cols-12 gap-12 mb-20">
-                        <div className="lg:col-span-5">
-                            <div className="flex items-center gap-3 mb-6">
-                                <img src="images/brain_logo.png" alt="HARMONI logo" className="w-12 h-12 object-contain rounded-lg" />
-                                <span className="font-display text-3xl text-paper">
-                                    HARMONI <span className="font-bold text-plum-300">Lab</span>
-                                </span>
-                            </div>
-                            <p className="text-paper/65 max-w-md text-[15px] leading-relaxed">
-                                An independent AI-native research lab exploring the impact of hormonal changes on female brain and behavior.
+                            <p className="text-[14px] leading-[1.75] text-ink/75 mb-3">
+                                AI/ML researcher with a career spanning outbreak detection at the CDC (Charles C. Shepard Science Award recipient), large-scale bioinformatics, and production ML at IBM. Ph.D. in Computer Science, three granted US patents.
                             </p>
-                            <div className="flex gap-3 mt-8">
-                                <a href="https://ga.linkedin.com/company/harmoni-lab" target="_blank" rel="noopener" className="w-10 h-10 rounded-full border border-paper/20 text-paper/70 flex items-center justify-center hover:bg-paper hover:text-ink transition-colors">
-                                    <LinkedIn />
-                                </a>
+                            <p className="text-[14px] leading-[1.75] text-ink/75 mb-6">
+                                At HARMONI Lab, she leads development of AXIOM and the broader privacy-first AI infrastructure for women's health - a problem she describes as "waiting for the technology to catch up."
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                {['Computational Biology','HPC & Parallel Algorithms','NGS & Outbreak Detection','Production ML','Women\'s Neurocognition'].map((tag,i)=>(
+                                    <span key={i} className="px-3 py-1 border border-plum-200 bg-plum-50 text-plum-700 text-[11px] tracking-wide rounded-full">{tag}</span>
+                                ))}
                             </div>
                         </div>
-
-                        <div className="lg:col-span-2">
-                            <p className="eyebrow text-plum-300 mb-5">Links</p>
-                            <ul className="space-y-3 text-[14px] text-paper/70">
-                                <li><a href="#about" className="ink-link hover:text-paper">About</a></li>
-                                <li><a href="#mission" className="ink-link hover:text-paper">Mission</a></li>
-                                <li><a href="#research" className="ink-link hover:text-paper">Research</a></li>
-                                <li><a href="#faq" className="ink-link hover:text-paper">FAQ</a></li>
-                            </ul>
-                            <p className="eyebrow text-plum-300 mt-8 mb-5">Tools</p>
-                            <ul className="space-y-3 text-[14px] text-paper/70">
-                                <li><a href="selene.html" className="ink-link hover:text-paper">SELENE</a></li>
-                                <li><a href="lucia.html" className="ink-link hover:text-paper">LUCIA</a></li>
-                                <li><a href="clara.html" className="ink-link hover:text-paper">CLARA</a></li>
-                            </ul>
-                        </div>
-
-                        <div className="lg:col-span-5">
-                            <p className="eyebrow text-plum-300 mb-5">Contact</p>
-                            <ContactForm />
-                        </div>
-                    </div>
-
-                    <div className="border-t border-paper/15 pt-10">
-                        <p className="eyebrow text-plum-300 text-center mb-8">Supported by</p>
-                        <div className="flex flex-col sm:flex-row gap-10 justify-center items-center">
-                            <a href="https://elevenlabs.io/startup-grants"><img src="https://eleven-public-cdn.elevenlabs.io/payloadcms/cy7rxce8uki-IIElevenLabsGrants%201.webp" alt="ElevenLabs" style={{width:'220px'}} /></a>
-                            <a href="https://aws.amazon.com/activate/" className="rounded-lg overflow-hidden bg-paper p-2"><img src="images/awsactivate.jpeg" alt="AWS Activate" className="rounded-lg" style={{width:'200px'}} /></a>
-                        </div>
-                    </div>
-
-                    <div className="border-t border-paper/15 mt-10 pt-8 flex flex-col md:flex-row justify-between items-center text-[12px] text-paper/45 tracking-wide">
-                        <p>&copy; {new Date().getFullYear()} HARMONI Lab LLC. All rights reserved.</p>
-                        <p className="mt-2 md:mt-0">Built with transparency and care for women's health.</p>
                     </div>
                 </div>
-            </footer>
-        );
-
-        // ---------- App ----------
-        const App = () => (
-            <div className="min-h-screen bg-paper text-ink selection:bg-plum-200 selection:text-plum-900">
-                <Navigation />
-                <Hero />
-                <Mission />
-                <Research />
-                <Initiatives />
-                <About />
-                <Team />
-                <FAQ />
-                <Newsletter />
-                <Footer />
             </div>
-        );
+        </section>
+    );
 
-        const root = createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+    const OpenCollab = () => (
+        <section className="py-24 lg:py-32 bg-cream/50 border-y border-rule">
+            <div className="max-w-3xl mx-auto px-6 lg:px-10 text-center">
+                <span className="sec-num">§ 05</span>
+                <h2 className="font-display font-light text-[clamp(2rem,4.5vw,3.75rem)] leading-tight tracking-tightest text-ink mt-6 mb-6">
+                    Open <span className="font-bold text-plum-600">Collaboration</span>
+                </h2>
+                <p className="text-[17px] leading-[1.8] text-ink/70 mb-10">
+                    HARMONI Lab is a founder-led research movement. AXIOM is open-source; the other tools follow. We aim to build a collaborative platform connecting scientists, engineers, and volunteers around shared challenges in women's health and neurocognition.
+                </p>
+                <div className="flex flex-wrap gap-3 justify-center">
+                    <a href="https://github.com/HARMONI-Lab/axiom" target="_blank" rel="noopener" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink text-paper text-[12px] tracking-wider uppercase hover:bg-plum-700 transition-colors">
+                        AXIOM on GitHub <ArrowRight/>
+                    </a>
+                    <a href="#newsletter" className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink/20 text-ink text-[12px] tracking-wider uppercase hover:bg-ink hover:text-paper transition-colors">
+                        Join Early Access
+                    </a>
+                </div>
+            </div>
+        </section>
+    );
+
+    const FAQ = () => {
+        const faqs = [
+            { q:'What is AXIOM and how does it relate to the other tools?', a:'AXIOM is HARMONI Lab\'s core knowledge infrastructure - a hybrid Graph RAG engine that ingests menopause research literature, builds a knowledge graph, and exposes everything via a REST API and 7-tool MCP server. SELENE, LUCIA, and CLARA are applications built on top of it. When any of them needs evidence grounding, they query AXIOM.' },
+            { q:'How does HARMONI Lab protect patient data?', a:'AXIOM runs entirely on-device. All LLM inference goes through a local Ollama instance; no data is sent to cloud APIs at runtime. Queries that reach external services (PubMed) are first scrubbed for PHI via a two-step pipeline: regex patterns strip dates, MRNs, and identifiers; an LLM then generalizes clinical specifics to pathophysiological search terms.' },
+            { q:'Are the AI outputs medically validated?', a:'Our tools are designed as research and support instruments, not medical advice. All outputs are grounded in peer-reviewed sources with transparent citations. AXIOM\'s retraction checker actively removes retracted literature from retrieval. We always recommend consulting a healthcare provider for personal decisions.' },
+            { q:'Can clinicians or researchers integrate AXIOM?', a:'Yes. AXIOM exposes a REST API (FastAPI) and an MCP server. API access for institutions is part of the planned commercial model. Contact us to discuss pilot programs or research collaborations.' },
+            { q:'How can I contribute?', a:'AXIOM is open-source on GitHub. You can contribute code, test beta features, share anonymized symptom narratives for research, or collaborate on publications. Join the early access waitlist to stay informed.' },
+        ];
+        return (
+            <section id="faq" className="py-28 lg:py-36">
+                <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                    <div className="grid lg:grid-cols-12 gap-12">
+                        <div className="lg:col-span-4">
+                            <div className="flex items-center gap-4 mb-6">
+                                <span className="sec-num">§ 06</span>
+                                <span className="eyebrow">FAQ</span>
+                            </div>
+                            <h2 className="font-display font-light text-[clamp(2rem,4.5vw,3.75rem)] leading-[1.02] tracking-tightest text-ink">
+                                Frequently <br/><span className="font-bold text-plum-600">Asked.</span>
+                            </h2>
+                        </div>
+                        <div className="lg:col-span-8">
+                            <div className="border-t border-ink/15">
+                                {faqs.map((f,i)=>(
+                                    <details key={i} className="group border-b border-ink/15 py-6">
+                                        <summary className="flex items-start justify-between gap-6">
+                                            <div className="flex items-baseline gap-5">
+                                                <span className="sec-num">{String(i+1).padStart(2,'0')}</span>
+                                                <span className="font-display text-xl lg:text-2xl text-ink leading-snug">{f.q}</span>
+                                            </div>
+                                            <span className="mt-2 text-ink/60 group-open:rotate-45 transition-transform flex-shrink-0"><Plus/></span>
+                                        </summary>
+                                        <div className="pl-12 pr-12 mt-4 text-[15px] leading-[1.75] text-ink/70 max-w-2xl">{f.a}</div>
+                                    </details>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+    };
+
+    const Newsletter = () => {
+        const [email, setEmail] = useState('');
+        const [status, setStatus] = useState('idle');
+        const [error, setError] = useState('');
+        const handleSubmit = async (e) => {
+            e.preventDefault(); setError('');
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError('Enter a valid email address.'); return; }
+            setStatus('sending');
+            try {
+                const res = await fetch('https://formspree.io/f/xgoolwyl', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ email }) });
+                if (res.ok) { setStatus('sent'); setEmail(''); } else { setStatus('error'); setError('Submission failed. Please try again.'); }
+            } catch { setStatus('error'); setError('Network error. Please try again.'); }
+        };
+        return (
+            <section id="newsletter" className="py-28 lg:py-32 bg-ink text-paper relative overflow-hidden">
+                <div className="max-w-3xl mx-auto px-6 lg:px-10 text-center relative">
+                    <span className="sec-num text-plum-300">§ 07 - Stay Updated</span>
+                    <h2 className="font-display font-light text-[clamp(2rem,5vw,4rem)] leading-[1.05] tracking-tightest mt-6 mb-6">
+                        Join Our <span className="font-bold text-plum-300">Early Access</span> Program
+                    </h2>
+                    <p className="text-[16px] leading-[1.7] text-paper/70 max-w-xl mx-auto mb-10">
+                        Be the first to test AXIOM's API, new features across all tools, and access research updates as we build toward the next generation of women's health AI.
+                    </p>
+                    {status !== 'sent' ? (
+                        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+                            <input type="email" value={email} onChange={e=>setEmail(e.target.value)} required placeholder="Enter your email"
+                                className="flex-1 px-5 py-4 bg-transparent border border-paper/30 rounded-full text-paper placeholder-paper/40 focus:outline-none focus:border-plum-300 text-[14px]" disabled={status==='sending'}/>
+                            <button type="submit" disabled={status==='sending'}
+                                className="px-7 py-4 bg-paper text-ink font-medium rounded-full text-[13px] tracking-wide uppercase hover:bg-plum-200 transition-colors disabled:opacity-50">
+                                {status==='sending'?'Sending...':'Join Waitlist'}
+                            </button>
+                        </form>
+                    ) : (
+                        <div className="border border-paper/20 rounded-sm p-8 max-w-md mx-auto">
+                            <Check className="mx-auto mb-3 text-plum-300"/>
+                            <p className="font-display text-2xl">You're on the list.</p>
+                            <p className="text-paper/60 text-sm mt-1">We'll be in touch with updates soon.</p>
+                        </div>
+                    )}
+                    {error && <p className="text-sm text-amber-200 mt-4">{error}</p>}
+                    <p className="text-xs text-paper/40 mt-5 tracking-wide">No spam, ever. Unsubscribe anytime.</p>
+                </div>
+            </section>
+        );
+    };
+
+    const ContactForm = () => {
+        const [d,setD]=useState({name:'',email:'',message:''});
+        const [e,setE]=useState({});
+        const [s,setS]=useState('idle');
+        const validate=()=>{const er={};if(!d.name.trim())er.name='Required.';if(!d.email.trim())er.email='Required.';else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email))er.email='Invalid email.';if(!d.message.trim())er.message='Required.';return er;};
+        const onChange=ev=>{const{name,value}=ev.target;setD(p=>({...p,[name]:value}));if(e[name])setE(p=>({...p,[name]:''}));};
+        const onSubmit=async ev=>{ev.preventDefault();const er=validate();if(Object.keys(er).length){setE(er);return;}setS('sending');try{const r=await fetch('https://formspree.io/f/xgoolwyl',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});if(r.ok){setS('sent');setD({name:'',email:'',message:''});}else setS('error');}catch{setS('error');}};
+        if(s==='sent')return(<div className="py-3"><Check className="mb-2 text-plum-300"/><p className="font-display text-lg text-paper">Message sent.</p><p className="text-paper/50 text-xs mt-1">We'll get back to you soon.</p><button onClick={()=>setS('idle')} className="mt-3 text-xs text-plum-300 underline">Send another</button></div>);
+        const ib="w-full px-0 py-2 bg-transparent border-0 border-b border-paper/25 focus:outline-none focus:border-plum-300 text-sm text-paper placeholder-paper/40 transition-colors";
+        return(<form onSubmit={onSubmit} className="space-y-5"><div><input name="name" type="text" value={d.name} onChange={onChange} placeholder="Your Name" className={ib}/>{e.name&&<div className="text-xs text-red-300 mt-1">{e.name}</div>}</div><div><input name="email" type="email" value={d.email} onChange={onChange} placeholder="Your Email" className={ib}/>{e.email&&<div className="text-xs text-red-300 mt-1">{e.email}</div>}</div><div><textarea name="message" rows="3" value={d.message} onChange={onChange} placeholder="Your Message" className={`${ib} resize-none`}/>{e.message&&<div className="text-xs text-red-300 mt-1">{e.message}</div>}</div><input type="text" name="_gotcha" style={{display:'none'}}/><button type="submit" disabled={s==='sending'} className="inline-flex items-center gap-2 px-5 py-3 bg-paper text-ink rounded-full text-[12px] tracking-wider uppercase hover:bg-plum-200 transition-colors disabled:opacity-50"><Send/><span>{s==='sending'?'Sending...':'Send Message'}</span></button>{s==='error'&&<p className="text-xs text-red-300">Something went wrong.</p>}</form>);
+    };
+
+    const Footer = () => (
+        <footer id="contact" className="bg-ink text-paper">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10 pt-24 pb-10">
+                <div className="grid lg:grid-cols-12 gap-12 mb-20">
+                    <div className="lg:col-span-5">
+                        <div className="flex items-center gap-3 mb-6">
+                            <img src="images/brain_logo.png" alt="HARMONI logo" className="w-12 h-12 object-contain rounded-lg"/>
+                            <span className="font-display text-3xl text-paper">HARMONI <span className="font-bold text-plum-300">Lab</span></span>
+                        </div>
+                        <p className="text-paper/65 max-w-md text-[15px] leading-relaxed">An independent AI-native research lab exploring the impact of hormonal changes on the female brain. AXIOM is our open-source flagship.</p>
+                        <div className="flex gap-3 mt-8">
+                            <a href="https://ga.linkedin.com/company/harmoni-lab" target="_blank" rel="noopener" className="w-10 h-10 rounded-full border border-paper/20 text-paper/70 flex items-center justify-center hover:bg-paper hover:text-ink transition-colors"><LinkedIn/></a>
+                        </div>
+                    </div>
+                    <div className="lg:col-span-2">
+                        <p className="eyebrow text-plum-300 mb-5">Site</p>
+                        <ul className="space-y-3 text-[14px] text-paper/70">
+                            <li><a href="#about" className="ink-link hover:text-paper">About</a></li>
+                            <li><a href="#mission" className="ink-link hover:text-paper">Mission</a></li>
+                            <li><a href="#research" className="ink-link hover:text-paper">Research</a></li>
+                            <li><a href="#faq" className="ink-link hover:text-paper">FAQ</a></li>
+                        </ul>
+                        <p className="eyebrow text-plum-300 mt-8 mb-5">Tools</p>
+                        <ul className="space-y-3 text-[14px] text-paper/70">
+                            <li><a href="axiom.html" className="ink-link hover:text-paper text-plum-300 font-medium">AXIOM ↗</a></li>
+                            <li><a href="selene.html" className="ink-link hover:text-paper">SELENE</a></li>
+                            <li><a href="lucia.html" className="ink-link hover:text-paper">LUCIA</a></li>
+                            <li><a href="clara.html" className="ink-link hover:text-paper">CLARA</a></li>
+                        </ul>
+                    </div>
+                    <div className="lg:col-span-5">
+                        <p className="eyebrow text-plum-300 mb-5">Contact</p>
+                        <ContactForm/>
+                    </div>
+                </div>
+                <div className="border-t border-paper/15 pt-10">
+                    <p className="eyebrow text-plum-300 text-center mb-8">Supported by</p>
+                    <div className="flex flex-col sm:flex-row gap-10 justify-center items-center">
+                        <a href="https://elevenlabs.io/startup-grants"><img src="https://eleven-public-cdn.elevenlabs.io/payloadcms/cy7rxce8uki-IIElevenLabsGrants%201.webp" alt="ElevenLabs" style={{width:'220px'}}/></a>
+                        <a href="https://aws.amazon.com/activate/" className="rounded-lg overflow-hidden bg-paper p-2"><img src="images/awsactivate.jpeg" alt="AWS Activate" className="rounded-lg" style={{width:'200px'}}/></a>
+                    </div>
+                </div>
+                <div className="border-t border-paper/15 mt-10 pt-8 flex flex-col md:flex-row justify-between items-center text-[12px] text-paper/45 tracking-wide">
+                    <p>&copy; {new Date().getFullYear()} HARMONI Lab LLC. All rights reserved.</p>
+                    <p className="mt-2 md:mt-0">Built with transparency and care for women's health.</p>
+                </div>
+            </div>
+        </footer>
+    );
+
+    const App = () => (
+        <div className="min-h-screen bg-paper text-ink selection:bg-plum-200 selection:text-plum-900">
+            <Navigation/>
+            <Hero/>
+            <Mission/>
+            <Research/>
+            <Tools/>
+            <About/>
+            <OpenCollab/>
+            <FAQ/>
+            <Newsletter/>
+            <Footer/>
+        </div>
+    );
+
+    createRoot(document.getElementById('root')).render(<App/>);
+</script>
 </body>
 </html>
