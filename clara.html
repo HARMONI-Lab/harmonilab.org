@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CLARA | HARMONI Lab - Auditing Clinical Logic</title>
+    <title>CLARA · HARMONI Lab · Auditing Clinical Logic</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <meta name="description" content="CLARA detects cognitive biases in medical consultations in real time, surfacing evidence-based prompts from AXIOM's knowledge base to prevent diagnostic errors.">
-    <meta property="og:title" content="CLARA | HARMONI Lab - Auditing Clinical Logic">
+    <meta property="og:title" content="CLARA · HARMONI Lab · Auditing Clinical Logic">
     <meta property="og:type" content="website">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -101,7 +101,7 @@
                             <ArrowRight className="text-plum-500"/>
                         </a>
                         <p className="text-[17px] leading-[1.7] text-ink/70 max-w-md mb-8">
-                            An intelligence layer that detects cognitive biases in medical consultations in real time - generating evidence-backed prompts grounded in AXIOM's peer-reviewed knowledge base.
+                            An intelligence layer that detects cognitive biases in medical consultations in real time, generating evidence-backed prompts grounded in AXIOM's peer-reviewed knowledge base.
                         </p>
                         <div className="flex flex-wrap gap-3">
                             <a href="https://ai.studio/apps/drive/1d04qEW2DRK0wyxJHNnNF0JI8wtrtMiR0?fullscreenApplet=true" target="_blank" rel="noopener" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink text-paper text-[12px] tracking-wider uppercase hover:bg-plum-700 transition-colors">Launch Auditor <ArrowRight/></a>
@@ -117,19 +117,19 @@
         <section className="py-28 lg:py-32 bg-paper border-t border-rule">
             <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
                 <div className="border-b border-rule pb-10 mb-16">
-                    <p className="sec-num mb-3">§ 01 - How It Works</p>
+                    <p className="sec-num mb-3">§ 01 · How It Works</p>
                     <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
                         Intelligent <strong className="font-bold text-plum-600">clinical oversight</strong>.
                     </h2>
                     <p className="text-[16px] leading-[1.7] text-ink/70 max-w-2xl mt-6">
-                        CLARA listens, identifies reasoning failures, and generates prompts - grounded in AXIOM's literature base - before those failures reach the patient.
+                        CLARA listens, identifies reasoning failures, and generates prompts — grounded in AXIOM's literature base — before those failures reach the patient.
                     </p>
                 </div>
                 <div className="grid md:grid-cols-3 gap-px bg-rule border border-rule">
                     {[
                         {t:'Real-time Monitoring',   d:'Continuously analyzes clinical dialogue as it unfolds, providing instant feedback on potential reasoning gaps without interrupting the encounter.'},
                         {t:'Bias Detection',         d:'Identifies three critical cognitive biases that account for a disproportionate share of diagnostic errors in women\'s health consultations.'},
-                        {t:'AXIOM-Grounded Prompts', d:'Generates actionable questions backed by clinical guidelines retrieved from AXIOM\'s knowledge graph - not generic AI suggestions.'},
+                        {t:'AXIOM-Grounded Prompts', d:'Generates actionable questions backed by clinical guidelines retrieved from AXIOM\'s knowledge graph, not generic AI suggestions.'},
                     ].map((f,i)=>(
                         <div key={i} className="bg-paper p-10 hover:bg-plum-50 transition-colors">
                             <p className="sec-num mb-4">{`0${i+1}`}</p>
@@ -146,7 +146,7 @@
         <section id="biases" className="py-28 lg:py-32 bg-cream border-t border-rule">
             <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
                 <div className="border-b border-rule pb-10 mb-16">
-                    <p className="sec-num mb-3">§ 02 - Cognitive Audit Scope</p>
+                    <p className="sec-num mb-3">§ 02 · Cognitive Audit Scope</p>
                     <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
                         The three <strong className="font-bold text-plum-600">silent threat</strong> detectors.
                     </h2>
@@ -157,7 +157,7 @@
                 <div className="grid md:grid-cols-3 gap-px bg-rule border border-rule">
                     {[
                         {code:'DS', t:'Diagnostic Shadowing', d:"Detects when physical symptoms are incorrectly attributed to a patient's pre-existing psychiatric history, leading to missed physical diagnoses. AXIOM checks whether the symptom cluster has documented physical etiologies in the literature."},
-                        {code:'PC', t:'Premature Closure',     d:'The tendency to cease diagnostic reasoning before all possibilities are explored. CLARA flags when a diagnosis is accepted without documented exclusion of alternatives - and retrieves what those alternatives are from AXIOM.'},
+                        {code:'PC', t:'Premature Closure',     d:'The tendency to cease diagnostic reasoning before all possibilities are explored. CLARA flags when a diagnosis is accepted without documented exclusion of alternatives — and retrieves what those alternatives are from AXIOM.'},
                         {code:'AB', t:'Anchoring Bias',        d:'Over-reliance on the first piece of information received, ignoring subsequent evidence. CLARA monitors for diagnostic statements made before a full symptom history is gathered, grounding its counter-prompt in AXIOM evidence.'},
                     ].map((b,i)=>(
                         <div key={i} className="bg-paper p-10">
@@ -184,7 +184,7 @@
                     </div>
                     <div className="lg:col-span-7">
                         <p className="text-[16px] leading-[1.75] text-plum-900/75">
-                            CLARA's bias detection is only as good as the evidence it can cite. When CLARA identifies a potential case of premature closure or anchoring bias, it does not rely on training data to generate the counter-prompt. It queries AXIOM's hybrid knowledge graph - retrieving documented relationships between the flagged symptom cluster and alternative diagnoses, scored by study type and recency, filtered for retractions. The clinician sees a question. Behind it is a graph traversal over primary literature.
+                            CLARA's bias detection is only as good as the evidence it can cite. When CLARA identifies a potential case of premature closure or anchoring bias, it does not rely on training data to generate the counter-prompt. It queries AXIOM's hybrid knowledge graph — retrieving documented relationships between the flagged symptom cluster and alternative diagnoses, scored by study type and recency, filtered for retractions. The clinician sees a question. Behind it is a graph traversal over primary literature.
                         </p>
                     </div>
                     <div className="lg:col-span-3 flex lg:justify-end">
@@ -201,7 +201,7 @@
         <section className="py-28 lg:py-32 bg-ink text-paper">
             <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
                 <div className="border-b border-paper/15 pb-10 mb-16">
-                    <p className="sec-num text-plum-300 mb-3">§ 03 - Technical Foundation</p>
+                    <p className="sec-num text-plum-300 mb-3">§ 03 · Technical Foundation</p>
                     <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
                         Engineered for <strong className="font-bold text-plum-300">precision</strong>.
                     </h2>
@@ -213,7 +213,7 @@
                     <ul className="space-y-px bg-paper/15 border border-paper/15">
                         {[
                             {t:'Gemini 3 Pro via Google AI Studio', d:'Multimodal reasoning over clinical audio transcripts in real time.'},
-                            {t:'AXIOM Knowledge Base',               d:'Evidence grounding for all generated prompts - graph traversal over primary menopause literature.'},
+                            {t:'AXIOM Knowledge Base',               d:'Evidence grounding for all generated prompts — graph traversal over primary menopause literature.'},
                             {t:'React + Vite + TypeScript Frontend', d:'Lightweight interface for clinicians. Minimal friction, maximum signal.'},
                             {t:'Async Audio-to-Transcript Pipeline', d:'Low-latency transcription enabling real-time bias detection without disrupting the encounter.'},
                         ].map((t,i)=>(
@@ -251,16 +251,16 @@ if (audit.biasDetected) {
         <section className="py-28 lg:py-32 bg-paper border-t border-rule">
             <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
                 <div className="border-b border-rule pb-10 mb-16">
-                    <p className="sec-num mb-3">§ 04 - Roadmap</p>
+                    <p className="sec-num mb-3">§ 04 · Roadmap</p>
                     <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
                         What comes <strong className="font-bold text-plum-600">next</strong>.
                     </h2>
                 </div>
                 <div className="grid md:grid-cols-3 gap-px bg-rule border border-rule">
                     {[
-                        {t:'Expanded Bias Library',  d:'Beyond the initial three bias types, CLARA will detect a broader taxonomy of reasoning failures documented in the gender medicine literature - each grounded by AXIOM retrieval.'},
+                        {t:'Expanded Bias Library',  d:'Beyond the initial three bias types, CLARA will detect a broader taxonomy of reasoning failures documented in the gender medicine literature, each grounded by AXIOM retrieval.'},
                         {t:'EHR Integration',         d:'Direct connection with electronic health records allows CLARA to cross-reference prior diagnoses and flag longitudinal inconsistencies in real time.'},
-                        {t:'Anonymized Outcomes',    d:'With consent, CLARA\'s flagged encounters contribute to AXIOM\'s graph - turning individual bias detections into systematic evidence for women\'s health research.'},
+                        {t:'Anonymized Outcomes',    d:'With consent, CLARA\'s flagged encounters contribute to AXIOM\'s graph, turning individual bias detections into systematic evidence for women\'s health research.'},
                     ].map((r,i)=>(
                         <div key={i} className="bg-paper p-10">
                             <p className="sec-num mb-4">{`0${i+1}`}</p>

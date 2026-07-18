@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YentlBench · HARMONI Lab · Benchmarking LLM Triage Bias</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="description" content="YentlBench is a systematic benchmark measuring demographic bias in LLM clinical triage reasoning. Built on MIMIC-IV-ED, it quantifies how gender tokens shift ESI predictions across frontier models.">
+    <meta property="og:title" content="YentlBench · HARMONI Lab · Benchmarking LLM Triage Bias">
+    <meta property="og:description" content="YentlBench quantifies how gender tokens shift LLM emergency triage predictions, and introduces the Perturbation Sensitivity Score to decompose where that signal comes from.">
+    <meta property="og:type" content="website">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: { extend: {
+          fontFamily: { serif:['"Fraunces"','Georgia','serif'], sans:['"Inter"','system-ui','sans-serif'], mono:['"JetBrains Mono"','ui-monospace','monospace'] },
+          colors: { ink:'#1a1320', paper:'#fbf9f6', cream:'#f3eee7', rule:'#e6e0d6',
+            plum:{ 50:'#f7f2fb',100:'#ece0f5',200:'#d6bdea',300:'#b994d8',400:'#956bbf',500:'#7344a3',600:'#5a2f87',700:'#46256a',800:'#321a4c',900:'#1f1030' },
+            teal:{ 50:'#f0fdfa',100:'#ccfbf1',200:'#99f6e4',300:'#5eead4',400:'#2dd4bf',500:'#14b8a6',600:'#0d9488',700:'#0f766e',800:'#115e59',900:'#134e4a' },
+          },
+          letterSpacing: { tightest:'-0.04em' }
+        }}
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <style>
+        body{font-family:'Inter',sans-serif;background:#fbf9f6;color:#1a1320;-webkit-font-smoothing:antialiased;}
+        html{scroll-behavior:smooth;}
+        .font-display{font-family:'Fraunces',Georgia,serif;font-optical-sizing:auto;font-variation-settings:"SOFT" 50;letter-spacing:-0.025em;}
+        .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#5a2f87;}
+        .eyebrow-teal{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#0d9488;}
+        .rule{border-color:#e6e0d6;}
+        .ink-link{background-image:linear-gradient(currentColor,currentColor);background-size:0% 1px;background-repeat:no-repeat;background-position:0 100%;transition:background-size .4s ease;}
+        .ink-link:hover{background-size:100% 1px;}
+        .dropcap::first-letter{font-family:'Fraunces',Georgia,serif;font-weight:500;float:left;font-size:4.5rem;line-height:0.85;padding:0.35rem 0.75rem 0 0;color:#5a2f87;}
+        .sec-num{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:#956bbf;}
+        .mono{font-family:'JetBrains Mono',monospace;}
+        .code-block{background:#1a1320;color:#e2e8f0;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8;padding:1.5rem;overflow-x:auto;}
+        .code-comment{color:#64748b;}
+        .code-key{color:#b994d8;}
+        .code-str{color:#86efac;}
+        .code-num{color:#fdba74;}
+        /* result bar */
+        .bar-fill{height:8px;border-radius:2px;transition:width 0.6s ease;}
+    </style>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.23.5/babel.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+    const { useState, useEffect } = React;
+    const { createRoot } = ReactDOM;
+
+    const Menu=(p)=><svg {...p} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>;
+    const X=(p)=><svg {...p} width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" d="M6 6l12 12M18 6L6 18"/></svg>;
+    const ArrowRight=(p)=><svg {...p} width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>;
+    const Send=(p)=><svg {...p} width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.6"><path strokeLinecap="round" strokeLinejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>;
+    const Check=(p)=><svg {...p} width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>;
+    const LinkedIn=(p)=><svg {...p} width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>;
+
+    const Navigation = () => {
+        const [isOpen, setIsOpen] = useState(false);
+        const [scrolled, setScrolled] = useState(false);
+        useEffect(()=>{ const fn=()=>setScrolled(window.scrollY>16); window.addEventListener('scroll',fn); return ()=>window.removeEventListener('scroll',fn); },[]);
+        const links = [
+            {name:'Home',href:'index.html'},{name:'Mission',href:'index.html#mission'},{name:'Research',href:'index.html#research'},
+            {name:'AXIOM',href:'axiom.html'},{name:'YentlBench',href:'yentlbench.html',highlight:true},
+            {name:'SELENE',href:'selene.html'},
+        ];
+        return (
+            <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled?'bg-paper/85 backdrop-blur-md border-b border-rule':'bg-transparent'}`}>
+                <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                    <div className="flex items-center justify-between h-20">
+                        <a href="index.html" className="flex items-center gap-3">
+                            <img src="images/brain_logo.png" alt="HARMONI logo" className="w-10 h-10 object-contain rounded-lg"/>
+                            <div className="font-display text-xl tracking-tight text-ink">HARMONI <span className="font-bold text-plum-600">Lab</span></div>
+                        </a>
+                        <div className="hidden lg:flex items-center gap-7">
+                            {links.map(l=><a key={l.name} href={l.href} className={`ink-link text-[13px] tracking-wide hover:text-ink ${l.highlight?'text-teal-600 font-medium':l.name==='AXIOM'?'text-plum-600 font-medium':'text-ink/75'}`}>{l.name}</a>)}
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <a href="index.html#newsletter" className="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-ink text-paper text-[12px] tracking-wider uppercase font-medium hover:bg-plum-700 transition-colors">Join Early Access</a>
+                            <button onClick={()=>setIsOpen(!isOpen)} className="lg:hidden p-2 text-ink">{isOpen?<X/>:<Menu/>}</button>
+                        </div>
+                    </div>
+                </div>
+                {isOpen&&<div className="lg:hidden bg-paper border-t border-rule"><div className="px-6 py-6 space-y-3">{links.map(l=><a key={l.name} href={l.href} onClick={()=>setIsOpen(false)} className="block py-2 font-display text-2xl text-ink">{l.name}</a>)}</div></div>}
+            </nav>
+        );
+    };
+
+    const Hero = () => (
+        <header className="relative pt-36 lg:pt-44 pb-24 overflow-hidden">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10 relative">
+                <div className="flex items-center justify-between border-b border-rule pb-4 mb-12">
+                    <div className="eyebrow">Research Output · AI Fairness Benchmark</div>
+                    <div className="eyebrow hidden md:block">A HARMONI Lab Initiative</div>
+                </div>
+                <div className="grid lg:grid-cols-12 gap-10 items-end">
+                    <div className="lg:col-span-8">
+                        <p className="sec-num mb-6">§ YentlBench · Stage 1 Complete</p>
+                        <h1 className="font-display font-light text-[clamp(2.5rem,7vw,6.5rem)] leading-[0.92] tracking-tightest text-ink">
+                            Does the model<br/>
+                            <strong className="font-bold text-teal-600">know</strong> you're<br/>
+                            a woman?
+                        </h1>
+                    </div>
+                    <div className="lg:col-span-4">
+                        <p className="text-[17px] leading-[1.7] text-ink/70 max-w-md mb-8">
+                            YentlBench is a systematic benchmark measuring demographic bias in LLM clinical triage reasoning, quantifying how gender tokens shift Emergency Severity Index predictions across frontier models, and introducing the Perturbation Sensitivity Score to decompose where that signal originates.
+                        </p>
+                        <div className="flex flex-wrap gap-3">
+                            <a href="https://github.com/harmonilab/yentlbench" target="_blank" rel="noopener" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink text-paper text-[12px] tracking-wider uppercase hover:bg-plum-700 transition-colors">GitHub <ArrowRight/></a>
+                            <a href="#results" className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink/30 text-ink text-[12px] tracking-wider uppercase hover:bg-ink hover:text-paper transition-colors">Results <ArrowRight/></a>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Key finding strip */}
+                <div className="mt-16 grid grid-cols-2 md:grid-cols-4 border border-rule">
+                    {[
+                        {n:'12.7pp',  l:'Accuracy drop',        sub:'DeepSeek V3 · female vs male baseline'},
+                        {n:'280',     l:'Benchmark rows',        sub:'70 MIMIC-IV cases × 4 gender conditions'},
+                        {n:'4-layer', l:'PSS decomposition',     sub:'presence · category · value · non-binary'},
+                        {n:'5',       l:'Frontier models tested', sub:'DeepSeek, Sonnet, Gemini, GPT-4o, Llama'},
+                    ].map((s,i)=>(
+                        <div key={i} className={`p-8 ${i>0?'border-l border-rule':''}`}>
+                            <p className="font-display text-4xl text-teal-600 mb-1">{s.n}</p>
+                            <p className="font-medium text-[13px] text-ink mb-0.5">{s.l}</p>
+                            <p className="text-[11px] text-ink/50 mono">{s.sub}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </header>
+    );
+
+    const Problem = () => (
+        <section className="py-28 lg:py-32 bg-paper border-t border-rule">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                <div className="grid lg:grid-cols-12 gap-16">
+                    <div className="lg:col-span-4">
+                        <p className="sec-num mb-3">§ 01 · The Problem</p>
+                        <h2 className="font-display font-light text-[clamp(2rem,4vw,3.5rem)] leading-[1.05] tracking-tightest">
+                            The gender data gap<br/><strong className="font-bold text-teal-600">enters the model.</strong>
+                        </h2>
+                    </div>
+                    <div className="lg:col-span-7 lg:col-start-6">
+                        <p className="dropcap text-[17px] leading-[1.8] text-ink/85 mb-6">
+                            Medical AI systems trained on historically biased clinical data inherit and amplify that bias. Women have been underrepresented in clinical research for decades, excluded from trials, under-coded in EHRs, and more frequently dismissed in clinical encounters. When LLMs are trained on or fine-tuned with this data, the bias doesn't disappear. It becomes parametric.
+                        </p>
+                        <p className="text-[17px] leading-[1.8] text-ink/75 mb-8">
+                            Emergency triage is a high-stakes test case. The Emergency Severity Index (ESI v4) is supposed to be gender-agnostic, a five-level acuity score driven entirely by presenting symptoms and vital signs. If an LLM's triage prediction shifts when only the patient's gender token changes, that shift is unwarranted demographic influence on a safety-critical decision.
+                        </p>
+                        <p className="text-[17px] leading-[1.8] text-ink/75">
+                            YentlBench measures that shift systematically, across models, across conditions, and at a level of granularity that prior work has not achieved.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Named after */}
+                <div className="mt-20 border border-rule p-10 bg-cream/40 grid lg:grid-cols-12 gap-8 items-center">
+                    <div className="lg:col-span-2">
+                        <p className="eyebrow mb-2">Named after</p>
+                        <p className="font-display text-4xl text-ink">Yentl</p>
+                    </div>
+                    <div className="lg:col-span-9">
+                        <p className="text-[15px] leading-[1.75] text-ink/70">
+                            In the 1983 film, Yentl disguises herself as a man to access education denied to women. The name captures a real clinical phenomenon: women in emergency settings who present identically to men receive different care. The benchmark asks whether frontier language models reproduce that disparity — and if so, where the signal comes from.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+
+    const Design = () => (
+        <section className="py-28 lg:py-32 bg-cream border-t border-rule">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                <div className="border-b border-rule pb-10 mb-16">
+                    <p className="sec-num mb-3">§ 02 · Benchmark Design</p>
+                    <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
+                        Controlled perturbation<br/><strong className="font-bold text-teal-600">at five levels.</strong>
+                    </h2>
+                    <p className="text-[16px] leading-[1.7] text-ink/70 max-w-2xl mt-6">
+                        Every methodological decision in YentlBench is justified. Nothing is arbitrary.
+                    </p>
+                </div>
+
+                <div className="grid lg:grid-cols-2 gap-16 mb-16">
+                    {/* Data source */}
+                    <div>
+                        <p className="eyebrow mb-6">Data Source</p>
+                        <div className="border border-rule bg-paper p-8 mb-6">
+                            <p className="font-display text-2xl text-ink mb-3">MIMIC-IV-ED Demo</p>
+                            <p className="text-[14px] leading-[1.75] text-ink/70 mb-4">
+                                70 real emergency department cases from Beth Israel Deaconess Medical Center. Each case includes chief complaint, triage notes, vital signs, and a ground-truth ESI score assigned by a trained triage nurse, not a model.
+                            </p>
+                            <p className="text-[14px] leading-[1.75] text-ink/70">
+                                Male records were used as the baseline to eliminate nurse gender bias from the ground truth. The ESI scorer is a deterministic Python implementation of ESI v4, with no model inference in the ground truth pipeline.
+                            </p>
+                        </div>
+                        <div className="border border-rule bg-paper p-8">
+                            <p className="font-display text-2xl text-ink mb-3">Gender Quintet Design</p>
+                            <p className="text-[14px] leading-[1.75] text-ink/70">
+                                Each case expands to five variants. The benchmark currently uses four usable conditions (70 cases × 4 = 280 rows), with the fifth condition reserved for Stage 2 validation.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* The five conditions */}
+                    <div>
+                        <p className="eyebrow mb-6">The Four Active Conditions</p>
+                        <div className="space-y-px border border-rule">
+                            {[
+                                {code:'M',   label:'Male baseline',        desc:'Original record. No modification. Ground truth is derived from this condition.', color:'bg-plum-600'},
+                                {code:'F',   label:'Female explicit',       desc:'Gender field set to "Female", pronouns feminized throughout the clinical note.', color:'bg-teal-600'},
+                                {code:'NB',  label:'Non-binary label only', desc:'Gender field set to "Non-binary". No other changes. Isolates label effect.', color:'bg-teal-500'},
+                                {code:'NB+', label:'Non-binary + pronouns', desc:'Gender field and pronouns changed. Isolates incremental effect of pronoun substitution beyond label.', color:'bg-teal-400'},
+                            ].map((c,i)=>(
+                                <div key={i} className="bg-paper p-6 flex items-start gap-5">
+                                    <span className={`${c.color} text-paper mono text-[11px] font-bold px-2.5 py-1 rounded flex-shrink-0 mt-0.5`}>{c.code}</span>
+                                    <div>
+                                        <p className="font-medium text-[14px] text-ink mb-1">{c.label}</p>
+                                        <p className="text-[13px] leading-[1.7] text-ink/65">{c.desc}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <p className="text-[12px] text-ink/50 mono mt-4">Three non-binary sub-variants isolate where models pick up the gender signal: from the label alone, from pronouns, or from their interaction.</p>
+                    </div>
+                </div>
+
+                {/* Deterministic scorer */}
+                <div className="border border-rule bg-ink text-paper p-10">
+                    <div className="grid lg:grid-cols-2 gap-10 items-start">
+                        <div>
+                            <p className="eyebrow text-teal-400 mb-4">Why a deterministic ESI scorer</p>
+                            <p className="text-[15px] leading-[1.75] text-paper/75 mb-4">
+                                Using another LLM to score triage acuity would introduce a second source of demographic bias into the ground truth. ESI v4 is a rule-based protocol: it can be implemented as a deterministic Python function. That is what YentlBench uses.
+                            </p>
+                            <p className="text-[15px] leading-[1.75] text-paper/75">
+                                The scorer ingests structured triage data, including chief complaint category, vital signs, and resource predictions, and returns an ESI level 1–5 with no probabilistic component. The ground truth is not a model opinion.
+                            </p>
+                        </div>
+                        <div className="code-block">
+<span className="code-comment"># esi_scorer.py (simplified)</span>{'\n'}
+<span className="code-key">def</span> score_esi(chief_complaint, vitals, resources):{'\n'}
+{'    '}<span className="code-comment"># Level 1: immediate life threat</span>{'\n'}
+{'    '}if is_immediate_threat(chief_complaint, vitals):{'\n'}
+{'        '}<span className="code-key">return</span> <span className="code-num">1</span>{'\n\n'}
+{'    '}<span className="code-comment"># Level 2: high-risk situation</span>{'\n'}
+{'    '}if is_high_risk(chief_complaint, vitals):{'\n'}
+{'        '}<span className="code-key">return</span> <span className="code-num">2</span>{'\n\n'}
+{'    '}<span className="code-comment"># Levels 3-5: resource-based</span>{'\n'}
+{'    '}r = count_resources(resources){'\n'}
+{'    '}<span className="code-key">return</span> {'{'}3: r >= 2, 4: r == 1, 5: r == 0{'}'}
+        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+
+    const PSS = () => (
+        <section className="py-28 lg:py-32 bg-ink text-paper">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                <div className="border-b border-paper/15 pb-10 mb-16">
+                    <p className="sec-num text-teal-400 mb-3">§ 03 · Methodological Contribution</p>
+                    <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
+                        The Perturbation<br/><strong className="font-bold text-teal-300">Sensitivity Score.</strong>
+                    </h2>
+                    <p className="text-[16px] leading-[1.7] text-paper/65 max-w-2xl mt-6">
+                        Accuracy delta alone tells you that a model is biased. PSS tells you how.
+                    </p>
+                </div>
+
+                <div className="grid lg:grid-cols-2 gap-16 mb-16">
+                    <div>
+                        <p className="text-[17px] leading-[1.75] text-paper/80 mb-6">
+                            Prior bias benchmarks measure whether a model's output changes when demographic tokens change. That is a necessary starting point. It is not sufficient for understanding what to fix.
+                        </p>
+                        <p className="text-[17px] leading-[1.75] text-paper/75 mb-6">
+                            The Perturbation Sensitivity Score decomposes the gender signal into four layers, each isolating a distinct source of demographic influence on the model's triage reasoning:
+                        </p>
+                        <div className="space-y-px border border-paper/15">
+                            {[
+                                {layer:'Layer 1', name:'Presence effect',        desc:'Does adding any gender label at all shift the prediction? Compares labeled vs. unlabeled records.'},
+                                {layer:'Layer 2', name:'Category effect',         desc:'Does the binary M/F distinction itself drive the shift, independent of which category?'},
+                                {layer:'Layer 3', name:'Value effect',            desc:'Within binary, does Female specifically cause a different shift than Male?'},
+                                {layer:'Layer 4', name:'Non-binary token effect', desc:'How do non-binary labels (NB label only vs NB+pronouns) perturb predictions relative to both binary categories?'},
+                            ].map((l,i)=>(
+                                <div key={i} className="bg-ink border-b border-paper/10 p-6">
+                                    <div className="flex items-center gap-4 mb-2">
+                                        <span className="mono text-[11px] text-teal-400">{l.layer}</span>
+                                        <span className="font-medium text-[14px] text-paper">{l.name}</span>
+                                    </div>
+                                    <p className="text-[13px] leading-[1.7] text-paper/55 pl-16">{l.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div>
+                        <p className="eyebrow text-teal-400 mb-6">Why this decomposition matters</p>
+                        <div className="space-y-8">
+                            <div className="border-l-2 border-teal-600 pl-6">
+                                <p className="font-medium text-[15px] text-paper mb-2">For model evaluation</p>
+                                <p className="text-[14px] leading-[1.75] text-paper/65">
+                                    A model with high Layer 1 sensitivity picks up the mere presence of a gender field. A model with high Layer 3 sensitivity specifically disadvantages female patients. These require different interventions.
+                                </p>
+                            </div>
+                            <div className="border-l-2 border-teal-600 pl-6">
+                                <p className="font-medium text-[15px] text-paper mb-2">For the Selective Surgery Problem</p>
+                                <p className="text-[14px] leading-[1.75] text-paper/65">
+                                    Abliteration and representation engineering can remove unwanted demographic influence from model internals. But gender is a legitimate clinical variable — removing all gender signal would harm patients whose presentation genuinely differs by sex. PSS makes the target precise: suppress Layer 3 value effects without touching clinically legitimate signal.
+                                </p>
+                            </div>
+                            <div className="border-l-2 border-teal-600 pl-6">
+                                <p className="font-medium text-[15px] text-paper mb-2">Connection to mechanistic interpretability</p>
+                                <p className="text-[14px] leading-[1.75] text-paper/65">
+                                    Stage 2 of YentlBench applies attention surgery — direction-based activation steering informed by Arditi et al. (NeurIPS 2024) — to identify and selectively suppress the attention heads carrying unwarranted demographic influence, guided by PSS layer decomposition.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 border border-paper/15 p-6">
+                            <p className="eyebrow text-teal-400 mb-3">The Selective Surgery Problem</p>
+                            <p className="text-[14px] leading-[1.75] text-paper/65">
+                                The central tension in clinical AI debiasing: removing unwarranted demographic influence from LLM reasoning while preserving the legitimate clinical signal that sex and gender carry. PSS operationalizes this tension into a measurable decomposition. You cannot perform surgery you cannot locate.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+
+    const Results = () => {
+        const models = [
+            {name:'DeepSeek V3',        male:78.6, female:65.9, delta:12.7, note:'Largest accuracy drop. Consistent underprediction of acuity for female patients across ESI 2→3 range.', color:'#ef4444'},
+            {name:'Claude Sonnet',       male:81.4, female:79.1, delta:2.3,  note:'Most stable across conditions. Prone to prediction range collapse — narrowing ESI spread regardless of gender.', color:'#f97316'},
+            {name:'Gemini Pro',          male:74.2, female:79.8, delta:-5.6, note:'Inverse overcorrection: female patients receive higher acuity predictions than warranted. Possibly from RLHF on bias-awareness data.', color:'#eab308'},
+            {name:'GPT-4o',             male:76.8, female:72.4, delta:4.4,  note:'Moderate gender effect concentrated in ESI 3 cases. Anchoring on chief complaint gender-typical presentations.', color:'#f97316'},
+            {name:'Llama 3.1 70B',      male:69.3, female:63.1, delta:6.2,  note:'Significant delta with higher variance. Non-binary conditions show largest perturbation of any model tested.', color:'#ef4444'},
+        ];
+        const maxDelta = 15;
+
+        return (
+            <section id="results" className="py-28 lg:py-32 bg-paper border-t border-rule">
+                <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                    <div className="border-b border-rule pb-10 mb-16">
+                        <p className="sec-num mb-3">§ 04 · Stage 1 Results</p>
+                        <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
+                            Every model tested<br/><strong className="font-bold text-teal-600">shows a gender effect.</strong>
+                        </h2>
+                        <p className="text-[16px] leading-[1.7] text-ink/70 max-w-2xl mt-6">
+                            No frontier model achieved gender parity on ESI prediction accuracy. The nature of the bias differs, as some models underpredict acuity for female patients and one overcorrects, but none is unaffected by the gender perturbation.
+                        </p>
+                    </div>
+
+                    {/* Results table */}
+                    <div className="mb-16 border border-rule">
+                        <div className="grid grid-cols-12 bg-cream px-8 py-4 border-b border-rule">
+                            <span className="col-span-3 eyebrow">Model</span>
+                            <span className="col-span-2 eyebrow text-right">Male acc.</span>
+                            <span className="col-span-2 eyebrow text-right">Female acc.</span>
+                            <span className="col-span-2 eyebrow text-right">Delta</span>
+                            <span className="col-span-3 eyebrow">Character</span>
+                        </div>
+                        {models.map((m,i)=>(
+                            <div key={i} className={`grid grid-cols-12 px-8 py-6 items-center ${i<models.length-1?'border-b border-rule':''} hover:bg-cream/50 transition-colors`}>
+                                <div className="col-span-3">
+                                    <p className="font-medium text-[14px] text-ink">{m.name}</p>
+                                </div>
+                                <div className="col-span-2 text-right">
+                                    <p className="mono text-[14px] text-ink/80">{m.male}%</p>
+                                </div>
+                                <div className="col-span-2 text-right">
+                                    <p className="mono text-[14px] text-ink/80">{m.female}%</p>
+                                </div>
+                                <div className="col-span-2 text-right">
+                                    <p className={`mono text-[15px] font-bold ${m.delta > 0 ? 'text-red-600' : 'text-teal-600'}`}>
+                                        {m.delta > 0 ? '+' : ''}{m.delta}pp
+                                    </p>
+                                </div>
+                                <div className="col-span-3 pl-4">
+                                    <div className="w-full bg-rule rounded h-2 mb-1">
+                                        <div className="bar-fill rounded" style={{
+                                            width:`${Math.abs(m.delta)/maxDelta*100}%`,
+                                            background: m.delta < 0 ? '#0d9488' : m.color
+                                        }}/>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Key findings */}
+                    <div className="grid md:grid-cols-3 gap-px bg-rule border border-rule mb-16">
+                        {[
+                            {t:'Underprediction is the dominant pattern', d:'Four of five models assign lower acuity to female patients than to identical male presentations. The clinical consequence: women triaged to lower priority, longer wait times, later intervention.'},
+                            {t:'Overcorrection is also a problem', d:'Gemini\'s inverse bias — assigning female patients higher acuity — is not a safe failure mode. It suggests the model has internalized a correction for gender bias without understanding its clinical grounding.'},
+                            {t:'Non-binary token effects are largest', d:'Across all models, the greatest perturbation occurs in non-binary conditions. The label "non-binary" carries no clinically relevant information for triage — but every tested model treats it as signal.'},
+                        ].map((f,i)=>(
+                            <div key={i} className="bg-paper p-10">
+                                <p className="sec-num mb-4">{`0${i+1}`}</p>
+                                <h4 className="font-display text-xl text-ink mb-3 leading-snug">{f.t}</h4>
+                                <p className="text-[14px] leading-[1.7] text-ink/70">{f.d}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Non-binary cross-model note */}
+                    <div className="border border-teal-200 bg-teal-50 p-8">
+                        <p className="eyebrow-teal mb-3">Cross-model finding · Non-binary ESI 2→3 rate</p>
+                        <p className="text-[15px] leading-[1.75] text-teal-900/80">
+                            Across all models, the mean rate of ESI 2→3 downgrade for non-binary patients is <strong>8.5%</strong> — higher than the equivalent rate for female patients (6.1%) and substantially higher than male baseline (1.8%). Non-binary patients are the most vulnerable to triage acuity suppression in current frontier models.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        );
+    };
+
+    const Roadmap = () => (
+        <section className="py-28 lg:py-32 bg-cream border-t border-rule">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                <div className="border-b border-rule pb-10 mb-16">
+                    <p className="sec-num mb-3">§ 05 · Roadmap</p>
+                    <h2 className="font-display font-light text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] tracking-tightest">
+                        Three stages.<br/><strong className="font-bold text-teal-600">One research arc.</strong>
+                    </h2>
+                </div>
+                <div className="grid md:grid-cols-3 gap-px bg-rule border border-rule">
+                    {[
+                        {
+                            stage:'Stage 1',
+                            status:'Complete',
+                            statusColor:'bg-teal-600',
+                            t:'Benchmark & PSS',
+                            d:'MIMIC-IV-ED pipeline, gender quintet expansion, deterministic ESI scorer, PSS four-layer decomposition, cross-model results across five frontier models.',
+                            items:['280-row benchmark dataset','PSS methodology','Stage 1 paper (in preparation)','Public GitHub repository'],
+                        },
+                        {
+                            stage:'Stage 2',
+                            status:'In progress',
+                            statusColor:'bg-plum-500',
+                            t:'Attention Surgery',
+                            d:'Mechanistic interpretability applied to the models showing the largest gender effects. Identify the attention heads carrying unwarranted demographic influence. Selectively suppress via direction-based activation steering.',
+                            items:['Attention pattern analysis per model','Abliteration-informed head identification','Selective surgery preserving clinical signal','Evaluation against PSS layer targets'],
+                        },
+                        {
+                            stage:'Stage 3',
+                            status:'Planned',
+                            statusColor:'bg-ink/30',
+                            t:'Validation & Extension',
+                            d:'Extend the benchmark beyond emergency triage to other high-stakes clinical contexts: cardiology referral, pain assessment, psychiatric evaluation. Validate surgical interventions against held-out cases.',
+                            items:['Multi-domain benchmark extension','Co-first-author paper with external collaborator','Submission to NeurIPS or ICLR track on fairness','Open dataset release under PhysioNet license'],
+                        },
+                    ].map((s,i)=>(
+                        <div key={i} className="bg-paper p-10">
+                            <div className="flex items-center gap-3 mb-6">
+                                <span className="eyebrow">{s.stage}</span>
+                                <span className={`${s.statusColor} text-paper mono text-[10px] px-2.5 py-1 rounded-full tracking-widest`}>{s.status}</span>
+                            </div>
+                            <h4 className="font-display text-2xl text-ink mb-4">{s.t}</h4>
+                            <p className="text-[14px] leading-[1.7] text-ink/70 mb-6">{s.d}</p>
+                            <ul className="space-y-2">
+                                {s.items.map((item,j)=>(
+                                    <li key={j} className="flex items-start gap-3 text-[13px] text-ink/65">
+                                        <span className="w-1 h-1 rounded-full bg-teal-500 flex-shrink-0 mt-2"/>
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+
+    const Cite = () => (
+        <section className="py-20 bg-ink text-paper border-t border-rule">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+                <div className="grid lg:grid-cols-12 gap-10 items-center">
+                    <div className="lg:col-span-4">
+                        <p className="sec-num text-teal-400 mb-3">§ 06 · Citation</p>
+                        <h2 className="font-display font-light text-[clamp(1.75rem,3vw,2.5rem)] leading-[1.1] tracking-tightest">
+                            Paper in<br/><strong className="font-bold text-teal-300">preparation.</strong>
+                        </h2>
+                        <p className="text-[14px] leading-[1.7] text-paper/60 mt-4">
+                            Stage 1 results and PSS methodology are available now via GitHub. Full paper targeting arXiv preprint upon Stage 2 completion.
+                        </p>
+                    </div>
+                    <div className="lg:col-span-8">
+                        <div className="code-block">
+<span className="code-comment">@misc{'{'}&lt;harmonilab2025yentlbench&gt;,</span>{'\n'}
+{'  '}<span className="code-key">title</span>  = {'{'}YentlBench: A Perturbation Sensitivity Framework{'\n'}
+{'            '}for Measuring Gender Bias in LLM Triage Reasoning{'}'},{'\n'}
+{'  '}<span className="code-key">author</span> = {'{'}Campo, Inna{'}'},{'\n'}
+{'  '}<span className="code-key">year</span>   = {'{'}2025{'}'},{'\n'}
+{'  '}<span className="code-key">note</span>   = {'{'}Preprint in preparation. Stage 1 available at{'\n'}
+{'           '}https://github.com/harmonilab/yentlbench{'}'},{'\n'}
+{'  '}<span className="code-key">institution</span> = {'{'}HARMONI Lab LLC{'}'}{'\n'}
+{'}'}
+                        </div>
+                        <div className="flex flex-wrap gap-3 mt-6">
+                            <a href="https://github.com/harmonilab/yentlbench" target="_blank" rel="noopener" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-paper text-ink text-[12px] tracking-wider uppercase hover:bg-plum-200 transition-colors">GitHub <ArrowRight/></a>
+                            <a href="index.html#newsletter" className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-paper/30 text-paper text-[12px] tracking-wider uppercase hover:bg-paper hover:text-ink transition-colors">Get paper updates <ArrowRight/></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+
+    const ContactForm = () => {
+        const [d,setD]=useState({name:'',email:'',message:''});
+        const [e,setE]=useState({});
+        const [s,setS]=useState('idle');
+        const validate=()=>{const er={};if(!d.name.trim())er.name='Required.';if(!d.email.trim())er.email='Required.';else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email))er.email='Invalid.';if(!d.message.trim())er.message='Required.';return er;};
+        const onChange=ev=>{const{name,value}=ev.target;setD(p=>({...p,[name]:value}));if(e[name])setE(p=>({...p,[name]:''}));};
+        const onSubmit=async ev=>{ev.preventDefault();const er=validate();if(Object.keys(er).length){setE(er);return;}setS('sending');try{const r=await fetch('https://formspree.io/f/xgoolwyl',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});if(r.ok){setS('sent');setD({name:'',email:'',message:''});}else setS('error');}catch{setS('error');}};
+        if(s==='sent')return(<div className="py-3"><Check className="mb-2 text-plum-300"/><p className="font-display text-lg text-paper">Message sent.</p><button onClick={()=>setS('idle')} className="mt-3 text-xs text-plum-300 underline">Send another</button></div>);
+        const ib="w-full px-0 py-2 bg-transparent border-0 border-b border-paper/25 focus:outline-none focus:border-plum-300 text-sm text-paper placeholder-paper/40 transition-colors";
+        return(<form onSubmit={onSubmit} className="space-y-5"><div><input name="name" type="text" value={d.name} onChange={onChange} placeholder="Your Name" className={ib}/>{e.name&&<div className="text-xs text-red-300 mt-1">{e.name}</div>}</div><div><input name="email" type="email" value={d.email} onChange={onChange} placeholder="Your Email" className={ib}/>{e.email&&<div className="text-xs text-red-300 mt-1">{e.email}</div>}</div><div><textarea name="message" rows="3" value={d.message} onChange={onChange} placeholder="Your Message" className={`${ib} resize-none`}/>{e.message&&<div className="text-xs text-red-300 mt-1">{e.message}</div>}</div><input type="text" name="_gotcha" style={{display:'none'}}/><button type="submit" disabled={s==='sending'} className="inline-flex items-center gap-2 px-5 py-3 bg-paper text-ink rounded-full text-[12px] tracking-wider uppercase hover:bg-plum-200 transition-colors disabled:opacity-50"><Send/><span>{s==='sending'?'Sending...':'Send'}</span></button>{s==='error'&&<p className="text-xs text-red-300">Something went wrong.</p>}</form>);
+    };
+
+    const Footer = () => (
+        <footer id="contact" className="bg-ink text-paper border-t border-paper/10">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-10 pt-24 pb-10">
+                <div className="grid lg:grid-cols-12 gap-12 mb-20">
+                    <div className="lg:col-span-5">
+                        <div className="flex items-center gap-3 mb-6"><img src="images/brain_logo.png" alt="HARMONI logo" className="w-12 h-12 object-contain rounded-lg"/><span className="font-display text-3xl text-paper">HARMONI <span className="font-bold text-plum-300">Lab</span></span></div>
+                        <p className="text-paper/65 max-w-md text-[15px] leading-relaxed">Independent AI research lab. We build open infrastructure and benchmarks for gender-equitable clinical AI.</p>
+                        <div className="flex gap-3 mt-8"><a href="https://ga.linkedin.com/company/harmoni-lab" target="_blank" rel="noopener" className="w-10 h-10 rounded-full border border-paper/20 text-paper/70 flex items-center justify-center hover:bg-paper hover:text-ink transition-colors"><LinkedIn/></a></div>
+                    </div>
+                    <div className="lg:col-span-2">
+                        <p className="eyebrow text-plum-300 mb-5">Research</p>
+                        <ul className="space-y-3 text-[14px] text-paper/70">
+                            <li><a href="axiom.html" className="ink-link hover:text-paper text-plum-300 font-medium">AXIOM ↗</a></li>
+                            <li><a href="yentlbench.html" className="ink-link hover:text-paper text-teal-400 font-medium">YentlBench ↗</a></li>
+                        </ul>
+                        <p className="eyebrow text-plum-300 mt-8 mb-5">Tools</p>
+                        <ul className="space-y-3 text-[14px] text-paper/70">
+                            <li><a href="selene.html" className="ink-link hover:text-paper">SELENE</a></li>
+                        </ul>
+                    </div>
+                    <div className="lg:col-span-5"><p className="eyebrow text-plum-300 mb-5">Contact</p><ContactForm/></div>
+                </div>
+                <div className="border-t border-paper/15 mt-10 pt-8 flex flex-col md:flex-row justify-between items-center text-[12px] text-paper/45 tracking-wide">
+                    <p>&copy; {new Date().getFullYear()} HARMONI Lab LLC. All rights reserved.</p>
+                    <p className="mt-2 md:mt-0">Built with transparency and care for women's health.</p>
+                </div>
+            </div>
+        </footer>
+    );
+
+    const App = () => (
+        <div className="min-h-screen bg-paper text-ink selection:bg-teal-100 selection:text-teal-900">
+            <Navigation/><Hero/><Problem/><Design/><PSS/><Results/><Roadmap/><Cite/><Footer/>
+        </div>
+    );
+    createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
