@@ -114,7 +114,7 @@
                             YentlBench is a systematic benchmark measuring demographic bias in LLM clinical triage reasoning, quantifying how gender tokens shift Emergency Severity Index predictions across frontier models, and introducing the Perturbation Sensitivity Score to decompose where that signal originates.
                         </p>
                         <div className="flex flex-wrap gap-3">
-                            <a href="https://github.com/harmonilab/yentlbench" target="_blank" rel="noopener" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink text-paper text-[12px] tracking-wider uppercase hover:bg-plum-700 transition-colors">GitHub <ArrowRight/></a>
+                            <a href="https://github.com/harmoni-lab/yentlbench" target="_blank" rel="noopener" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink text-paper text-[12px] tracking-wider uppercase hover:bg-plum-700 transition-colors">GitHub <ArrowRight/></a>
                             <a href="#results" className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink/30 text-ink text-[12px] tracking-wider uppercase hover:bg-ink hover:text-paper transition-colors">Results <ArrowRight/></a>
                         </div>
                     </div>
@@ -170,7 +170,7 @@
                     </div>
                     <div className="lg:col-span-9">
                         <p className="text-[15px] leading-[1.75] text-ink/70">
-                            In the 1983 film, Yentl disguises herself as a man to access education denied to women. The name captures a real clinical phenomenon: women in emergency settings who present identically to men receive different care. The benchmark asks whether frontier language models reproduce that disparity — and if so, where the signal comes from.
+                            In the 1983 film, Yentl disguises herself as a man to access education denied to women. The name captures a real clinical phenomenon: women in emergency settings who present identically to men receive different care. The benchmark asks whether frontier language models reproduce that disparity. If so, it asks where the signal comes from.
                         </p>
                     </div>
                 </div>
@@ -317,13 +317,13 @@
                             <div className="border-l-2 border-teal-600 pl-6">
                                 <p className="font-medium text-[15px] text-paper mb-2">For the Selective Surgery Problem</p>
                                 <p className="text-[14px] leading-[1.75] text-paper/65">
-                                    Abliteration and representation engineering can remove unwanted demographic influence from model internals. But gender is a legitimate clinical variable — removing all gender signal would harm patients whose presentation genuinely differs by sex. PSS makes the target precise: suppress Layer 3 value effects without touching clinically legitimate signal.
+                                    Abliteration and representation engineering can remove unwanted demographic influence from model internals. But gender is a legitimate clinical variable, meaning removing all gender signal would harm patients whose presentation genuinely differs by sex. PSS makes the target precise: suppress Layer 3 value effects without touching clinically legitimate signal.
                                 </p>
                             </div>
                             <div className="border-l-2 border-teal-600 pl-6">
                                 <p className="font-medium text-[15px] text-paper mb-2">Connection to mechanistic interpretability</p>
                                 <p className="text-[14px] leading-[1.75] text-paper/65">
-                                    Stage 2 of YentlBench applies attention surgery — direction-based activation steering informed by Arditi et al. (NeurIPS 2024) — to identify and selectively suppress the attention heads carrying unwarranted demographic influence, guided by PSS layer decomposition.
+                                    Stage 2 of YentlBench applies attention surgery, which is direction-based activation steering informed by Arditi et al. (NeurIPS 2024), to identify and selectively suppress the attention heads carrying unwarranted demographic influence, guided by PSS layer decomposition.
                                 </p>
                             </div>
                         </div>
@@ -343,7 +343,7 @@
     const Results = () => {
         const models = [
             {name:'DeepSeek V3',        male:78.6, female:65.9, delta:12.7, note:'Largest accuracy drop. Consistent underprediction of acuity for female patients across ESI 2→3 range.', color:'#ef4444'},
-            {name:'Claude Sonnet',       male:81.4, female:79.1, delta:2.3,  note:'Most stable across conditions. Prone to prediction range collapse — narrowing ESI spread regardless of gender.', color:'#f97316'},
+            {name:'Claude Sonnet',       male:81.4, female:79.1, delta:2.3,  note:'Most stable across conditions. Prone to prediction range collapse, which narrows ESI spread regardless of gender.', color:'#f97316'},
             {name:'Gemini Pro',          male:74.2, female:79.8, delta:-5.6, note:'Inverse overcorrection: female patients receive higher acuity predictions than warranted. Possibly from RLHF on bias-awareness data.', color:'#eab308'},
             {name:'GPT-4o',             male:76.8, female:72.4, delta:4.4,  note:'Moderate gender effect concentrated in ESI 3 cases. Anchoring on chief complaint gender-typical presentations.', color:'#f97316'},
             {name:'Llama 3.1 70B',      male:69.3, female:63.1, delta:6.2,  note:'Significant delta with higher variance. Non-binary conditions show largest perturbation of any model tested.', color:'#ef4444'},
@@ -404,8 +404,8 @@
                     <div className="grid md:grid-cols-3 gap-px bg-rule border border-rule mb-16">
                         {[
                             {t:'Underprediction is the dominant pattern', d:'Four of five models assign lower acuity to female patients than to identical male presentations. The clinical consequence: women triaged to lower priority, longer wait times, later intervention.'},
-                            {t:'Overcorrection is also a problem', d:'Gemini\'s inverse bias — assigning female patients higher acuity — is not a safe failure mode. It suggests the model has internalized a correction for gender bias without understanding its clinical grounding.'},
-                            {t:'Non-binary token effects are largest', d:'Across all models, the greatest perturbation occurs in non-binary conditions. The label "non-binary" carries no clinically relevant information for triage — but every tested model treats it as signal.'},
+                            {t:'Overcorrection is also a problem', d:'Gemini\'s inverse bias, assigning female patients higher acuity, is not a safe failure mode. It suggests the model has internalized a correction for gender bias without understanding its clinical grounding.'},
+                            {t:'Non-binary token effects are largest', d:'Across all models, the greatest perturbation occurs in non-binary conditions. The label "non-binary" carries no clinically relevant information for triage, but every tested model treats it as signal.'},
                         ].map((f,i)=>(
                             <div key={i} className="bg-paper p-10">
                                 <p className="sec-num mb-4">{`0${i+1}`}</p>
@@ -419,7 +419,7 @@
                     <div className="border border-teal-200 bg-teal-50 p-8">
                         <p className="eyebrow-teal mb-3">Cross-model finding · Non-binary ESI 2→3 rate</p>
                         <p className="text-[15px] leading-[1.75] text-teal-900/80">
-                            Across all models, the mean rate of ESI 2→3 downgrade for non-binary patients is <strong>8.5%</strong> — higher than the equivalent rate for female patients (6.1%) and substantially higher than male baseline (1.8%). Non-binary patients are the most vulnerable to triage acuity suppression in current frontier models.
+                            Across all models, the mean rate of ESI 2→3 downgrade for non-binary patients is <strong>8.5%</strong>. This is higher than the equivalent rate for female patients (6.1%) and substantially higher than male baseline (1.8%). Non-binary patients are the most vulnerable to triage acuity suppression in current frontier models.
                         </p>
                     </div>
                 </div>
@@ -506,12 +506,12 @@
 {'  '}<span className="code-key">author</span> = {'{'}Campo, Inna{'}'},{'\n'}
 {'  '}<span className="code-key">year</span>   = {'{'}2025{'}'},{'\n'}
 {'  '}<span className="code-key">note</span>   = {'{'}Preprint in preparation. Stage 1 available at{'\n'}
-{'           '}https://github.com/harmonilab/yentlbench{'}'},{'\n'}
+{'           '}https://github.com/harmoni-lab/yentlbench{'}'},{'\n'}
 {'  '}<span className="code-key">institution</span> = {'{'}HARMONI Lab LLC{'}'}{'\n'}
 {'}'}
                         </div>
                         <div className="flex flex-wrap gap-3 mt-6">
-                            <a href="https://github.com/harmonilab/yentlbench" target="_blank" rel="noopener" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-paper text-ink text-[12px] tracking-wider uppercase hover:bg-plum-200 transition-colors">GitHub <ArrowRight/></a>
+                            <a href="https://github.com/harmoni-lab/yentlbench" target="_blank" rel="noopener" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-paper text-ink text-[12px] tracking-wider uppercase hover:bg-plum-200 transition-colors">GitHub <ArrowRight/></a>
                             <a href="index.html#newsletter" className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-paper/30 text-paper text-[12px] tracking-wider uppercase hover:bg-paper hover:text-ink transition-colors">Get paper updates <ArrowRight/></a>
                         </div>
                     </div>

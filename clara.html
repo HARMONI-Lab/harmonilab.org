@@ -122,7 +122,7 @@
                         Intelligent <strong className="font-bold text-plum-600">clinical oversight</strong>.
                     </h2>
                     <p className="text-[16px] leading-[1.7] text-ink/70 max-w-2xl mt-6">
-                        CLARA listens, identifies reasoning failures, and generates prompts — grounded in AXIOM's literature base — before those failures reach the patient.
+                        CLARA listens, identifies reasoning failures, and generates prompts, grounded in AXIOM's literature base, before those failures reach the patient.
                     </p>
                 </div>
                 <div className="grid md:grid-cols-3 gap-px bg-rule border border-rule">
@@ -157,7 +157,7 @@
                 <div className="grid md:grid-cols-3 gap-px bg-rule border border-rule">
                     {[
                         {code:'DS', t:'Diagnostic Shadowing', d:"Detects when physical symptoms are incorrectly attributed to a patient's pre-existing psychiatric history, leading to missed physical diagnoses. AXIOM checks whether the symptom cluster has documented physical etiologies in the literature."},
-                        {code:'PC', t:'Premature Closure',     d:'The tendency to cease diagnostic reasoning before all possibilities are explored. CLARA flags when a diagnosis is accepted without documented exclusion of alternatives — and retrieves what those alternatives are from AXIOM.'},
+                        {code:'PC', t:'Premature Closure',     d:'The tendency to cease diagnostic reasoning before all possibilities are explored. CLARA flags when a diagnosis is accepted without documented exclusion of alternatives, and retrieves what those alternatives are from AXIOM.'},
                         {code:'AB', t:'Anchoring Bias',        d:'Over-reliance on the first piece of information received, ignoring subsequent evidence. CLARA monitors for diagnostic statements made before a full symptom history is gathered, grounding its counter-prompt in AXIOM evidence.'},
                     ].map((b,i)=>(
                         <div key={i} className="bg-paper p-10">
@@ -184,7 +184,7 @@
                     </div>
                     <div className="lg:col-span-7">
                         <p className="text-[16px] leading-[1.75] text-plum-900/75">
-                            CLARA's bias detection is only as good as the evidence it can cite. When CLARA identifies a potential case of premature closure or anchoring bias, it does not rely on training data to generate the counter-prompt. It queries AXIOM's hybrid knowledge graph — retrieving documented relationships between the flagged symptom cluster and alternative diagnoses, scored by study type and recency, filtered for retractions. The clinician sees a question. Behind it is a graph traversal over primary literature.
+                            CLARA's bias detection is only as good as the evidence it can cite. When CLARA identifies a potential case of premature closure or anchoring bias, it does not rely on training data to generate the counter-prompt. It queries AXIOM's hybrid knowledge graph, retrieving documented relationships between the flagged symptom cluster and alternative diagnoses, scored by study type and recency, filtered for retractions. The clinician sees a question. Behind it is a graph traversal over primary literature.
                         </p>
                     </div>
                     <div className="lg:col-span-3 flex lg:justify-end">
@@ -213,7 +213,7 @@
                     <ul className="space-y-px bg-paper/15 border border-paper/15">
                         {[
                             {t:'Gemini 3 Pro via Google AI Studio', d:'Multimodal reasoning over clinical audio transcripts in real time.'},
-                            {t:'AXIOM Knowledge Base',               d:'Evidence grounding for all generated prompts — graph traversal over primary menopause literature.'},
+                            {t:'AXIOM Knowledge Base',               d:'Evidence grounding for all generated prompts, using graph traversal over primary menopause literature.'},
                             {t:'React + Vite + TypeScript Frontend', d:'Lightweight interface for clinicians. Minimal friction, maximum signal.'},
                             {t:'Async Audio-to-Transcript Pipeline', d:'Low-latency transcription enabling real-time bias detection without disrupting the encounter.'},
                         ].map((t,i)=>(
